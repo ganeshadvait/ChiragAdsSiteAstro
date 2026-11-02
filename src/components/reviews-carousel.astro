@@ -1,0 +1,308 @@
+---
+// Astro twin of reviews-carousel.tsx: stacked review cards with spring motion.
+// Markup is the initial state (first card active); the script animates y/scale
+// with the same spring as motion/react (stiffness 250, damping 20, mass 0.5).
+import { cn } from "@/lib/utils";
+
+export type Review = {
+  id: string | number;
+  body: string;
+  author: string;
+  title: string;
+};
+
+interface Props {
+  reviews: Review[];
+  class?: string;
+  className?: string;
+  height?: string;
+  excludeIds?: (string | number)[];
+  showIndicators?: boolean;
+  showNavigation?: boolean;
+  autoPlay?: boolean;
+  autoPlayInterval?: number;
+}
+
+const {
+  reviews,
+  class: classProp,
+  className = classProp ?? "",
+  height = "300px",
+  excludeIds = [],
+  showIndicators = true,
+  showNavigation = true,
+  autoPlay = false,
+  autoPlayInterval = 5000,
+} = Astro.props;
+
+const FRAME_OFFSET = -30;
+const FRAMES_VISIBLE_LENGTH = 3;
+
+const clamp = (val: number, [min, max]: [number, number]) => Math.min(Math.max(val, min), max);
+
+const filteredReviews = reviews.filter((review) => !excludeIds.includes(review.id));
+const maxIndex = filteredReviews.length - 1;
+const activeIndex = 0;
+
+// Same as motion's SSR output for initial={false}: transform from the animate target.
+const cardStyle = (index: number) => {
+  const offsetIndex = index - activeIndex;
+  const blur = activeIndex > index ? 2 : 0;
+  const opacity = activeIndex > index ? 0 : 1;
+  const scale = clamp(1 - offsetIndex * 0.08, [0.08, 2]);
+  const y = clamp(offsetIndex * FRAME_OFFSET, [FRAME_OFFSET * FRAMES_VISIBLE_LENGTH, Number.POSITIVE_INFINITY]);
+  const parts = [y !== 0 ? `translateY(${y}px)` : "", scale !== 1 ? `scale(${scale})` : ""].filter(Boolean);
+  const transform = parts.length ? parts.join(" ") : "none";
+  return `border-width:${1 / scale}px;will-change:opacity, filter, transform;filter:blur(${blur}px);opacity:${opacity};transition-property:opacity, filter;transition-duration:300ms;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);z-index:${filteredReviews.length - index};pointer-events:${index === activeIndex ? "auto" : "none"};top:50%;transform:${transform}`;
+};
+
+const NAV_BASE =
+  "box-gen group relative z-0 flex h-7 w-7 items-center justify-center rounded-full border-[0.5px] border-foreground/10 bg-background/50 backdrop-blur-sm transition-all duration-200";
+const NAV_DARK =
+  "dark:border-foreground/5 dark:bg-foreground/5 dark:hover:border-foreground/10 dark:hover:bg-foreground/10";
+const navClass = (disabled: boolean) =>
+  cn(
+    NAV_BASE,
+    disabled
+      ? "cursor-not-allowed opacity-30"
+      : "cursor-pointer hover:border-foreground/20 hover:bg-background/70 hover:shadow-lg",
+    NAV_DARK
+  );
+const dotClass = (active: boolean) =>
+  cn(
+    "h-2 rounded-full transition-all duration-200",
+    active ? "w-8 bg-[#F8B956]" : "w-2 bg-[#F8B956]/30 hover:bg-[#F8B956]/50"
+  );
+const ICON_CLASS = "h-3.5 w-3.5 text-foreground/60 transition-colors group-hover:text-foreground group-disabled:text-foreground/20";
+---
+
+{filteredReviews.length > 0 && (
+  <div
+    class={cn("relative mx-auto w-full max-w-4xl", className)}
+    style={`height:${height}`}
+    data-reviews-carousel
+    data-auto-play={autoPlay ? "true" : "false"}
+    data-auto-play-interval={autoPlayInterval}
+    data-nav-enabled={navClass(false)}
+    data-nav-disabled={navClass(true)}
+    data-dot-active={dotClass(true)}
+    data-dot-inactive={dotClass(false)}
+  >
+    {/* Stack of cards - using grid-stack pattern */}
+    <div class="relative h-full w-full py-8">
+      <div class="grid h-full w-full place-items-center">
+        {filteredReviews.map((review, index) => (
+          <figure class="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 w-[calc(100%-2rem)] max-w-[600px] rounded-2xl border border-foreground/10 bg-background/80 p-4 shadow-lg backdrop-blur-md sm:p-6" style={cardStyle(index)} data-card>
+            <blockquote class="relative">
+              <div class="-left-2 -top-1 absolute text-4xl text-foreground/10 leading-none dark:text-foreground/5">"</div>
+              <p class="relative text-foreground/80 text-sm leading-relaxed">{review.body}</p>
+            </blockquote>
+            <figcaption class="mt-4 flex items-center gap-2 border-foreground/5 border-t pt-4">
+              <div class="flex flex-col">
+                <span class="font-semibold text-foreground text-xs">{review.author}</span>
+                <span class="text-foreground/50 text-xs">{review.title}</span>
+              </div>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+
+    {/* Navigation buttons */}
+    {(showNavigation || showIndicators) && (
+      <div class="-translate-x-1/2 absolute bottom-4 left-1/2 z-50 flex items-center gap-2">
+        {showNavigation && (
+          <button aria-label="Anterior" class={navClass(activeIndex <= 0)} disabled={activeIndex <= 0} type="button" data-prev>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class={`lucide lucide-chevron-left ${ICON_CLASS}`} aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+          </button>
+        )}
+        {showIndicators && (
+          <div class="flex items-center gap-2">
+            {filteredReviews.map((_, index) => (
+              <button aria-label={`Ir al testimonio ${index + 1}`} class={dotClass(index === activeIndex)} type="button" data-dot></button>
+            ))}
+          </div>
+        )}
+        {showNavigation && (
+          <button aria-label="Siguiente" class={navClass(activeIndex === maxIndex)} disabled={activeIndex === maxIndex} type="button" data-next>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class={`lucide lucide-chevron-right ${ICON_CLASS}`} aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+          </button>
+        )}
+      </div>
+    )}
+  </div>
+)}
+
+<script>
+  const FRAME_OFFSET = -30;
+  const FRAMES_VISIBLE_LENGTH = 3;
+  // motion/react spring used by the cards
+  const STIFFNESS = 250;
+  const DAMPING = 20;
+  const MASS = 0.5;
+
+  const clamp = (val: number, [min, max]: [number, number]) => Math.min(Math.max(val, min), max);
+
+  // Retargetable spring that keeps its velocity, like motion's animate().
+  class Spring {
+    value: number;
+    target: number;
+    velocity = 0;
+    restSpeed = 2;
+    restDelta = 0.5;
+    constructor(value: number) {
+      this.value = value;
+      this.target = value;
+    }
+    setTarget(target: number) {
+      this.target = target;
+      // Smaller rest thresholds on a granular scale (same rule as motion).
+      const granular = Math.abs(target - this.value) < 5;
+      this.restSpeed = granular ? 0.01 : 2;
+      this.restDelta = granular ? 0.005 : 0.5;
+    }
+    // Advance by dt seconds; returns true once at rest.
+    step(dt: number) {
+      const h = 1 / 1000;
+      for (let t = 0; t < dt; t += h) {
+        const accel = (-STIFFNESS * (this.value - this.target) - DAMPING * this.velocity) / MASS;
+        this.velocity += accel * h;
+        this.value += this.velocity * h;
+      }
+      if (Math.abs(this.velocity) <= this.restSpeed && Math.abs(this.target - this.value) <= this.restDelta) {
+        this.value = this.target;
+        this.velocity = 0;
+        return true;
+      }
+      return false;
+    }
+  }
+
+  const buildTransform = (y: number, scale: number) => {
+    const parts: string[] = [];
+    if (y !== 0) parts.push(`translateY(${y}px)`);
+    if (scale !== 1) parts.push(`scale(${scale})`);
+    return parts.length ? parts.join(" ") : "none";
+  };
+
+  function init(root: HTMLElement) {
+    const cards = Array.from(root.querySelectorAll<HTMLElement>("[data-card]"));
+    const dots = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-dot]"));
+    const prevBtn = root.querySelector<HTMLButtonElement>("[data-prev]");
+    const nextBtn = root.querySelector<HTMLButtonElement>("[data-next]");
+    const { navEnabled, navDisabled, dotActive, dotInactive } = root.dataset;
+    const autoPlay = root.dataset.autoPlay === "true";
+    const autoPlayInterval = Number(root.dataset.autoPlayInterval);
+
+    const maxIndex = cards.length - 1;
+    const total = cards.length;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let activeIndex = 0;
+
+    const targets = (index: number) => {
+      const offsetIndex = index - activeIndex;
+      return {
+        blur: activeIndex > index ? 2 : 0,
+        opacity: activeIndex > index ? 0 : 1,
+        scale: reduceMotion ? 1 : clamp(1 - offsetIndex * 0.08, [0.08, 2]),
+        y: reduceMotion
+          ? 0
+          : clamp(offsetIndex * FRAME_OFFSET, [FRAME_OFFSET * FRAMES_VISIBLE_LENGTH, Number.POSITIVE_INFINITY]),
+      };
+    };
+
+    // One y + scale spring per card, started from the rendered values.
+    const springs = cards.map((card, index) => {
+      const t = targets(index);
+      card.style.transform = buildTransform(t.y, t.scale);
+      return { y: new Spring(t.y), scale: new Spring(t.scale), raf: 0, last: 0 };
+    });
+
+    const animate = (index: number) => {
+      const s = springs[index];
+      if (s.raf) return;
+      s.last = performance.now();
+      const tick = (now: number) => {
+        const dt = Math.min((now - s.last) / 1000, 0.1);
+        s.last = now;
+        const yDone = s.y.step(dt);
+        const scaleDone = s.scale.step(dt);
+        cards[index].style.transform = buildTransform(s.y.value, s.scale.value);
+        s.raf = yDone && scaleDone ? 0 : requestAnimationFrame(tick);
+      };
+      s.raf = requestAnimationFrame(tick);
+    };
+
+    const render = () => {
+      cards.forEach((card, index) => {
+        const t = targets(index);
+        card.style.borderWidth = `${1 / t.scale}px`;
+        card.style.filter = `blur(${t.blur}px)`;
+        card.style.opacity = String(t.opacity);
+        card.style.zIndex = String(total - index);
+        card.style.pointerEvents = index === activeIndex ? "auto" : "none";
+
+        const s = springs[index];
+        let changed = false;
+        if (s.y.target !== t.y) {
+          s.y.setTarget(t.y);
+          changed = true;
+        }
+        if (s.scale.target !== t.scale) {
+          s.scale.setTarget(t.scale);
+          changed = true;
+        }
+        if (changed) animate(index);
+      });
+
+      if (prevBtn) {
+        const disabled = activeIndex <= 0;
+        prevBtn.disabled = disabled;
+        prevBtn.className = (disabled ? navDisabled : navEnabled)!;
+      }
+      if (nextBtn) {
+        const disabled = activeIndex === maxIndex;
+        nextBtn.disabled = disabled;
+        nextBtn.className = (disabled ? navDisabled : navEnabled)!;
+      }
+      dots.forEach((dot, index) => {
+        dot.className = (index === activeIndex ? dotActive : dotInactive)!;
+      });
+    };
+
+    const setActiveIndex = (next: number) => {
+      if (next === activeIndex) return;
+      activeIndex = next;
+      render();
+    };
+
+    // Auto-play functionality
+    if (autoPlay && maxIndex >= 0) {
+      setInterval(() => {
+        setActiveIndex(activeIndex >= maxIndex ? 0 : activeIndex + 1);
+      }, autoPlayInterval);
+    }
+
+    // Keyboard navigation
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") {
+        setActiveIndex(clamp(activeIndex - 1, [0, maxIndex]));
+      } else if (event.key === "ArrowRight") {
+        setActiveIndex(clamp(activeIndex + 1, [0, maxIndex]));
+      }
+    });
+
+    prevBtn?.addEventListener("click", () => {
+      if (activeIndex > 0) setActiveIndex(activeIndex - 1);
+    });
+    nextBtn?.addEventListener("click", () => {
+      const newIndex = activeIndex + 1;
+      if (newIndex <= maxIndex) setActiveIndex(newIndex);
+    });
+    dots.forEach((dot, index) => {
+      dot.addEventListener("click", () => setActiveIndex(index));
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-reviews-carousel]").forEach(init);
+</script>

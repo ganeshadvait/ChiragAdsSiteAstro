@@ -1,0 +1,68 @@
+---
+// Astro port of faq.tsx. Single-open accordion; the script toggles the same
+// classes and inline styles React did.
+type FAQ = {
+  faqquestion: string;
+  faqanswer: string;
+};
+
+type Props = {
+  faqs: FAQ[];
+  className?: string;
+};
+
+const { faqs, className = "" } = Astro.props;
+
+const closedStyle = "max-height:0px;opacity:0;transform:translateY(-10px);transition:all 0.3s ease";
+---
+
+<section id="faqs" class="faqs_section mx-auto" data-faq>
+  <h2 class="text-3xl text-[#625587] mb-[24px] text-center font-bold faq_title">Frequently Asked Questions</h2>
+  <div class={`faq_wrapper inner_section ${className}`}>
+    {faqs.map((faq) => (
+      <div class="accordion rounded-xl " data-faq-item>
+        <div class="accordion_head">
+          <span>{faq.faqquestion}</span>
+          <p class="icon ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16"><path stroke="currentColor" d="M13.5 5.5 8 11 2.5 5.5"></path></svg>
+          </p>
+        </div>
+
+        <div class="accordion_content" style={closedStyle}>
+          <p class="faq_answer">{faq.faqanswer}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  function initFaq(root: HTMLElement) {
+    const items = Array.from(root.querySelectorAll<HTMLElement>("[data-faq-item]"));
+    let activeIndex: number | null = null;
+
+    const render = () => {
+      items.forEach((item, i) => {
+        const open = activeIndex === i;
+        item.className = `accordion rounded-xl ${open ? "active" : ""}`;
+        const icon = item.querySelector<HTMLElement>(".icon");
+        if (icon) icon.className = `icon ${open ? "rotate" : ""}`;
+        const content = item.querySelector<HTMLElement>(".accordion_content");
+        if (content) {
+          content.style.maxHeight = open ? "200px" : "0px";
+          content.style.opacity = open ? "1" : "0";
+          content.style.transform = open ? "translateY(0)" : "translateY(-10px)";
+        }
+      });
+    };
+
+    items.forEach((item, i) => {
+      item.addEventListener("click", () => {
+        activeIndex = activeIndex === i ? null : i;
+        render();
+      });
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-faq]").forEach(initFaq);
+</script>

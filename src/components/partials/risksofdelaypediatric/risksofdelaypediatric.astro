@@ -1,0 +1,69 @@
+---
+import Image from "@/lib/Image.astro";
+
+const DEFAULT_RISKS = [
+  {
+    title: "Worsening incontinence:",
+    description:
+      "As the prolapse progresses, the anal sphincter muscles stretch further, leading to increasingly severe fecal incontinence that may become permanent even after surgical repair.",
+  },
+  {
+    title: "Strangulation and emergency:",
+    description:
+      "Prolapsed tissue can become trapped outside the anus (incarcerated), cutting off blood supply. This is a surgical emergency that requires immediate intervention.",
+  },
+  {
+    title: "Ulceration and bleeding:",
+    description:
+      "Chronically exposed rectal tissue develops ulcers (solitary rectal ulcer syndrome), causing persistent bleeding, discharge, and pain.",
+  },
+  {
+    title: "More complex surgery needed:",
+    description:
+      "Early-stage prolapse can often be managed with simpler, perineal approaches. Advanced prolapse requires more extensive abdominal surgery with longer recovery.",
+  },
+  {
+    title: "Severe quality of life impact: ",
+    description:
+      "Fecal incontinence, constant discharge, and the psychological burden of prolapse lead to social isolation, depression, and avoidance of activities.",
+  },
+];
+
+const {
+  heading = "Risks of Delaying Rectal Prolapse Treatment",
+  intro = "Rectal prolapse is progressive and will not improve without intervention. Delaying treatment leads to:",
+  image = "/ladypilestypes.png",
+  imageAlt = "Risks of delaying pediatric anal treatment",
+  risks = DEFAULT_RISKS,
+} = Astro.props;
+---
+
+<section class="w-full py-4 md:py-6 px-4 sm:px-6 md:px-8">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 items-center">
+      {/* LEFT: Image */}
+      <div class="flex justify-center lg:justify-start order-2 lg:order-1">
+        <div class="relative w-full max-w-[460px] aspect-[4/3] rounded-2xl overflow-hidden flex items-center justify-center">
+          <Image
+            src={image}
+            alt={imageAlt}
+            fill
+            sizes="(max-width: 500px) 100vw, 460px"
+            class="w-full h-full object-cover rounded-2xl"
+          />
+        </div>
+      </div>
+
+      {/* RIGHT: Content */}
+      <div class="order-1 lg:order-2">
+        <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-[32px] font-bold text-[#1E1B4B] mb-4 md:mb-5 leading-snug">{heading}</h2>
+        <p class="text-sm md:text-[15px] text-gray-600 leading-relaxed mb-5 md:mb-6">{intro}</p>
+        <div class="space-y-4 md:space-y-5">
+          {risks.map((risk) => (
+            <p class="text-sm md:text-[15px] text-gray-600 leading-relaxed"><span class="font-semibold text-[#1E1B4B]">{risk.title}</span> {risk.description}</p>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

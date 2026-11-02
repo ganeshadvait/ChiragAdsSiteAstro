@@ -1,0 +1,105 @@
+---
+// Astro port of dynamictables.tsx.
+// The video <source> is attached by the script only when the section is near
+// the viewport, so the large video file doesn't download during page load.
+import Image from "@/lib/Image.astro";
+
+interface Props {
+  theading: string;
+  title: string;
+  description?: string;
+  // Trusted HTML from page data, for descriptions with inline markup.
+  descriptionHtml?: string;
+  points: string[];
+
+  /** MEDIA PROPS */
+  imageSrc?: string;
+  videoSrc?: string;
+}
+
+const { theading, title, description, descriptionHtml, points, imageSrc, videoSrc } = Astro.props;
+
+const videoType = videoSrc?.endsWith(".webm")
+  ? "video/webm"
+  : videoSrc?.endsWith(".mov")
+    ? "video/quicktime"
+    : "video/mp4";
+
+const safeImageSrc = imageSrc && imageSrc.startsWith("/") ? imageSrc : "/ladypilestypes.png";
+---
+
+<section class="w-[95%] md:w-[96%] max-w-[1500px] mx-auto py-4">
+  {/* MAIN HEADING */}
+  <h2 class="table_heading text-center text-xl font-bold text-[#625587]">{theading}</h2>
+
+  <div class="tablevideo fade-in mt-6 gap-8 flex flex-col lg:flex-row items-center">
+    {/* ================= MEDIA SECTION ================= */}
+    <div class="w-full lg:w-1/2 flex justify-center">
+      {imageSrc ? (
+        <div class="w-full max-w-[520px] h-[240px] lg:h-[280px] relative rounded-lg overflow-hidden">
+          <Image src={safeImageSrc} alt="Treatment visual" fill class="object-cover" priority />
+        </div>
+      ) : videoSrc ? (
+        <video
+          class="w-full max-w-[520px] h-[240px] lg:h-[280px] rounded-lg"
+          autoplay
+          muted
+          loop
+          playsinline
+          controls
+          preload="metadata"
+          webkit-playsinline="true"
+          x5-playsinline="true"
+          data-lazy-video={videoSrc}
+          data-video-type={videoType}
+        >Your browser does not support the video tag.</video>
+      ) : null}
+    </div>
+
+    {/* ================= INFO SECTION ================= */}
+    <div class="w-full lg:w-1/2 flex flex-col justify-center">
+      <h3 class="text-[20px] sm:text-2xl md:text-3xl font-semibold text-[#6A5A8A] mb-4">{title}</h3>
+
+      {descriptionHtml ? (
+        <p class="text-gray-700 text-base md:text-lg leading-relaxed mb-4 sm:mb-6" set:html={descriptionHtml} />
+      ) : (
+        <p class="text-gray-700 text-base md:text-lg leading-relaxed mb-4 sm:mb-6">{description}</p>
+      )}
+
+      <ul class="space-y-4 list-disc marker:text-[#6A5A8A] marker:text-[20px] pl-6">
+        {points.map((point) => (
+          <li class="text-[16px] sm:text-lg font-medium text-gray-900 leading-relaxed">{point}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initLazyVideo(video: HTMLVideoElement) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        observer.disconnect();
+
+        const source = document.createElement("source");
+        source.src = video.dataset.lazyVideo!;
+        source.type = video.dataset.videoType!;
+        video.insertBefore(source, video.firstChild);
+
+        video.muted = true;
+        video.load();
+        const tryPlay = () => {
+          const p = video.play();
+          if (p && typeof p.catch === "function") p.catch(() => {});
+        };
+        tryPlay();
+        video.addEventListener("loadedmetadata", tryPlay);
+      },
+      { rootMargin: "300px 0px" }
+    );
+    observer.observe(video);
+  }
+
+  document.querySelectorAll<HTMLVideoElement>("video[data-lazy-video]").forEach(initLazyVideo);
+</script>

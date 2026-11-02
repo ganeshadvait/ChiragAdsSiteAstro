@@ -1,0 +1,127 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/header/header.astro";
+import FooterComponent from "@/components/footer/footer.astro";
+
+type LinkItem = { label: string; href: string };
+type Section = { title: string; links: LinkItem[] };
+
+
+// Ad landing variants are the slugs with their own content (phone, hero, FAQs)
+// in each page's contentMap. Any other slug under these paths shows the default page.
+const sections: Section[] = [
+  {
+    title: "Main Pages",
+    links: [
+      { label: "Home", href: "/" },
+      { label: "International Patient Care", href: "/international-patient-care-india" },
+      { label: "New Design", href: "/newdesign" },
+    ],
+  },
+  {
+    title: "Piles",
+    links: [
+      { label: "Best Piles Laser Treatment in Bangalore", href: "/piles/best-piles-laser-treatment-in-bangalore" },
+      { label: "Piles Laser Treatment Cost in Bangalore", href: "/piles/piles-laser-treatment-cost-in-Bangalore" },
+      { label: "Piles (all)", href: "/piles" },
+    ],
+  },
+  {
+    title: "Fistula",
+    links: [
+      { label: "Best Fistula Treatment in Bangalore", href: "/best-fistula-treatment-in-bangalore" },
+      { label: "Fistula – Best Fistula Treatment in Bangalore", href: "/fistula/best-fistula-treatment-in-bangalore" },
+      { label: "Anal Fistula Surgery Cost in Bangalore", href: "/fistula/anal-fistula-surgery-cost-in-Bangalore" },
+      { label: "Fistula (all)", href: "/fistula" },
+    ],
+  },
+  {
+    title: "Fissure",
+    links: [
+      { label: "Best Fissure Treatment in Bangalore", href: "/fissure/best-fissure-treatment-in-bangalore" },
+      { label: "Fissure (all)", href: "/fissure" },
+    ],
+  },
+  {
+    title: "Pilonidal Sinus",
+    links: [
+      { label: "Best Pilonidal Sinus Treatment in Bangalore", href: "/best-pilonidal-sinus-treatment-in-bangalore" },
+      {
+        label: "Pilonidal Sinus – landing variant",
+        href: "/best-pilonidal-sinus-treatment-in-bangalore/best-pilonidal-sinus-treatment-in-bangalore",
+      },
+    ],
+  },
+  {
+    title: "Rectal Prolapse",
+    links: [
+      { label: "Best Rectal Prolapse Treatment in Bangalore", href: "/best-rectal-prolapse-treatment-in-bangalore" },
+      {
+        label: "Rectal Prolapse – landing variant",
+        href: "/best-rectal-prolapse-treatment-in-bangalore/best-rectal-prolapse-treatment-in-bangalore",
+      },
+    ],
+  },
+  {
+    title: "Pediatric Anal Care",
+    links: [
+      { label: "Expert Pediatric Anal Care Treatment in Bangalore", href: "/expert-pediatric-anal-care-treatment-in-bangalore" },
+      {
+        label: "Pediatric Anal Care – landing variant",
+        href: "/expert-pediatric-anal-care-treatment-in-bangalore/expert-pediatric-anal-care-treatment-in-bangalore",
+      },
+    ],
+  },
+  {
+    title: "Colorectal Cancer",
+    links: [
+      { label: "Colorectal Cancer", href: "/colorectal-cancer" },
+      { label: "Best Colorectal Cancer Treatment in Bangalore", href: "/colorectal-cancer/best-colorectal-cancer-treatment-in-bangalore" },
+      { label: "Colorectal Laser Treatment Cost in Bangalore", href: "/colorectal-cancer/colorectal-laser-treatment-cost-in-bangalore" },
+    ],
+  },
+  {
+    title: "Doctor Profiles",
+    links: [
+      { label: "Dr. Rajasekhar M R", href: "/doctors/Proctology/dr-rajasekhar" },
+      { label: "Dr. Shreedevi KN", href: "/doctors/Proctology/dr-shreedevi" },
+    ],
+  },
+];
+
+const total = sections.reduce((n, s) => n + s.links.length, 0);
+---
+
+<BaseLayout
+  title="All Links | Chirag Global Hospitals"
+  description="Every page on the Chirag Global Hospitals site in one place."
+>
+  <Header PhoneNumber={"08065916415"} mobilectatext={"Call Now"} mobileNumberHeader={"tel:08065916415"} />
+  <main class="w-full max-w-[1500px] mx-auto px-4 py-8">
+    <h1 class="text-2xl md:text-3xl font-bold text-[#0b1b3f] mb-2">All Links</h1>
+    <p class="text-gray-600 mb-8">{total} pages on this site.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      {sections.map((section) => (
+        <section class="bg-white border border-gray-100 rounded-2xl shadow-lg p-5 md:p-6">
+          <h2 class="no-section-heading text-lg font-semibold text-[#625587] mb-3">{section.title}</h2>
+          <ul class="space-y-2">
+            {section.links.map((link) => (
+              <li>
+                <a href={link.href} class="group block rounded-lg px-3 py-2 hover:bg-[#F8B956]/10 transition">
+                  <span class="block text-[#0b1b3f] font-medium group-hover:text-[#625587]">{link.label}</span>
+                  <span class="block text-xs text-gray-500 break-all">{link.href}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </main>
+  <FooterComponent
+    footerdesc="About Chirag Global Hospitals"
+    extradesc="Providing trusted care with decades of experience in diagnosing and treating colorectal and digestive health conditions."
+    footernumber="08065916415"
+  />
+</BaseLayout>

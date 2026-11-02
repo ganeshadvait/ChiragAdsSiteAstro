@@ -1,0 +1,750 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/header/header.astro";
+import Hero from "@/components/partials/hero/hero.astro";
+import WhatIsPediatric from "@/components/partials/whatispediatric/whatispediatric.astro";
+import PediatricConditions from "@/components/partials/pediatricconditions/pediatricconditions.astro";
+import WhenConsult from "@/components/partials/whenconsult/whenconsult.astro";
+import TreatmentApproach from "@/components/partials/treatmentapproach/treatmentapproach.astro";
+import TreatmentOptions from "@/components/partials/treatmentoptions/treatmentoptions.astro";
+import WhyChoosePediatric from "@/components/partials/whychoosepediatric/whychoosepediatric.astro";
+import LaserVsTraditional from "@/components/partials/laservstraditional/laservstraditional.astro";
+import WhyLaserBest from "@/components/partials/whylaserbest/whylaserbest.astro";
+import RisksOfDelayPediatric from "@/components/partials/risksofdelaypediatric/risksofdelaypediatric.astro";
+import Number from "@/components/partials/number/number.astro";
+import Cost from "@/components/partials/cost/cost.astro";
+import Risk from "@/components/partials/risks/risk.astro";
+import Doctors from "@/components/partials/doctors/doctors.astro";
+import CostDepends from "@/components/partials/costdepends/costdepends.astro";
+import InsurenceAdvisor from "@/components/partials/insurenceadvisor/insurenceadvisor.astro";
+import Why from "@/components/partials/why/why.astro";
+import Google from "@/components/partials/google/google.astro";
+import Info from "@/components/partials/info/info.astro";
+import CtaBanner from "@/components/partials/ctabanner/ctabanner.astro";
+import Faqs from "@/components/faqs/faq.astro";
+import Form from "@/components/partials/form/from.astro";
+import Reviews from "@/components/partials/reviews/reviews.astro";
+import HospitalLocation from "@/components/HospitalLocation/hospitallocations.astro";
+import FooterComponent from "@/components/footer/footer.astro";
+
+type HeroDataType = {
+  heading: string;
+  points: string[];
+  buttonText: string;
+  imageSrc: string;
+};
+
+type PilesPageProps = {
+  params: {
+    slug: string;
+  };
+};
+import HospitalComparisond from "@/components/dynamictable/dynamictables.astro";
+
+const contentMap: Record<
+  string,
+  {
+    phone?: string;
+    hero?: Partial<HeroDataType>;
+    faqs?: { faqTitle: string; faqAnswer: string }[];
+  }
+> = {
+  "best-pilonidal-sinus-treatment-in-bangalore": {
+    phone: "08065916427",
+    hero: {
+      heading: "Affordable Pilonidal Sinus Treatment in Bangalore",
+      points: [
+        "Packages starting from ₹50,000",
+        "Transparent pricing, no surprises",
+        "Laser & advanced options available",
+        "Faster recovery-focused care",
+        "Easy payment options available",
+      ],
+    },
+    faqs: [
+      {
+        faqTitle: "How much does Piles laser treatment cost in Bangalore?",
+        faqAnswer:
+          "The cost ranges from ₹50,000, depending on the complexity of the treatment and hospital charges.",
+      },
+      {
+        faqTitle: "Are there any hidden costs for laser piles treatment?",
+        faqAnswer:
+          "No, Chirag Global Hospitals provides transparent pricing, and all costs will be discussed upfront. We offer no hidden charges.",
+      },
+      {
+        faqTitle: "Is Piles laser treatment covered under insurance?",
+        faqAnswer:
+          "Yes, most major insurance plans cover laser treatment for piles.",
+      },
+      {
+        faqTitle: "Can I pay for the treatment in installments?",
+        faqAnswer:
+          "Yes, Chirag Global Hospitals offers zero-interest EMI options for your convenience.",
+      },
+      {
+        faqTitle: "Is laser treatment for piles worth the cost?",
+        faqAnswer:
+          "Yes, laser treatment provides quick recovery, minimal pain, and a higher success rate with fewer complications compared to traditional surgery.",
+      },
+      {
+        faqTitle:
+          "Will the treatment cost be higher if the condition is severe?",
+        faqAnswer:
+          "Yes, in some cases, if the piles are advanced, the cost may vary slightly depending on the additional procedures required. Contact us today to get a personalized quotation and learn more about your treatment options.",
+      },
+    ],
+  },
+};
+
+export const prerender = false;
+
+const slug = Astro.params.slug ?? "";
+
+const normalizedSlug = decodeURIComponent(String(slug))
+  .trim()
+  .replace(/\/+$/, "")
+  .toLowerCase();
+
+const pageContent = contentMap[normalizedSlug];
+
+const defaultPhone = "08065916415";
+const finalPhone = pageContent?.phone ?? defaultPhone;
+
+const finalPhoneTel = `tel:${finalPhone}`;
+
+const HeroData = {
+  heading: "Best Pilonidal Sinus Treatment in Bangalore",
+  points: [
+    "Advanced laser & minimally invasive treatment",
+    "30-minute procedure under local anesthesia",
+    "Same-day discharge & rapid recovery",
+    "No large cuts, no stitches, minimal scarring",
+    "Low recurrence rate with expert care",
+  ],
+  buttonText: "Book Appointment",
+  imageSrc: "/Chirag Doctors Main.png",
+};
+
+const finalHeroData = {
+  ...HeroData,
+  ...(pageContent?.hero ?? {}),
+  heading: pageContent?.hero?.heading ?? HeroData.heading,
+  points: pageContent?.hero?.points ?? HeroData.points,
+};
+
+const whatIsPediatricData = {
+  heading: "What Is Pilonidal Sinus?",
+  emoji: "🩺",
+  image: "/pilonidalsinus/what is pilonidal sinus.png",
+  imageAlt: "Pilonidal sinus illustration",
+  paragraphs: [
+    "A pilonidal sinus is a small cyst or abscess that forms in the cleft at the top of the buttocks, near the tailbone (coccyx). It typically contains hair, debris, and skin fragments, and develops when loose hairs penetrate the skin and become embedded, triggering an inflammatory reaction.",
+    "The condition most commonly affects young adults aged 15–35, particularly males, and is prevalent among people with sedentary lifestyles, excessive body hair, or occupations requiring prolonged sitting. It can also develop after local trauma or friction to the area.",
+    "A pilonidal sinus may remain dormant for months or years before becoming infected, at which point it forms a painful pilonidal abscess. Without proper treatment, the condition often becomes recurrent, with repeated infections, discharge, and significant impact on daily life and work productivity.",
+  ],
+};
+
+const statsSectionData = {
+  heading: "Trusted by Patients\nWorldwide",
+  description:
+    "Patients receive safe treatment, quick discharge, shorter hospital stays, and faster recovery with continuous medical care and support.",
+  stats: [
+    {
+      value: "24 hr",
+      label: "Discharge",
+    },
+    {
+      value: "180K+",
+      label: "Patient Treated",
+    },
+    {
+      value: "3 Days",
+      label: "Recovery Time",
+    },
+    {
+      value: "99.5%",
+      label: "Success Rate",
+    },
+  ],
+};
+
+// const costSectionData = {
+//   title: "Check Surgery Cost",
+//   points: [
+//     "Find the total cost of Surgery at the best hospitals.",
+//     "Compare surgery prices across top hospitals.",
+//     "Get a clear estimate before visiting the hospital.",
+//   ],
+//   buttonText: "Calculate Surgery Cost",
+//   imageSrc: "/chiraggpt.png",
+// };
+
+const pediatricConditionsData = {
+  heading: "Types of Pilonidal Sinus We Treat",
+  subheading:
+    "From acute abscess to complex recurrent disease — we offer expert care for every presentation of pilonidal sinus.",
+  conditions: [
+    {
+      icon: "clock",
+      title: "Acute Pilonidal Abscess",
+      description:
+        "A sudden, painful swelling near the tailbone caused by an infected pilonidal sinus. The area becomes red, hot, and tender, often with fever. Requires urgent incision and drainage followed by definitive treatment to prevent recurrence.",
+    },
+    {
+      icon: "shield",
+      title: "Chronic Pilonidal Sinus",
+      description:
+        "A long-standing tract or tunnel beneath the skin with one or more openings (pits) along the natal cleft. Causes persistent or intermittent discharge (pus or blood-tinged), foul odor, and dull discomfort. The most common presentation.",
+    },
+    {
+      icon: "activity",
+      title: "Recurrent Pilonidal Sinus",
+      description:
+        "Pilonidal sinus that returns after previous treatment, often due to incomplete removal of sinus tracts or continued hair ingrowth. Requires advanced techniques like laser ablation or flap procedures for definitive cure.",
+    },
+  ],
+};
+
+const whenConsultData = {
+  heading: "Symptoms of Pilonidal Sinus",
+  subheading:
+    "Early treatment prevents abscess, infection, and long-term complications — recognize these warning signs.",
+  signs: [
+    "Pain or discomfort at the top of the buttock crease (near the tailbone)",
+    "Visible small opening (pit) in the natal cleft",
+    "Swelling, redness, or warmth near the coccyx",
+    "Discharge of pus, blood, or foul-smelling fluid",
+    "Painful lump that makes sitting uncomfortable",
+    "Fever, chills, or feeling unwell (sign of abscess)",
+    "Recurrent infections in the same area",
+    "Hair protruding from a small opening in the skin",
+    "Persistent itching or irritation in the natal cleft",
+    "Difficulty sitting for long periods or while driving",
+  ],
+};
+
+const treatmentApproachData = {
+  heading: "Your Pilonidal Sinus Treatment Journey",
+  subheading:
+    "A streamlined, minimally invasive pathway from consultation to complete recovery.",
+  steps: [
+    {
+      title: "Specialist Consultation",
+      description:
+        "Detailed clinical examination of the natal cleft, assessment of sinus tract complexity, review of previous treatments (if any), and planning of the optimal treatment approach.",
+    },
+    {
+      title: "Pre-Operative Evaluation",
+      description:
+        "Basic pre-anesthesia workup and, for complex or recurrent cases, MRI fistulography to map sinus tracts accurately. Hair removal and skin preparation counseling.",
+    },
+    {
+      title: "Laser / Minimally Invasive Procedure",
+      description:
+        "Most patients undergo laser pilonidal treatment (SiLaC / FiLaC) as a 30-minute day-care procedure under local or short general anesthesia, with same-day discharge.",
+    },
+    {
+      title: "Recovery & Recurrence Prevention",
+      description:
+        "Simple wound care (no daily packing), hair removal guidance, hygiene counseling, and lifestyle recommendations to prevent recurrence. Follow-ups until complete healing.",
+    },
+  ],
+};
+
+const whyChooseData = {
+  heading: "Why Choose Chirag Hospitals for Pilonidal Sinus Treatment",
+  subheading:
+    "Bangalore's most experienced colorectal team for modern, laser-based pilonidal sinus care.",
+  features: [
+    {
+      title: "30+ Years of Colorectal Expertise",
+      description:
+        "Dr. Rajasekhar M R and our senior colorectal team have decades of experience in all pilonidal techniques — from laser (SiLaC / FiLaC) to advanced flap reconstruction.",
+    },
+    {
+      title: "Modern Laser (SiLaC / FiLaC) Treatment",
+      description:
+        "Minimally invasive, 30-minute procedure under local anesthesia. No large wounds, no daily packing, same-day discharge, and rapid return to work.",
+    },
+    {
+      title: "Expertise in Recurrent & Complex Cases",
+      description:
+        "We treat complex, branching, and previously-operated pilonidal sinuses using endoscopic (EPSiT), Limberg, and Karydakis flap techniques with low recurrence rates.",
+    },
+    {
+      title: "Low Recurrence Focus",
+      description:
+        "A structured aftercare program — hair removal guidance, hygiene counseling, lifestyle changes — to minimize recurrence risk long after the procedure.",
+    },
+    {
+      title: "180K+ Patients Trusted Us",
+      description:
+        "With a 99.5% success rate across colorectal conditions, patients from across India choose Chirag Hospitals for expert pilonidal care.",
+    },
+    {
+      title: "Affordable & Insurance-Friendly",
+      description:
+        "Insurance support, zero-interest EMI through GMoney, and transparent pricing with no hidden charges.",
+    },
+  ],
+};
+
+const risksOfDelayData = {
+  heading: "Risks of Delaying Pilonidal Sinus Treatment",
+  intro:
+    "Pilonidal sinus does not heal on its own. Delaying treatment leads to progressive, and often severe, complications:",
+  image: "/pilonidalsinus/risk of pilonidal sinus.png",
+  imageAlt: "Risks of delaying pilonidal sinus treatment",
+  risks: [
+    {
+      title: "Recurrent abscess formation:",
+      description:
+        "Untreated sinuses develop into painful, infected abscesses that may burst spontaneously. Each episode leaves scarring and increases the risk of chronic disease.",
+    },
+    {
+      title: "Chronic infection & discharge:",
+      description:
+        "Persistent drainage of pus and blood-tinged fluid causes skin irritation, foul odor, hygiene difficulties, and significant impact on quality of life.",
+    },
+    {
+      title: "Expansion of sinus tracts:",
+      description:
+        "Over time, simple sinuses branch into complex networks of tracts. Early treatable cases become advanced conditions requiring more extensive surgery.",
+    },
+    {
+      title: "Risk of malignant transformation:",
+      description:
+        "Rare but serious — long-standing, untreated pilonidal sinus can undergo malignant change (squamous cell carcinoma) after many years of chronic inflammation.",
+    },
+    {
+      title: "Lost work & social impact:",
+      description:
+        "Recurrent pain, discharge, and inability to sit comfortably lead to missed work, avoidance of travel, and psychological distress.",
+    },
+  ],
+};
+
+const whyLaserBestData = {
+  heading: "Why Laser Is the Best Treatment for Pilonidal Sinus",
+  subheading:
+    "Laser pilonidal sinus treatment represents a paradigm shift from traditional open surgery. Here's why our patients and surgeons prefer it:",
+  image: "/pilonidalsinus/why pilonidal sinus.png",
+  imageAlt: "Laser pilonidal sinus treatment illustration",
+  points: [
+    {
+      title: "Minimally invasive",
+      description:
+        "The laser fiber is inserted through a tiny opening — no large wounds or extensive tissue removal. This preserves healthy tissue and dramatically reduces post-operative pain.",
+    },
+    {
+      title: "Precision destruction",
+      description:
+        "The laser energy specifically targets and destroys the sinus lining while sealing the tract, leaving surrounding tissue undamaged.",
+    },
+    {
+      title: "Rapid recovery",
+      description:
+        "Most patients return to normal activities within 3–5 days compared to weeks of painful wound care with traditional surgery.",
+    },
+    {
+      title: "Office-friendly",
+      description:
+        "Can often be performed under local anesthesia, making it suitable for patients who want to avoid general anesthesia.",
+    },
+    {
+      title: "Cosmetic advantage",
+      description:
+        "Minimal to no visible scarring, which is particularly important for younger patients concerned about appearance.",
+    },
+  ],
+};
+
+const laserVsTraditionalData = {
+  heading: "Laser vs Traditional Surgery",
+  subheading:
+    "Why laser pilonidal sinus treatment is the preferred choice at Chirag Hospitals.",
+  laserLabel: "Laser Treatment (SiLaC)",
+  traditionalLabel: "Traditional Open Surgery",
+  rows: [
+    { parameter: "Procedure Time", laser: "20–30 minutes", traditional: "45–90 minutes" },
+    { parameter: "Anesthesia", laser: "Local / Short GA", traditional: "General / Spinal" },
+    { parameter: "Incision Size", laser: "Tiny (few mm)", traditional: "Large (several cm)" },
+    { parameter: "Pain Level", laser: "Minimal", traditional: "Moderate to Severe" },
+    { parameter: "Hospital Stay", laser: "Same-day discharge", traditional: "1–3 days" },
+    { parameter: "Recovery Time", laser: "3–5 days", traditional: "4–8 weeks" },
+    { parameter: "Return to Work", laser: "3–5 days", traditional: "2–6 weeks" },
+    { parameter: "Scarring", laser: "Minimal / None", traditional: "Significant" },
+    { parameter: "Wound Care", laser: "Minimal dressings", traditional: "Daily packing / dressings for weeks" },
+    { parameter: "Recurrence Rate", laser: "5–10%", traditional: "10–30%" },
+  ],
+};
+const doctorsSectionData = {
+  heading: "Our Top Doctors",
+
+  topDoctors: [
+    {
+      name: "Dr. Rajasekhar M R",
+      designation: "MBBS, MS General Surgeon",
+      qualification: "Founder and Senior Colorectal Surgeon",
+      experience: "30+ Years",
+      reviews: "99%",
+      img: "/doctorchiragcard.avif",
+    },
+    {
+      name: "Dr. Shreedevi KN",
+      designation: "MBBS, MS, FSGE",
+      qualification: "Surgical Gastroenterologist and Colorectal surgeon",
+      experience: "12 Years",
+      reviews: "99%",
+      img: "/doctorshreedevicard.avif",
+    },
+    {
+      name: "Dr. Padmanabh R Bhat",
+      designation: "MBBS, MS(Gen Surgery),FRCS(Edin)",
+      qualification: "General Surgeon",
+      experience: "28 Years",
+      reviews: "99%",
+      img: "/doctorpadmanabhcard.avif",
+    },
+  ],
+
+  moreDoctors: [
+    {
+      name: "Dr.Jyotsna Vemulapalli",
+      designation: "MBBS, MS(Gen Surgery)",
+      qualification: "Colorectal Surgeon & Proctologist",
+      experience: "4 Years",
+      reviews: "99%",
+      img: "/doctorjyotsnacard.avif",
+    },
+    {
+      name: "Dr. Prithvija Chakravarthy",
+      designation: "BAMS, MD(Ayu),YIC (Yoga - SVYASA)",
+      qualification: "Proctologist",
+      experience: "10 Years",
+      reviews: "99%",
+      img: "/doctorprithvicard.avif",
+    },
+    {
+      name: "Dr. Suchitra N Adiga",
+      designation: "BAMS, MS(Ayu)",
+      qualification: "Proctologist",
+      experience: "8 Years",
+      reviews: "99%",
+      img: "/doctorsuchithracard.avif",
+    },
+  ],
+
+  banner: {
+    heading: "Consult The Doctor Now",
+    points: [
+      "Experienced colorectal specialists",
+      "Modern laser treatment methods",
+      "Proven treatment outcomes",
+    ],
+    buttonText: "Book Appointment",
+    imageSrc: "/consultthedoctor.png",
+  },
+};
+const defaultLocationHeading =
+  "Chirag Global Hospital - Best Colorectal Hospital in Bangalore";
+
+const treatmentCostDependsData = {
+  heading: "Treatment Cost Depends On",
+  items: [
+    {
+      titleBold: "Type of",
+      titleRest: "Procedure",
+      icon: "/typeofprocedure.png",
+    },
+    {
+      titleBold: "Severity of",
+      titleRest: "the Disease",
+      icon: "/severitydisease.png",
+    },
+    {
+      titleBold: "Past Medical",
+      titleRest: "Condition",
+      icon: "/pastmedical.png",
+    },
+    {
+      titleBold: "Contact",
+      titleRest: "for exact cost",
+      icon: "/contact.png",
+    },
+  ],
+  ctaText: "Chat with Our Expert",
+};
+const insuranceAdvisorData = {
+  cards: [
+    {
+      titlePrefix: "Easy",
+      titleHighlight: "Payment Options",
+      description:
+        "Enjoy hassle-free treatment and insurance support through GMoney, with zero processing fees and interest-free finance.",
+      image: "/checkinsurancecoverage.png",
+      imageAlt: "Insurance coverage illustration",
+      buttonText: "Check EMI Options",
+      ctaType: "modal",
+    },
+    {
+      titlePrefix: "Talk To",
+      titleHighlight: "Health Advisor",
+      description:
+        "Get clear guidance on treatment options, costs, and recovery process.",
+      image: "/talktohealthadvaiser.png",
+      imageAlt: "Health advisor illustration",
+      buttonText: "Call Our Advisors",
+      ctaType: "call",
+    },
+  ],
+};
+
+const treatmentOptionsData = {
+  heading: "Treatment Options for Pilonidal Sinus",
+  subheading:
+    "From laser ablation to advanced flap techniques — we offer the full range of modern pilonidal sinus treatments.",
+  options: [
+    {
+      icon: "zap",
+      title: "Laser Pilonidal Sinus Treatment (SiLaC/FiLaC)",
+      description:
+        "The gold standard in modern pilonidal sinus care. A laser fiber is inserted into the sinus tract to destroy the lining and seal the tract from inside. Benefits include 30-minute procedure, no large incisions, minimal scarring, same-day discharge, and 3–5 day recovery. Ideal for primary and uncomplicated sinuses.",
+    },
+    {
+      icon: "wrench",
+      title: "Endoscopic Pilonidal Sinus Treatment (EPSiT)",
+      description:
+        "A video-assisted minimally invasive technique where a small endoscope is inserted into the sinus for direct visualization. The surgeon cleans, debrides, and destroys the tract under camera guidance. Excellent for complex or branching sinuses with very small incisions.",
+    },
+    {
+      icon: "shield",
+      title: "Pit Picking (Minimally Invasive)",
+      description:
+        "A targeted approach for simple sinuses with limited tracts. Small pits are excised under local anesthesia with minimal tissue removal. Very quick recovery (1–2 days) with small wounds that heal rapidly. Best suited for early-stage pilonidal disease.",
+    },
+    {
+      icon: "filetext",
+      title: "Wide Excision & Primary Closure",
+      description:
+        "Complete surgical removal of the entire sinus tract and affected tissue. The wound is closed with sutures for faster healing compared to open wounds. Suitable for moderate-sized sinuses and offers good cure rates when performed by experienced surgeons.",
+    },
+    {
+      icon: "hexagon",
+      title: "Flap Procedures (Limberg / Karydakis)",
+      description:
+        "Advanced reconstructive techniques for complex, recurrent, or large pilonidal sinuses. Tissue flaps are used to flatten the natal cleft, eliminating the conditions that cause recurrence. The Limberg rhomboid flap and Karydakis flap have the lowest recurrence rates (under 3%) for complex cases.",
+    },
+    {
+      icon: "smile",
+      title: "Incision & Drainage (Emergency)",
+      description:
+        "For acute pilonidal abscess with severe pain and infection. Quick relief through drainage of the abscess under local anesthesia, followed by antibiotics. This is a temporary measure — definitive treatment is planned once the acute infection settles.",
+    },
+  ],
+};
+
+const InfoContent = {
+  theading: "Piles Treatment at Chirag Hospitals",
+  videoSrc: "/chirag-piles-video.mp4",
+
+  title: "What Are Piles or Hemorrhoids?",
+  description: `Piles, also called hemorrhoids, are swollen veins in the anal area that cause pain, bleeding, and discomfort. Medical treatment helps relieve symptoms and prevents complications.`,
+
+  points: [
+    "Internal Piles – Piles inside the rectum",
+    "External Piles – Piles outside the anus",
+    "Thrombosed Piles – Piles with blood clots",
+  ],
+};
+const InfoData = {
+  aboutTitle: "Symptoms of Piles",
+  aboutText:
+    "Piles commonly cause bleeding during bowel movements, pain, itching, swelling, or a lump around the anus that needs medical attention.",
+
+  advantagesTitle: "Treatment Options for Piles",
+  advantages: [
+    "Laser piles treatment",
+    "Lifestyle and dietary guidance",
+    "Advanced DGHAL procedure for piles",
+    "Ultrasonic shears excision for minimal pain and faster recovery",
+  ],
+
+  costTitle: "Why Laser Is Best Treatment",
+  costIntro: "Laser piles treatment is preferred because it offers:",
+  costPoints: [
+    "Minimally invasive procedure",
+    "Less pain and bleeding",
+    "Same-day discharge possible",
+    "Faster recovery time",
+  ],
+
+  expandedContent: [
+    "Laser piles treatment is a modern option for patients seeking effective relief with minimal discomfort and shorter recovery time.",
+    "Treatment plan and cost are decided after medical evaluation based on the severity and individual patient condition.",
+  ],
+};
+
+const BannerData = {
+  heading: "Get Relief from Pediatric Anal – Book Now",
+  buttonText: "Book An Appointment",
+  imageSrc: "/scheduleyourvisit.png",
+};
+
+const faqs = [
+  {
+    faqTitle: "What causes pilonidal sinus?",
+    faqAnswer:
+      "Pilonidal sinus is primarily caused by loose hairs that penetrate the skin in the natal cleft (buttock crease) and trigger an inflammatory reaction. Risk factors include excessive body hair, prolonged sitting (desk jobs, long drives), obesity, deep natal cleft, poor hygiene, and family history. Friction and sweating worsen the condition.",
+  },
+  {
+    faqTitle: "Can pilonidal sinus heal on its own without treatment?",
+    faqAnswer:
+      "No. Pilonidal sinus does not resolve spontaneously. While symptoms may temporarily improve after an abscess drains naturally, the underlying sinus tract remains and will inevitably cause recurrent infections. Early professional treatment is essential for permanent cure and to prevent the condition from becoming more complex.",
+  },
+  {
+    faqTitle: "Is laser treatment effective for pilonidal sinus?",
+    faqAnswer:
+      "Yes. Laser treatment is highly effective for pilonidal sinus, offering a minimally invasive option with reduced pain, bleeding, and recovery time compared to traditional surgery.",
+  },
+  {
+    faqTitle: "How long does recovery take after laser pilonidal sinus treatment?",
+    faqAnswer:
+      "Most patients return to normal activities within 3–5 days after laser treatment. You can sit comfortably within 2–3 days, and return to work within a week. In contrast, traditional open surgery may require 4–8 weeks of recovery with daily wound care.",
+  },
+  {
+    faqTitle: "Will my pilonidal sinus come back after treatment?",
+    faqAnswer:
+      "Recurrence rates depend on the treatment method and post-operative care. Laser treatment has a 5–10% recurrence rate, while flap procedures have the lowest rates (under 3%). Following aftercare instructions — including regular hair removal, good hygiene, and weight management — significantly reduces recurrence risk.",
+  },
+  {
+    faqTitle: "How much does pilonidal sinus treatment cost at Chirag Hospitals?",
+    faqAnswer:
+      "Treatment costs vary based on the complexity and technique used. Laser treatment is competitively priced, and zero-interest EMI through GMoney, and transparent pricing with no hidden charges. Contact 08065916415 for a personalized cost estimate.",
+  },
+  {
+    faqTitle: "Who is at highest risk for pilonidal sinus?",
+    faqAnswer:
+      "Young males between 15–35 years are most commonly affected. Risk is higher for those with sedentary occupations (IT professionals, drivers, students), excessive body hair, obesity, deep natal cleft, and family history. The condition is rare before puberty and after age 45.",
+  },
+  {
+    faqTitle: "Is pilonidal sinus surgery painful?",
+    faqAnswer:
+      "With modern laser treatment, pain is minimal. The procedure is performed under local anesthesia or short general anesthesia, and most patients report only mild discomfort for 1–2 days after, manageable with standard pain medication. Traditional open surgery involves more significant post-operative pain.",
+  },
+];
+
+const finalFaqs = pageContent?.faqs ?? faqs;
+
+const testimonialSectionData = {
+  testimonials: [
+    {
+      // title: "Laser treatment for my dad's piles",
+      text: "I visited this hospital for pilonidal sinus treatment and had a very positive experience. The doctor explained the condition clearly and suggested the best treatment option. The procedure was smooth, recovery was faster than expected, and the staff were supportive throughout.",
+      name: "Rahul K.",
+      rating: 5,
+    },
+    {
+      // title: "Smooth and painless",
+      text: "Excellent care for pilonidal sinus treatment. I was dealing with pain and repeated swelling for a long time, but the team handled everything professionally. The treatment was effective, and I feel much better now. Thank you to the doctors and staff.",
+      name: "Sneha R",
+      rating: 5,
+    },
+    {
+      // title: "Colorectal Diseases",
+      text: "Highly recommend this hospital for pilonidal sinus treatment. The specialists were experienced, the diagnosis was accurate, and the treatment process was well managed. Clean facilities, caring staff, and good follow-up support after the procedure.",
+      name: "Arjun M.",
+      rating: 5,
+    },
+    {
+      // title: "Admitted for my fistula surgery",
+      text: "Very satisfied with my treatment for pilonidal sinus. From consultation to recovery, everything was handled with care and professionalism. The doctor answered all my concerns patiently, and the results have been excellent.",
+      name: "Priya S.",
+      rating: 5,
+    },
+  ],
+  ctaText: "Google Reviews",
+  ctaLink:
+    "https://www.google.com/maps/place/Chirag+Global+Hospital/@12.9059178,77.6037368,17z/data=!4m8!3m7!1s0x3bae150e6550b135:0xa07798be317297a5!8m2!3d12.9059178!4d77.6037368!9m1!1b1!16s%2Fg%2F11q4j4m7pw?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA2OUgBUAM%3D",
+};
+---
+
+<BaseLayout
+  title="Piles Treatment in Bangalore | Laser Piles Surgery | Chirag Hospitals"
+  description="Get advanced laser treatment for piles in Bangalore at Chirag Hospitals. Experienced specialists, minimal pain procedure, fast recovery, EMI options available.">
+<main>
+
+<>
+  <Header
+    PhoneNumber={finalPhone}
+    mobilectatext={"Call Now"}
+    mobileNumberHeader={finalPhoneTel}
+  />
+  <div class="w-full max-w-[1500px] mx-auto px-4 py-8">
+    {/* 2-Column Layout */}
+    <div class="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
+      {/* LEFT SIDE 70% */}
+      <div class="space-y-10">
+        <Hero {...finalHeroData} />
+        <Number {...statsSectionData} />
+        <WhatIsPediatric {...whatIsPediatricData} />
+        <PediatricConditions {...pediatricConditionsData} />
+        <WhenConsult {...whenConsultData} />
+        <Doctors {...doctorsSectionData} />
+        <TreatmentOptions {...treatmentOptionsData} />
+        <WhyLaserBest {...whyLaserBestData} />
+        <LaserVsTraditional {...laserVsTraditionalData} />
+        <CostDepends
+          heading={treatmentCostDependsData.heading}
+          items={treatmentCostDependsData.items}
+          ctaText={treatmentCostDependsData.ctaText}
+        />
+        <InsurenceAdvisor {...insuranceAdvisorData} />
+        <TreatmentApproach {...treatmentApproachData} />
+        <RisksOfDelayPediatric {...risksOfDelayData} />
+        <WhyChoosePediatric {...whyChooseData} />
+        {/* <Cost
+        title={costSectionData.title}
+        points={costSectionData.points}
+        buttonText={costSectionData.buttonText}
+        imageSrc={costSectionData.imageSrc}
+      /> */}
+        <HospitalLocation locationsectionheading={defaultLocationHeading} />
+        {/* <CtaBanner {...BannerData} /> */}
+        {finalFaqs.length > 0 && (
+          <Faqs
+            className="md:!w-[95%] w-full mx-[unset]"
+            // fheading={fheading}
+            faqs={finalFaqs.map((faq) => ({
+              faqquestion: faq.faqTitle,
+              faqanswer: faq.faqAnswer,
+            }))}
+          />
+        )}
+      </div>
+
+      {/* RIGHT SIDE 30% (Sticky Form) */}
+      <div class="relative">
+        {/* Desktop: sticky, Mobile: fixed bottom */}
+        <div class="hidden lg:block sticky top-24">
+          <Form reviewsData={testimonialSectionData} />
+        </div>
+        <div
+          class="block lg:hidden fixed bottom-0 left-0 w-full z-50 bg-transparent   px-4 py-1"
+          style={{ maxWidth: "1500px", margin: "0 auto" }}
+        >
+          <Form reviewsData={testimonialSectionData} />
+        </div>
+      </div>
+    </div>
+  </div>
+  <FooterComponent
+    footerdesc="About Chirag Global Hospitals"
+    extradesc="Providing trusted care with decades of experience in diagnosing and treating colorectal and digestive health conditions."
+    footernumber={finalPhone}
+  />
+</>
+  
+</main>
+</BaseLayout>

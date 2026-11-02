@@ -1,0 +1,40 @@
+---
+// Astro port of components/partials/google/google.jsx (PatientReviews)
+---
+
+<section class="w-full max-w-5xl mx-auto px-0 md:px-4 py-6">
+  {/* Heading */}
+  <h2 class="text-2xl font-semibold text-gray-900 mb-4">What our Patients Say</h2>
+
+  {/* Card */}
+  <div class="border border-emerald-400 rounded-3xl p-6 shadow-sm bg-white space-y-4">
+
+    {/* Google Reviews Row */}
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div>
+        <div class="flex items-center gap-1 text-xl font-semibold">
+          <img
+            src="/images/google-logo.png"
+            alt="Google"
+            class="h-7"
+          />
+          <span class="text-gray-900">Reviews</span>
+        </div>
+
+        {/* Rating Row */}
+        <div class="flex items-center gap-2 mt-2">
+          <span class="text-2xl font-bold text-gray-900">4.8</span>
+
+          {/* Stars */}
+          <div class="flex text-yellow-400 text-xl"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+
+          <span class="text-gray-600 text-sm">(3,222 Reviews)</span>
+        </div>
+      </div>
+    </div>
+
+    {/* Book Appointment Button */}
+    <button class="w-full bg-emerald-600 text-white rounded-full py-4 text-lg font-semibold flex items-center justify-center gap-3 hover:bg-emerald-700 transition"><span class="text-2xl"></span>Book Appointment</button>
+
+  </div>
+</section>

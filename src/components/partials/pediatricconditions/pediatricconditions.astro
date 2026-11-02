@@ -1,0 +1,103 @@
+---
+// Astro port of pediatricconditions.jsx. Mobile: infinite-loop swipe slider with dots;
+// sm and up: static grid.
+type Condition = { title: string; description: string };
+
+type Props = {
+  heading?: string;
+  subheading?: string;
+  conditions?: Condition[];
+};
+
+const DEFAULT_CONDITIONS: Condition[] = [
+  {
+    title: "Acute Pilonidal Abscess",
+    description:
+      "A sudden, painful swelling near the tailbone caused by an infected pilonidal sinus. The area becomes red, hot, and tender, often with fever. Requires urgent incision and drainage followed by definitive treatment to prevent recurrence.",
+  },
+  {
+    title: "Chronic Pilonidal Sinus",
+    description:
+      "A long-standing tract or tunnel beneath the skin with one or more openings (pits) along the natal cleft. Causes persistent or intermittent discharge (pus or blood-tinged), foul odor, and dull discomfort. This is the most common presentation.",
+  },
+  {
+    title: "Recurrent Pilonidal Sinus",
+    description:
+      "Pilonidal sinus that returns after previous treatment, often due to incomplete removal of sinus tracts or continued hair ingrowth. Requires advanced techniques like laser ablation or flap procedures for definitive cure.",
+  },
+];
+
+const {
+  heading = "Pediatric Anorectal Conditions We Treat",
+  subheading = "Our team of specialists provides expert diagnosis and treatment for a comprehensive range of pediatric anal and rectal conditions.",
+  conditions: conditions = DEFAULT_CONDITIONS,
+} = Astro.props;
+
+const slides =
+  conditions.length > 0
+    ? [conditions[conditions.length - 1], ...conditions, conditions[0]]
+    : [];
+
+const originalIndex = (i: number) =>
+  i === 0 ? conditions.length - 1 : i === slides.length - 1 ? 0 : i - 1;
+
+const cardClass = "bg-white rounded-2xl p-5 md:p-6 shadow-sm hover:shadow-md transition-shadow duration-300 h-full";
+---
+
+<section class="w-full py-4 md:py-6 px-4 sm:px-6 md:px-8" data-pediatric-conditions>
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-8 md:mb-12">
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1E1B4B] mb-3 md:mb-4">{heading}</h2>
+      <p class="text-sm md:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">{subheading}</p>
+    </div>
+
+    {/* MOBILE SWIPER */}
+    <div class="sm:hidden">
+      <div class="overflow-hidden py-3" data-slider-viewport>
+        <div class="flex touch-pan-y" data-slider-track>
+          {slides.map((item, i) => (
+            <div class="flex-shrink-0 w-full px-2">
+              <div class={cardClass}>
+                <div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-[#EEECFC] flex items-center justify-center mb-4">
+                  <span class="text-[#6B5AED] font-bold text-lg md:text-xl">{originalIndex(i) + 1}</span>
+                </div>
+                <h3 class="text-base md:text-lg font-semibold text-[#1E1B4B] mb-2 md:mb-3">{item.title}</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">{item.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Mobile Dots */}
+      <div class="flex justify-center gap-2 mt-6">
+        {conditions.map((_, i) => (
+          <button
+            aria-label={`Go to slide ${i + 1}`}
+            class={`w-2 h-2 rounded-full transition-all duration-200 border border-[#6B5AED] ${i === 0 ? "bg-[#6B5AED]" : "bg-white"}`}
+            data-slider-dot
+          ></button>
+        ))}
+      </div>
+    </div>
+
+    {/* DESKTOP / TABLET GRID */}
+    <div class="hidden sm:grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
+      {conditions.map((item, idx) => (
+        <div class={cardClass}>
+          <div class="w-11 h-11 md:w-12 md:h-12 rounded-xl bg-[#EEECFC] flex items-center justify-center mb-4">
+            <span class="text-[#6B5AED] font-bold text-lg md:text-xl">{idx + 1}</span>
+          </div>
+          <h3 class="text-base md:text-lg font-semibold text-[#1E1B4B] mb-2 md:mb-3">{item.title}</h3>
+          <p class="text-sm text-gray-600 leading-relaxed">{item.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initLoopSlider } from "@/lib/loopSlider";
+
+  document.querySelectorAll<HTMLElement>("[data-pediatric-conditions]").forEach(initLoopSlider);
+</script>

@@ -1,0 +1,100 @@
+---
+// File: components/medicalTourism/mtTreatments.astro
+
+const treatments = [
+  {
+    svg: "/medicaltourism/Piles.svg",
+    title: "Piles / Hemorrhoids",
+    description:
+      "Advanced laser treatment — painless, daycare procedure, back to travel in 48 hrs.",
+    link: "https://chiragglobalhospitals.com/piles-laser-treatment-in-bangalore/",
+  },
+  {
+    svg: "/medicaltourism/Fistula.svg",
+    title: "Fistula Surgery",
+    description:
+      "Complex fistulotomy & fistulectomy with India's most experienced proctologist.",
+    link: "https://chiragglobalhospitals.com/top-fistula-laser-treatment-hospital-in-bangalore/",
+  },
+  {
+    svg: "/medicaltourism/fissure.svg",
+    title: "Fissure Treatment",
+    description:
+      "Laser-based, no-cut procedure with minimal downtime and long-term relief.",
+    link: "https://chiragglobalhospitals.com/best-fissure-laser-treatment-in-bangalore/",
+  },
+  {
+    svg: "/medicaltourism/Pilonidal sinus.svg",
+    title: "Pilonidal Sinus",
+    description:
+      "Precision surgery with minimal scar, faster healing — ideal for travelling patients.",
+    link: "https://chiragglobalhospitals.com/pilonidal-sinus-specialists-in-bangalore/",
+  },
+  {
+    svg: "/medicaltourism/Colon cancer.svg",
+    title: "Colon Cancer",
+    description:
+      "Multi-disciplinary oncology & surgical care with world-class outcomes.",
+    link: "https://chiragglobalhospitals.com/colon-cancer-experts-in-bangalore/",
+  },
+  {
+    svg: "/medicaltourism/Ulcerative Colitis.svg",
+    title: "Ulcerative Colitis",
+    description:
+      "Specialised medical management and surgical options for IBD patients.",
+    link: "https://chiragglobalhospitals.com/ulcerative-colitis-treatment-in-bangalore/",
+  },
+  {
+    svg: "/medicaltourism/Rectal prolapse.svg",
+    title: "Rectal Prolapse",
+    description:
+      "Minimally invasive correction for complete or partial rectal prolapse.",
+    link: "https://chiragglobalhospitals.com/top-specialists-for-rectal-prolapse-treatment-in-bangalore/",
+  },
+  {
+    svg: "/medicaltourism/Constipation.svg",
+    title: "Constipation & IBD",
+    description:
+      "Comprehensive diagnosis and treatment plans for chronic bowel conditions.",
+    link: "https://chiragglobalhospitals.com/best-constipation-treatment-in-bangalore/",
+  },
+];
+---
+
+<section
+  id="treatments"
+  class="bg-[#FAF7F3] px-4 py-14 sm:px-6 lg:px-8 lg:py-20"
+>
+  <div class="mx-auto max-w-7xl">
+    <span class="mb-3 inline-block text-xs font-semibold uppercase tracking-[2px] text-[#C8963E]">Specialisations</span>
+
+    <h2 class="text-3xl font-bold leading-tight text-[#625587] sm:text-4xl lg:text-5xl">Treatments for International Patients</h2>
+
+    <p class="mt-4 max-w-2xl text-base leading-7 text-[#5A7078]">Advanced laser &amp; minimally invasive procedures with faster recovery — designed for patients travelling from abroad.</p>
+
+    <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {treatments.map((treatment) => (
+        <div class="rounded-[14px] border border-transparent bg-white px-5 py-6 text-center shadow-[0_2px_16px_rgba(11,79,90,0.06)] transition duration-300 hover:-translate-y-1 hover:border-[#625587] hover:shadow-[0_4px_32px_rgba(11,79,90,0.10)]">
+          <div class="mb-6">
+            <img
+              src={treatment.svg}
+              alt={treatment.title}
+              class="w-15 h-15 mx-auto"
+            />
+          </div>
+
+          <h4 class="text-lg font-bold text-[#625587]">{treatment.title}</h4>
+
+          <p class="mt-2 text-sm leading-6 text-[#5A7078]">{treatment.description}</p>
+
+          <a
+            href={treatment.link}
+            target="_blank"
+            rel="noreferrer"
+            class="mt-4 inline-block text-sm font-semibold text-[#625587] transition hover:text-[#C8963E]"
+          >Learn more →</a>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

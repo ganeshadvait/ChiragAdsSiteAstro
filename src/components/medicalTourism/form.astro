@@ -1,0 +1,189 @@
+---
+interface Props {
+  source?: string;
+}
+
+const { source = "unknown" } = Astro.props;
+
+const countries = [
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States",
+  "Saudi Arabia",
+  "Kenya",
+  "Nigeria",
+  "Tanzania",
+  "Bangladesh",
+  "Sri Lanka",
+  "Afghanistan",
+  "Other",
+];
+
+const treatments = [
+  "Piles / Hemorrhoids",
+  "Fistula",
+  "Fissure",
+  "Pilonidal Sinus",
+  "Colon Cancer",
+  "Ulcerative Colitis",
+  "Rectal Prolapse",
+  "Constipation",
+  "Not Sure / Need Diagnosis",
+];
+---
+
+<form data-mt-form data-source={source} class="mt-6 flex flex-col gap-4">
+  <div class="flex flex-col gap-1.5">
+    <label for="fullName" class="text-sm font-semibold text-[#625587]">Full Name</label>
+    <input
+      id="fullName"
+      name="fullName"
+      type="text"
+      required
+      placeholder="Your name"
+      class="rounded-lg border border-[#D8E4E7] bg-[#FAF7F3] px-4 py-3 text-sm text-[#1C2B30] outline-none focus:border-[#2A8A9E]"
+    />
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label for="country" class="text-sm font-semibold text-[#625587]">Country</label>
+    <select
+      id="country"
+      name="country"
+      required
+      class="rounded-lg border border-[#D8E4E7] bg-[#FAF7F3] px-4 py-3 text-sm text-[#1C2B30] outline-none focus:border-[#2A8A9E]"
+    >
+      <option value="">Select your country</option>
+      {countries.map((country) => <option value={country}>{country}</option>)}
+    </select>
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label for="phoneNumber" class="text-sm font-semibold text-[#625587]">Phone Number</label>
+    <input
+      id="phoneNumber"
+      name="phoneNumber"
+      type="tel"
+      required
+      placeholder="+1 000 000 0000"
+      data-phone
+      class="rounded-lg border bg-[#FAF7F3] px-4 py-3 text-sm text-[#1C2B30] outline-none focus:border-[#2A8A9E] border-[#D8E4E7]"
+    />
+    <p data-phone-error class="text-xs text-red-500" hidden></p>
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label for="treatment" class="text-sm font-semibold text-[#625587]">Condition / Treatment Needed</label>
+    <select
+      id="treatment"
+      name="treatment"
+      required
+      class="rounded-lg border border-[#D8E4E7] bg-[#FAF7F3] px-4 py-3 text-sm text-[#1C2B30] outline-none focus:border-[#2A8A9E]"
+    >
+      <option value="">Select treatment</option>
+      {treatments.map((treatment) => <option value={treatment}>{treatment}</option>)}
+    </select>
+  </div>
+
+  <p data-form-error class="text-center text-sm text-red-500" hidden></p>
+
+  <button
+    type="submit"
+    class="mt-1 w-full rounded-4xl bg-[#F8B956] px-4 py-3.5 text-base font-bold text-white transition hover:bg-[#625587] disabled:opacity-60"
+  >
+    Book My Consultation →
+  </button>
+
+  <p data-form-success class="text-center text-sm font-semibold !text-green-600" hidden>Thank you! Our coordinator will contact you within 2 hours.</p>
+
+  <p class="text-center text-xs text-[#5A7078]">🔒 100% private. No spam. A coordinator will contact you within 2 hours.</p>
+</form>
+
+<script>
+  const validatePhone = (phone: string) => {
+    const cleaned = phone.replace(/[\s\-()]/g, "");
+    return /^\+?\d{7,15}$/.test(cleaned);
+  };
+
+  document.querySelectorAll<HTMLFormElement>("form[data-mt-form]").forEach((form) => {
+    const source = form.dataset.source ?? "unknown";
+    const phoneInput = form.querySelector<HTMLInputElement>("[data-phone]")!;
+    const phoneErrorEl = form.querySelector<HTMLElement>("[data-phone-error]")!;
+    const errorEl = form.querySelector<HTMLElement>("[data-form-error]")!;
+    const successEl = form.querySelector<HTMLElement>("[data-form-success]")!;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+
+    const setSubmitting = (on: boolean) => {
+      button.disabled = on;
+      button.textContent = on ? "Submitting..." : "Book My Consultation →";
+    };
+
+    const setError = (msg: string) => {
+      errorEl.textContent = msg;
+      errorEl.hidden = !msg;
+    };
+
+    const setPhoneError = (msg: string) => {
+      phoneErrorEl.textContent = msg;
+      phoneErrorEl.hidden = !msg;
+      phoneInput.classList.toggle("border-red-400", !!msg);
+      phoneInput.classList.toggle("border-[#D8E4E7]", !msg);
+    };
+
+    phoneInput.addEventListener("input", () => {
+      if (!phoneErrorEl.hidden) setPhoneError("");
+    });
+
+    // Popups call form.reset() on close, matching React unmounting the form.
+    // `run` lets a request still in flight after a reset be ignored.
+    let run = 0;
+    form.addEventListener("reset", () => {
+      run++;
+      setSubmitting(false);
+      setError("");
+      setPhoneError("");
+      successEl.hidden = true;
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const current = ++run;
+      setSubmitting(true);
+      setError("");
+      setPhoneError("");
+
+      const formData = new FormData(form);
+      const phone = formData.get("phoneNumber") as string;
+
+      if (!validatePhone(phone)) {
+        setPhoneError("Please enter a valid phone number (e.g. +1 234 567 8900)");
+        setSubmitting(false);
+        return;
+      }
+
+      const data = {
+        full_name: formData.get("fullName"),
+        country: formData.get("country"),
+        phone_number: phone,
+        treatment: formData.get("treatment"),
+        source,
+      };
+
+      try {
+        const res = await fetch("/api/leads/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        if (!res.ok) throw new Error("Submission failed");
+
+        if (current === run) successEl.hidden = false;
+      } catch {
+        if (current === run) setError("Something went wrong. Please try again.");
+      } finally {
+        if (current === run) setSubmitting(false);
+      }
+    });
+  });
+</script>

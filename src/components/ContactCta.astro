@@ -1,0 +1,33 @@
+---
+// A real <a> so the browser shows the target URL on hover.
+// Desktop → WhatsApp (new tab), mobile → call the page's number.
+// Rendered as the desktop link; the script below switches it to tel: on mobile.
+import type { HTMLAttributes } from "astro/types";
+import { WHATSAPP_URL, getPhoneForPath, toTel } from "@/constants/contact";
+
+type Props = HTMLAttributes<"a">;
+
+const phone = getPhoneForPath(Astro.url.pathname);
+---
+
+<a
+  href={WHATSAPP_URL}
+  target="_blank"
+  rel="noopener noreferrer"
+  data-contact-cta={toTel(phone)}
+  {...Astro.props}
+>
+  <slot />
+</a>
+
+<script>
+  import { isMobileDevice } from "@/constants/contact";
+
+  if (isMobileDevice()) {
+    document.querySelectorAll<HTMLAnchorElement>("a[data-contact-cta]").forEach((a) => {
+      a.href = a.dataset.contactCta!;
+      a.removeAttribute("target");
+      a.removeAttribute("rel");
+    });
+  }
+</script>

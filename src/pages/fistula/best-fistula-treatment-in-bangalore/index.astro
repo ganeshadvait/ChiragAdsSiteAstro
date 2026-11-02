@@ -1,0 +1,708 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/header/header.astro";
+import Hero from "@/components/partials/hero/hero.astro";
+import WhatIsPediatric from "@/components/partials/whatispediatric/whatispediatric.astro";
+import PediatricConditions from "@/components/partials/pediatricconditions/pediatricconditions.astro";
+import WhenConsult from "@/components/partials/whenconsult/whenconsult.astro";
+import TreatmentApproach from "@/components/partials/treatmentapproach/treatmentapproach.astro";
+import TreatmentOptions from "@/components/partials/treatmentoptions/treatmentoptions.astro";
+import WhyChoosePediatric from "@/components/partials/whychoosepediatric/whychoosepediatric.astro";
+import LaserVsTraditional from "@/components/partials/laservstraditional/laservstraditional.astro";
+import WhyLaserBest from "@/components/partials/whylaserbest/whylaserbest.astro";
+import RisksOfDelayPediatric from "@/components/partials/risksofdelaypediatric/risksofdelaypediatric.astro";
+import Number from "@/components/partials/number/number.astro";
+import Cost from "@/components/partials/cost/cost.astro";
+import Risk from "@/components/partials/risks/risk.astro";
+import Doctors from "@/components/partials/doctors/doctors.astro";
+import CostDepends from "@/components/partials/costdepends/costdepends.astro";
+import InsurenceAdvisor from "@/components/partials/insurenceadvisor/insurenceadvisor.astro";
+import Why from "@/components/partials/why/why.astro";
+import Google from "@/components/partials/google/google.astro";
+import Info from "@/components/partials/info/info.astro";
+import CtaBanner from "@/components/partials/ctabanner/ctabanner.astro";
+import Faqs from "@/components/faqs/faq.astro";
+import Form from "@/components/partials/form/from.astro";
+import Reviews from "@/components/partials/reviews/reviews.astro";
+import HospitalLocation from "@/components/HospitalLocation/hospitallocations.astro";
+import FooterComponent from "@/components/footer/footer.astro";
+
+type HeroDataType = {
+  heading: string;
+  points: string[];
+  buttonText: string;
+  imageSrc: string;
+};
+
+type PilesPageProps = {
+  params: {
+    slug: string;
+  };
+};
+import HospitalComparisond from "@/components/dynamictable/dynamictables.astro";
+
+const contentMap: Record<
+  string,
+  {
+    phone?: string;
+    hero?: Partial<HeroDataType>;
+    faqs?: { faqTitle: string; faqAnswer: string }[];
+  }
+> = {
+  "best-fistula-treatment-in-bangalore": {
+    phone: "08065916427",
+    hero: {
+      heading: "Best Fistula Treatment in Bangalore",
+      points: [
+        "Packages starting from ₹50,000",
+        "Transparent pricing, no surprises",
+        "Laser & advanced options available",
+        "Faster recovery-focused care",
+        "Easy payment options available",
+      ],
+    },
+    faqs: [
+      {
+        faqTitle: "How much does Piles laser treatment cost in Bangalore?",
+        faqAnswer:
+          "The cost ranges from ₹50,000, depending on the complexity of the treatment and hospital charges.",
+      },
+      {
+        faqTitle: "Are there any hidden costs for laser piles treatment?",
+        faqAnswer:
+          "No, Chirag Global Hospitals provides transparent pricing, and all costs will be discussed upfront. We offer no hidden charges.",
+      },
+      {
+        faqTitle: "Is Piles laser treatment covered under insurance?",
+        faqAnswer:
+          "Yes, most major insurance plans cover laser treatment for piles.",
+      },
+      {
+        faqTitle: "Can I pay for the treatment in installments?",
+        faqAnswer:
+          "Yes, Chirag Global Hospitals offers zero-interest EMI options for your convenience.",
+      },
+      {
+        faqTitle: "Is laser treatment for piles worth the cost?",
+        faqAnswer:
+          "Yes, laser treatment provides quick recovery, minimal pain, and a higher success rate with fewer complications compared to traditional surgery.",
+      },
+      {
+        faqTitle:
+          "Will the treatment cost be higher if the condition is severe?",
+        faqAnswer:
+          "Yes, in some cases, if the piles are advanced, the cost may vary slightly depending on the additional procedures required. Contact us today to get a personalized quotation and learn more about your treatment options.",
+      },
+    ],
+  },
+};
+
+const finalPhone = "08065916415";
+const finalPhoneTel = `tel:${finalPhone}`;
+
+const finalHeroData = {
+  heading: "Best Treatment for Recurrent & Complex Fistulas in Bangalore",
+  points: [
+    "2,500+ Recurrent Fistula Cases Treated",
+    "Experienced colorectal specialists",
+    "Advanced laser treatment for fistula",
+    "Personalized patient-focused care",
+    "Same-day discharge & faster recovery",
+    "Minimal pain, no stitches",
+  ],
+  buttonText: "Book Appointment",
+  imageSrc: "/Chirag Doctors Main.png",
+};
+
+const whatIsPediatricData = {
+  heading: "What is Fistula ?",
+  emoji: "🩺",
+  image: "/fistula/what is fistula.png",
+  imageAlt: "Fistula",
+  paragraphs: [
+    "Anal fistulas are the result of an infection that starts in an anal gland. The infection results in an abscess which is a collection of pus inside. When there is a single opening inside the anal canal, it is called the sinus. When it opens outside and pus starts coming out, it is called Fistula.",
+    "In simpler terms, Fistula is a tract that opens from the rectum creating a hole in the walls of the bottoms. The tract exposes the faecal matter to escape through it. As these tracts do not have sphincters to control the flow, pus & other faecal matter flows without control of the patient. This creates a difficult & awkward situation for the patient in daily life.",
+    " If not treated at an early stage, the infection may spread and multiple tracts can form, which makes it a complex fistula. Get treated for your fistulas by experts only for effective treatment.",
+  ],
+};
+
+const statsSectionData = {
+  aboveContetn: "For the first time in India",
+  aboveContetna:
+    "CEREG – Circumferential Endoanal Real-Time Echo-Guided Procedures",
+  heading: "Trusted by Patients\nWorldwide",
+  description:
+    "Patients receive safe fistula treatment with shorter hospital stays, quick discharge, and dedicated medical support.",
+  stats: [
+    { value: "24 hr", label: "Discharge" },
+    { value: "180K", label: "Patient Treated" },
+    { value: "3 Days", label: "Recovery Time" },
+    { value: "99.5%", label: "Success Rate" },
+  ],
+};
+
+// const costSectionData = {
+//   title: "Check Surgery Cost",
+//   points: [
+//     "Find the total cost of Surgery at the best hospitals.",
+//     "Compare surgery prices across top hospitals.",
+//     "Get a clear estimate before visiting the hospital.",
+//   ],
+//   buttonText: "Calculate Surgery Cost",
+//   imageSrc: "/chiraggpt.png",
+// };
+
+const pediatricConditionsData = {
+  heading: "Symptoms of Fistula",
+  subheading:
+    "Common fistula symptoms include pain near the anus, pus or discharge, swelling, irritation, and recurring infections",
+  conditions: [
+    {
+      icon: "clock",
+      title: "Pain Near Anus",
+      description:
+        "Constant or intermittent pain in the anal area, especially when sitting or during bowel movements",
+    },
+    {
+      icon: "shield",
+      title: "Pus or Discharge",
+      description:
+        "Foul-smelling pus or bloody discharge from the fistula opening, often staining clothing",
+    },
+    {
+      icon: "activity",
+      title: "Swelling & Redness",
+      description:
+        "Swollen, tender area around the anal opening with visible redness or irritation",
+    },
+    {
+      icon: "activity",
+      title: "Recurrent Infections",
+      description:
+        "Repeated infections with fever, chills, and general malaise if left untreated",
+    },
+    {
+      icon: "activity",
+      title: "Itching & Irritation",
+      description:
+        "Persistent itching and skin irritation around the affected area",
+    },
+    {
+      icon: "activity",
+      title: "Difficulty with Activities",
+      description:
+        "Pain and discomfort affecting daily activities, exercise, and quality of life",
+    },
+  ],
+};
+
+const whenConsultData = {
+  heading: "Symptoms of Fistula",
+  subheading:
+    "Common fistula symptoms include pain near the anus, pus or discharge, swelling, irritation, and recurring infections",
+  signs: [
+    "Pain Near Anus",
+    "Pus or Discharge",
+    "Swelling & Redness",
+    "Recurrent Infections",
+    "Itching & Irritation",
+    "Difficulty with Activities",
+  ],
+};
+
+const treatmentApproachData = {
+  heading: "Your Pilonidal Sinus Treatment Journey",
+  subheading:
+    "A streamlined, minimally invasive pathway from consultation to complete recovery.",
+  steps: [
+    {
+      title: "Specialist Consultation",
+      description:
+        "Detailed clinical examination of the natal cleft, assessment of sinus tract complexity, review of previous treatments (if any), and planning of the optimal treatment approach.",
+    },
+    {
+      title: "Pre-Operative Evaluation",
+      description:
+        "Basic pre-anesthesia workup and, for complex or recurrent cases, MRI fistulography to map sinus tracts accurately. Hair removal and skin preparation counseling.",
+    },
+    {
+      title: "Laser / Minimally Invasive Procedure",
+      description:
+        "Most patients undergo laser pilonidal treatment (SiLaC / FiLaC) as a 30-minute day-care procedure under local or short general anesthesia, with same-day discharge.",
+    },
+    {
+      title: "Recovery & Recurrence Prevention",
+      description:
+        "Simple wound care (no daily packing), hair removal guidance, hygiene counseling, and lifestyle recommendations to prevent recurrence. Follow-ups until complete healing.",
+    },
+  ],
+};
+
+const whyChooseData = {
+  heading: "Why Choose Chirag Hospitals for Fistula Treatment",
+  subheading:
+    "Bangalore's Leading Hospital for Fistula Management and Surgery",
+  features: [
+    {
+      title: "30+ Years of Expertise in Fistula Treatment",
+      description:
+        "Dr. Rajasekhar M R and his team have extensive experience in treating complex fistulas using advanced surgical methods like fistulectomy, fistula-in-ano, and seton procedures.",
+    },
+    {
+      title: "Advanced Surgical Techniques",
+      description:
+        "At Chirag Hospitals, we offer the most effective and advanced procedures for fistula treatment, including LIFT (Ligation of Intersphincteric Fistula Tract), VAAFT (Video Assisted Anal Fistula Treatment).",
+    },
+    {
+      title: "Comprehensive Diagnostic Tools",
+      description:
+        "We utilize cutting-edge diagnostic tools, including CEREG – Circumferential Endoanal Real-Time Echo Guided Procedures, to provide accurate staging and treatment planning. This procedure, along with high-resolution anoscopy, MRI, and endoscopic evaluation, ensures precise mapping of the fistula for a tailored treatment approach.",
+    },
+    {
+      title: "Personalized Treatment Plans",
+      description:
+        "No one-size-fits-all approach. Treatment is customized based on your specific condition, including the type and complexity of the fistula, your overall health, and any associated conditions such as incontinence or abscesses.",
+    },
+    {
+      title: "Trusted by 180K+ Patients",
+      description:
+        "Chirag Hospitals boasts a 99.5% success rate across all fistula treatments. Families from across India trust us for expert care in managing complex colorectal conditions.",
+    },
+    {
+      title: "Easy EMI",
+      description:
+        "zero-interest EMI through GMoney, and transparent pricing with no hidden charges make it easier to access the best care.",
+    },
+  ],
+};
+
+const risksOfDelayData = {
+  heading: "Risks of Delaying Fistula Treatment",
+  intro:
+    "Fistula is a progressive condition that requires prompt medical attention. Delaying treatment leads to serious complications.",
+  image: "/fistula/risks of delaying fistula treatment.png",
+  imageAlt: "Risks of Delaying Fistula Treatment",
+  risks: [
+    {
+      title: "Severe Pain",
+      description:
+        "Progressive worsening of pain that significantly impacts daily activities and sleep quality",
+    },
+    {
+      title: "Persistent Discharge",
+      description:
+        "Continuous foul-smelling discharge affecting hygiene and causing social embarrassment",
+    },
+    {
+      title: "Recurrent Infections",
+      description:
+        "Repeated bacterial infections leading to fever, abscess formation, and systemic complications",
+    },
+    {
+      title: "Worsening Fistula Tract",
+      description:
+        "The fistula tract may enlarge or develop multiple branches, making treatment more complex",
+    },
+    {
+      title: "Surgical Complications",
+      description:
+        "Advanced fistulas may require more invasive procedures with longer recovery times",
+    },
+  ],
+};
+
+const whyLaserBestData = {
+  heading: "Why Laser is the Best Treatment",
+  subheading:
+    "",
+  image: "/fistula/why laser is best treatment.png",
+  imageAlt: "Laser fistula treatment",
+  points: [
+    {
+      title: "Minimally Invasive Procedure",
+      description:
+        "Laser treatment uses precise light energy to seal fistula tracts without requiring traditional surgical incisions",
+    },
+    {
+      title: "Less Tissue Damage",
+      description:
+        "Focused laser energy minimizes damage to surrounding healthy tissue and anal sphincter",
+    },
+    {
+      title: "Lower Recurrence Risk",
+      description:
+        "Laser therapy achieves 95%+ success rate with significantly lower recurrence compared to traditional methods",
+    },
+    {
+      title: "Faster Recovery Time",
+      description:
+        "Same-day discharge with minimal pain and quick return to normal activities within 3 days",
+    },
+  ],
+};
+
+const laserVsTraditionalData = {
+  heading: "Laser vs Traditional Surgery",
+  subheading:
+    "Why laser pilonidal sinus treatment is the preferred choice at Chirag Hospitals.",
+  laserLabel: "Laser Treatment (SiLaC)",
+  traditionalLabel: "Traditional Open Surgery",
+  rows: [
+    { parameter: "Procedure Time", laser: "20–30 minutes", traditional: "45–90 minutes" },
+    { parameter: "Anesthesia", laser: "Local / Short GA", traditional: "General / Spinal" },
+    { parameter: "Incision Size", laser: "Tiny (few mm)", traditional: "Large (several cm)" },
+    { parameter: "Pain Level", laser: "Minimal", traditional: "Moderate to Severe" },
+    { parameter: "Hospital Stay", laser: "Same-day discharge", traditional: "1–3 days" },
+    { parameter: "Recovery Time", laser: "3–5 days", traditional: "4–8 weeks" },
+    { parameter: "Return to Work", laser: "3–5 days", traditional: "2–6 weeks" },
+    { parameter: "Scarring", laser: "Minimal / None", traditional: "Significant" },
+    { parameter: "Wound Care", laser: "Minimal dressings", traditional: "Daily packing / dressings for weeks" },
+    { parameter: "Recurrence Rate", laser: "5–10%", traditional: "10–30%" },
+  ],
+};
+const doctorsSectionData = {
+  heading: "Our Top Doctors",
+
+  topDoctors: [
+    {
+      name: "Dr. Rajasekhar M R",
+      designation: "MBBS, MS General Surgeon",
+      qualification: "Chairman, Chief Colorectal Surgeon & Proctologist",
+      experience: "30+ Years",
+      reviews: "99%",
+      img: "/doctorchiragcard.avif",
+    },
+    {
+      name: "Dr. Shreedevi KN",
+      designation: "MBBS, MS General Surgery, FSGE (Surgical Gastroenterology )",
+      qualification: "Head Colorectal Surgery & Proctology",
+      experience: "12 Years",
+      reviews: "99%",
+      img: "/doctorshreedevicard.avif",
+    },
+    {
+      name: "Dr. Padmanabh R Bhat",
+      designation: "MBBS, MS(Gen Surgery),FRCS(Edin)",
+      qualification: "General Surgeon",
+      experience: "28 Years",
+      reviews: "99%",
+      img: "/doctorpadmanabhcard.avif",
+    },
+  ],
+
+  moreDoctors: [
+    {
+      name: "Dr.Jyotsna Vemulapalli",
+      designation: "MBBS MS General Surgery",
+      qualification: "Colorectal Surgeon & Proctologist",
+      experience: "4 Years",
+      reviews: "99%",
+      img: "/doctorjyotsnacard.avif",
+    },
+  ],
+
+  banner: {
+    heading: "Consult The Doctor Now",
+    points: [
+      "Experienced colorectal specialists",
+      "Modern laser treatment methods",
+      "Proven treatment outcomes",
+    ],
+    buttonText: "Book Appointment",
+    imageSrc: "/consultthedoctor.png",
+  },
+};
+const defaultLocationHeading =
+  "Chirag Global Hospital - Best Colorectal Hospital in Bangalore";
+
+const treatmentCostDependsData = {
+  heading: "Treatment Cost Depends On",
+  items: [
+    {
+      titleBold: "Type of",
+      titleRest: "Procedure",
+      icon: "/typeofprocedure.png",
+    },
+    {
+      titleBold: "Severity of",
+      titleRest: "the Disease",
+      icon: "/severitydisease.png",
+    },
+    {
+      titleBold: "Past Medical",
+      titleRest: "Condition",
+      icon: "/pastmedical.png",
+    },
+    {
+      titleBold: "Contact",
+      titleRest: "for exact cost",
+      icon: "/contact.png",
+    },
+  ],
+  ctaText: "Chat with Our Expert",
+};
+const insuranceAdvisorData = {
+  cards: [
+    {
+      titlePrefix: "Easy",
+      titleHighlight: "Payment Options",
+      description:
+        "Enjoy hassle-free treatment and insurance support through GMoney, with zero processing fees and interest-free finance.",
+      image: "/checkinsurancecoverage.png",
+      imageAlt: "Insurance coverage illustration",
+      buttonText: "Check EMI Options",
+      ctaType: "modal",
+    },
+    {
+      titlePrefix: "Talk To",
+      titleHighlight: "Health Advisor",
+      description:
+        "Get clear guidance on treatment options, costs, and recovery process.",
+      image: "/talktohealthadvaiser.png",
+      imageAlt: "Health advisor illustration",
+      buttonText: "Call Our Advisors",
+      ctaType: "call",
+    },
+  ],
+};
+
+const treatmentOptionsData = {
+  heading: "Treatment Options for Fistula",
+  subheading:
+    "From medication to advanced laser therapy—comprehensive care for every stage of fistula",
+  options: [
+    {
+      icon: "zap",
+      title: "Medication",
+      description:
+        "Initial infection control with antibiotics and anti-inflammatory medications to manage symptoms",
+    },
+    {
+      icon: "wrench",
+      title: "Laser Fistula Treatment",
+      description:
+        "Minimally invasive laser therapy for precise, effective treatment with minimal tissue damage",
+    },
+    {
+      icon: "shield",
+      title: "LIFT Procedure",
+      description:
+        "Ligation of Intersphincteric Fistula Tract—preserves sphincter function with high success rate",
+    },
+    {
+      icon: "filetext",
+      title: "Fistulectomy",
+      description:
+        "Surgical removal of the fistula tract with reconstruction of affected tissue",
+    },
+    {
+      icon: "hexagon",
+      title: "Seton Placement",
+      description:
+        "Gradual fistula drainage using a specialized thread to promote healing and reduce pain",
+    },
+    {
+      icon: "smile",
+      title: "Glue Plug or Fibrin",
+      description:
+        "Minimally invasive biologic approach using specialized adhesives to seal fistula tracts",
+    },
+  ],
+};
+
+const InfoContent = {
+  theading: "Piles Treatment at Chirag Hospitals",
+  videoSrc: "/chirag-piles-video.mp4",
+
+  title: "What Are Piles or Hemorrhoids?",
+  description: `Piles, also called hemorrhoids, are swollen veins in the anal area that cause pain, bleeding, and discomfort. Medical treatment helps relieve symptoms and prevents complications.`,
+
+  points: [
+    "Internal Piles – Piles inside the rectum",
+    "External Piles – Piles outside the anus",
+    "Thrombosed Piles – Piles with blood clots",
+  ],
+};
+const InfoData = {
+  aboutTitle: "Symptoms of Piles",
+  aboutText:
+    "Piles commonly cause bleeding during bowel movements, pain, itching, swelling, or a lump around the anus that needs medical attention.",
+
+  advantagesTitle: "Treatment Options for Piles",
+  advantages: [
+    "Laser piles treatment",
+    "Lifestyle and dietary guidance",
+    "Advanced DGHAL procedure for piles",
+    "Ultrasonic shears excision for minimal pain and faster recovery",
+  ],
+
+  costTitle: "Why Laser Is Best Treatment",
+  costIntro: "Laser piles treatment is preferred because it offers:",
+  costPoints: [
+    "Minimally invasive procedure",
+    "Less pain and bleeding",
+    "Same-day discharge possible",
+    "Faster recovery time",
+  ],
+
+  expandedContent: [
+    "Laser piles treatment is a modern option for patients seeking effective relief with minimal discomfort and shorter recovery time.",
+    "Treatment plan and cost are decided after medical evaluation based on the severity and individual patient condition.",
+  ],
+};
+
+const BannerData = {
+  heading: "Get Relief from Pediatric Anal – Book Now",
+  buttonText: "Book An Appointment",
+  imageSrc: "/scheduleyourvisit.png",
+};
+
+const finalFaqs = [
+  {
+    faqTitle: "What are the common symptoms of fistula?",
+    faqAnswer:
+      "Common fistula symptoms include pain, pus or discharge near the anus, swelling, and repeated infections. Some patients experience itching, a foul smell, or difficulty sitting. If you notice any of these signs, seek medical attention promptly to prevent complications.",
+  },
+  {
+    faqTitle: "Is laser treatment effective for fistula?",
+    faqAnswer:
+      "Yes, laser treatment is highly effective for fistula with a 95%+ success rate. It's a safe, minimally invasive procedure that offers faster recovery, minimal pain, and lower recurrence compared to traditional surgery. Most patients achieve symptom relief within 3 days and return to normal activities quickly.",
+  },
+  {
+    faqTitle: "When should I consult a doctor for fistula?",
+    faqAnswer:
+      "You should consult a colorectal specialist if you notice pain, discharge, or recurrent infections near the anus. Don't wait for symptoms to worsen—early consultation allows for simpler treatment options and prevents complications. Contact us at 08065916415 for a free consultation.",
+  },
+  {
+    faqTitle: "Is the doctor experienced in treating fistula?",
+    faqAnswer:
+      "Yes, our team includes Dr. Rajasekhar M R with 30+ years of colorectal surgery experience, supported by highly trained colorectal specialists. All treatments are provided by board-certified surgeons with extensive fistula management expertise and proven track records.",
+  },
+  {
+    faqTitle: "How much does fistula treatment cost at Chirag Hospitals?How much does fistula treatment cost at Chirag Hospitals?",
+    faqAnswer:
+      "Treatment cost depends on the fistula type, severity, and treatment method. We offer flexible payment options including EMI through GMoney, insurance support. Contact our health advisors for a personalized cost estimate based on your specific condition.",
+  },
+  {
+    faqTitle: "Why is Chirag Hospitals trusted for fistula treatment?",
+    faqAnswer:
+      "Chirag Hospitals is trusted for advanced treatment methods, experienced doctors, patient-focused care, and proven outcomes. With 180K+ patients treated and a 99.5% success rate, we've built a reputation for excellence in colorectal care. Our commitment to affordability and compassionate treatment sets us apart.",
+  },
+];
+
+const testimonialSectionData = {
+  testimonials: [
+    {
+      // title: "Laser treatment for my dad's piles",
+      text: "Good hospitality and very best doctors Dr.Suchitra madam, Dr Rajasekhar sir and all staff are friendly and supportive, YouTube videos are very good, informative. Recovery is very fast for fistula. This is the no.1 hospital for fistula treatment with best quality treatment without recurrence, Im from Bagalkot and very happy about service",
+      name: "Laxman",
+      rating: 5,
+    },
+    {
+      // title: "Smooth and painless",
+      text: "Dr. Suchitra madam is very friendly and supportive, very best treatment for fistula in Bangalore. Thank you",
+      name: "Uppalapati",
+      rating: 5,
+    },
+    {
+      // title: "Colorectal Diseases",
+      text: "My wife gone through fistula surgery we are very satisfactied with doctors and staff. Hospital environment also very good especially nursing staff is extremely good dr. Rajashekar sir is very experienced person and also dr suchitra mam treatment is like our family members thank to chirag hospital.",
+      name: "Naresh",
+      rating: 5,
+    },
+    {
+      // title: "Admitted for my fistula surgery",
+      text: "Recently, I underwent surgery for a fistula at Chirag Global Hospitals. Having previously experienced recurrence after a surgery elsewhere, I was pleased with the results here. Dr. Sri Devi performed the surgery, and subsequent follow-ups by Dr. Suchitra were exceptional. Their clear explanations and effective medical procedures contributed to faster wound healing.",
+      name: "Sudhakar",
+      rating: 5,
+    },
+    {
+      // title: "Fistula Surgery",
+      text: "I recently had a wonderful experience at chirag Hospital in Bangalore. The staff was incredibly helpful and accommodating throughout my stay. I also had the pleasure of being treated by DR.Rajasekhar sir, who is an expert in piles and fistula treatment. He took the time to explain my condition and recommended a treatment plan that worked perfectly for me. I highly recommend chirag Hospital to anyone seeking quality medical care",
+      name: "Indu",
+      rating: 5,
+    },
+  ],
+  ctaText: "Google Reviews",
+  ctaLink:
+    "https://www.google.com/maps/place/Chirag+Global+Hospital/@12.9059178,77.6037368,17z/data=!4m8!3m7!1s0x3bae150e6550b135:0xa07798be317297a5!8m2!3d12.9059178!4d77.6037368!9m1!1b1!16s%2Fg%2F11q4j4m7pw?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA2OUgBUAM%3D",
+};
+---
+
+<BaseLayout>
+
+<>
+  <Header
+    PhoneNumber={finalPhone}
+    mobilectatext={"Call Now"}
+    mobileNumberHeader={finalPhoneTel}
+  />
+  <div class="w-full max-w-[1500px] mx-auto px-4 py-8">
+    {/* 2-Column Layout */}
+    <div class="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
+      {/* LEFT SIDE 70% */}
+      <div class="space-y-10">
+        <Hero {...finalHeroData} />
+        <WhatIsPediatric {...whatIsPediatricData} />
+        <Number {...statsSectionData} />
+         {/* <WhenConsult {...whenConsultData} /> */}
+         <PediatricConditions {...pediatricConditionsData} />
+         <RisksOfDelayPediatric {...risksOfDelayData} />
+       {/* <LaserVsTraditional {...laserVsTraditionalData} /> */}
+       <TreatmentOptions {...treatmentOptionsData} />
+        <Doctors {...doctorsSectionData} />
+        <WhyLaserBest {...whyLaserBestData} />
+       
+        
+        <CostDepends
+          heading={treatmentCostDependsData.heading}
+          items={treatmentCostDependsData.items}
+          ctaText={treatmentCostDependsData.ctaText}
+        />
+        <InsurenceAdvisor {...insuranceAdvisorData} />
+        {/* <TreatmentApproach {...treatmentApproachData} /> */}
+        
+        <WhyChoosePediatric {...whyChooseData} />
+        {/* <Cost
+        title={costSectionData.title}
+        points={costSectionData.points}
+        buttonText={costSectionData.buttonText}
+        imageSrc={costSectionData.imageSrc}
+      /> */}
+        <HospitalLocation locationsectionheading={defaultLocationHeading} />
+        {/* <CtaBanner {...BannerData} /> */}
+        {finalFaqs.length > 0 && (
+          <Faqs
+            className="md:!w-[95%] w-full mx-[unset]"
+            // fheading={fheading}
+            faqs={finalFaqs.map((faq) => ({
+              faqquestion: faq.faqTitle,
+              faqanswer: faq.faqAnswer,
+            }))}
+          />
+        )}
+      </div>
+
+      {/* RIGHT SIDE 30% (Sticky Form) */}
+      <div class="relative">
+        {/* Desktop: sticky, Mobile: fixed bottom */}
+        <div class="hidden lg:block sticky top-24">
+          <Form reviewsData={testimonialSectionData} />
+        </div>
+        <div
+          class="block lg:hidden fixed bottom-0 left-0 w-full z-50 bg-transparent   px-4 py-1"
+          style={{ maxWidth: "1500px", margin: "0 auto" }}
+        >
+          <Form reviewsData={testimonialSectionData} />
+        </div>
+      </div>
+    </div>
+  </div>
+  <FooterComponent
+    footerdesc="About Chirag Global Hospitals"
+    extradesc="Providing trusted care with decades of experience in diagnosing and treating colorectal and digestive health conditions."
+    footernumber={finalPhone}
+  />
+</>
+  
+</BaseLayout>

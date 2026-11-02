@@ -1,0 +1,44 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/header/header.astro";
+import MtHero from "@/components/medicalTourism/mtHero.astro";
+import Doctors from "@/components/medicalTourism/doctors.astro";
+import Why from "@/components/medicalTourism/why.astro";
+import Treatments from "@/components/medicalTourism/treatments.astro";
+import Journey from "@/components/medicalTourism/journey.astro";
+import Services from "@/components/medicalTourism/services.astro";
+import Testimonials from "@/components/medicalTourism/testimonials.astro";
+import FAQs from "@/components/medicalTourism/faqs.astro";
+import MtBottomCta from "@/components/medicalTourism/ctaBanner.astro";
+import WhatsAppFloat from "@/components/medicalTourism/whatsAppFloat.astro";
+import FooterComponent from "@/components/footer/footer.astro";
+
+
+---
+
+<BaseLayout>
+
+<>
+  <Header
+    PhoneNumber={"08065916415"}
+    mobilectatext={"Call Now"}
+    mobileNumberHeader={"tel:08065916415"}
+  />
+  <MtHero />
+  <Doctors />
+  <Why />
+  <Treatments />
+  <Journey />
+  <Services />
+  <Testimonials />
+  <FAQs />
+  {/* <MtBottomCta /> */}
+  <WhatsAppFloat />
+  <FooterComponent
+    footerdesc="About Chirag Global Hospitals"
+    extradesc="Providing trusted care with decades of experience in diagnosing and treating colorectal and digestive health conditions."
+    footernumber="08065916415"
+  />
+</>
+  
+</BaseLayout>

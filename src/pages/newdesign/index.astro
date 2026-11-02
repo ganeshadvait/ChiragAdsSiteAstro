@@ -1,0 +1,423 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import type { Review } from "@/components/reviews-carousel.astro";
+import ReviewsCarousel from "@/components/reviews-carousel.astro";
+import Header from "@/components/partials/header/header.astro";
+import Hero from "@/components/partials/hero/hero.astro";
+import Number from "@/components/partials/number/number.astro";
+import Cost from "@/components/partials/cost/cost.astro";
+import Risk from "@/components/partials/risks/risk.astro";
+import Doctors from "@/components/partials/doctors/doctors.astro";
+import CostDepends from "@/components/partials/costdepends/costdepends.astro";
+import InsurenceAdvisor from "@/components/partials/insurenceadvisor/insurenceadvisor.astro";
+import Why from "@/components/partials/why/why.astro";
+import Google from "@/components/partials/google/google.astro";
+import Info from "@/components/partials/info/info.astro";
+import CtaBanner from "@/components/partials/ctabanner/ctabanner.astro";
+import Faqs from "@/components/faqs/faq.astro";
+import Form from "@/components/partials/form/from.astro";
+import Reviews from "@/components/partials/reviews/reviews.astro";
+import HospitalLocation from "@/components/HospitalLocation/hospitallocations.astro";
+
+import HospitalComparisond from "@/components/dynamictable/dynamictables.astro";
+
+const pilesHeroData = {
+  heading: "Best Piles Treatment In Bangalore",
+  points: [
+    "No Cut, No Dressing",
+    "Expert Piles Doctors",
+    "FREE Doctor Consult",
+    "Pay Later Facility",
+  ],
+  buttonText: "Calculate Surgery Cost",
+  imageSrc: "/Chirag Doctors Main.png",
+};
+const statsSectionData = {
+  heading: "Trusted by Patients\nWorldwide",
+  description:
+    "Our healthcare efficiency, faster discharge times, and superior recovery procedures help patients heal quickly and safely.",
+  stats: [
+    {
+      value: "24 hr",
+      label: "Discharge",
+    },
+    {
+      value: "98%",
+      label: "Patient Satisfaction",
+    },
+    {
+      value: "3 Days",
+      label: "Recovery Time",
+    },
+    {
+      value: "5 Days",
+      label: "Average Stay",
+    },
+  ],
+};
+
+const costSectionData = {
+  title: "Check Surgery Cost",
+  points: [
+    "Find the total cost of Surgery at the best hospitals.",
+    "Compare surgery prices across top hospitals.",
+    "Get a clear estimate before visiting the hospital.",
+  ],
+  buttonText: "Calculate Surgery Cost",
+  imageSrc: "/chiraggpt.png",
+};
+const treatmentCostDependsData = {
+  heading: "Treatment Cost Depends On",
+  items: [
+    {
+      titleBold: "Type of",
+      titleRest: "Procedure",
+      icon: "/typeofprocedure.png",
+    },
+    {
+      titleBold: "Severity of",
+      titleRest: "the Disease",
+      icon: "/severitydisease.png",
+    },
+    {
+      titleBold: "Past Medical",
+      titleRest: "Condition",
+      icon: "/pastmedical.png",
+    },
+    {
+      titleBold: "Contact",
+      titleRest: "for exact cost",
+      icon: "/contact.png",
+    },
+  ],
+  ctaText: "Chat with Expert",
+};
+const insuranceAdvisorData = {
+  cards: [
+    {
+      titlePrefix: "Check",
+      titleHighlight: "Insurance Coverage",
+      description:
+        "Find out if this treatment is covered in your insurance policy or not.",
+      image: "/checkinsurancecoverage.png",
+      imageAlt: "Insurance coverage illustration",
+      buttonText: "Check Insurance Coverage",
+    },
+    {
+      titlePrefix: "Talk To",
+      titleHighlight: "Health Advisor",
+      description: "Find the best hospitals and best doctors for treatment.",
+      image: "/talktohealthadvaiser.png",
+      imageAlt: "Health advisor illustration",
+      buttonText: "Call Advisor Now",
+    },
+  ],
+};
+const whyChooseData = {
+  heading: "Why Choose Chirag Hospitals for Piles Treatment in Bangalore",
+  points: [
+    "Advanced Laser Techniques",
+    "Expert Surgeons Team",
+    "Zero Waiting Time",
+    "Affordable Treatment Options",
+    "24/7 Patient Support",
+  ],
+};
+
+const faqs = [
+  {
+    faqTitle: " What are piles?",
+    faqAnswer:
+      "Piles are swollen veins in the anal area that may cause pain, itching, or bleeding.",
+  },
+  {
+    faqTitle: "How do I know if I have piles?",
+    faqAnswer:
+      "Common signs include bleeding during bowel movements, a lump near the anus, pain, or irritation.",
+  },
+  {
+    faqTitle: "Do all piles need surgery?",
+    faqAnswer:
+      "No. Early-stage piles can often be treated with medicines, fibre, ointments, and Sitz baths.",
+  },
+  {
+    faqTitle: "What is laser treatment for piles?",
+    faqAnswer:
+      "Laser treatment is a minimally invasive procedure that seals the swollen veins with controlled laser energy — no major cuts or stitches.",
+  },
+  {
+    faqTitle: "Is laser treatment painful?",
+    faqAnswer:
+      "Most patients experience minimal discomfort compared to traditional surgery.",
+  },
+  {
+    faqTitle: "How long does the procedure take?",
+    faqAnswer: "Usually around 20–30 minutes, depending on the case.",
+  },
+];
+const pilesComparisonContent = {
+  theading: "Piles Treatment at Chirag Hospitals",
+  ConditionVideo: "/chirag-piles-video.mp4",
+
+  title: "What are Piles or Hemorrhoids?",
+  descriptionHtml: "Piles are swollen blood vessels found inside or under the skin around the bottom. These are also called <strong>Hemorrhoids</strong>. There are 3 types of Piles.",
+
+  points: [
+    "External Hemorrhoids",
+    "Internal Hemorrhoids",
+    "Interno – External Piles",
+  ],
+};
+const risksOfDelayData = {
+  heading: "Risks of Delay in Piles Operation",
+  risks: [
+    "Intolerable Pain",
+    "Excessive Blood in Stool",
+    "Risk of Severe Infection",
+    "Prolapsed (Bulging) Piles",
+    "Risk of Anaemia",
+  ],
+};
+
+const laserPilesInfoData = {
+  aboutTitle: "About Laser Piles Operation",
+  aboutText:
+    "In laser piles operation, a special laser is used to shrink the pile mass, resulting in reduced swelling and discomfort. This advanced technique provides effective treatment with minimal bleeding.",
+
+  advantagesTitle: "Advantages of Laser Operation for Piles",
+  advantages: [
+    "Minimal pain and discomfort",
+    "Quicker recovery time",
+    "Reduced risk of complications",
+    "Early return to daily activities",
+  ],
+
+  costTitle: "Piles Laser Operation Cost in Bangalore",
+  costIntro: "Cost of piles operation depends on the following:",
+  costPoints: [
+    "Hospital reputation",
+    "Doctor's expertise",
+    "Grades of Piles (1,2,3,4)",
+    "Procedure type (laser, stapler, open)",
+    "Any pre-existing medical conditions",
+  ],
+
+  expandedContent: [
+    "Laser piles surgery is typically recommended for patients looking for minimally invasive treatment with faster recovery. Most patients can resume normal activities within a few days.",
+    "The final cost may vary depending on hospital facilities, surgeon experience, and post-operative care requirements.",
+  ],
+};
+
+const aiHealthBannerData = {
+  heading: "Your Health Matters – Schedule Your Visit",
+  buttonText: "Calculate Surgery Cost",
+  imageSrc: "/scheduleyourvisit.png",
+};
+const testimonialSectionData = {
+  testimonials: [
+    {
+      title: "Laser treatment for my dad's piles",
+      text: "Dr. Samhitha Reddy's laser treatment for my dad's piles worked wonders. He's pain-free now and really grateful for her care!",
+      name: "Mithilesh Sah",
+      rating: 5,
+    },
+    {
+      title: "Smooth and painless",
+      text: "Dr. Samhitha Reddy's laser treatment for my fissure was smooth and painless. She was super kind, which made the whole process much easier.",
+      name: "Rohit Kumar",
+      rating: 5,
+    },
+    {
+      title: "Colorectal Diseases",
+      text: "Lux hospital is one of best hospital in Bangalore for colorectal diseases. Dr. Samhita Mam explains everything in detail and the staff is caring.",
+      name: "Arti Shettiwar",
+      rating: 4.5,
+    },
+    {
+      title: "Admitted for my fistula surgery",
+      text: "I was admitted for my fistula surgery, Dr Samhita explained everything clearly. Surgery was seamless & painless. Great staff support.",
+      name: "Sanat Jayasingh",
+      rating: 4.7,
+    },
+    {
+      title: "Fistula Surgery",
+      text: "We were admitted for fistula surgery. Staff and doctor were polite & quick. Special thanks to Ashok for insurance support.",
+      name: "Sujith V",
+      rating: 4.8,
+    },
+  ],
+  ctaText: "Google Reviews",
+  ctaLink: "https://www.google.com/maps/place/Chirag+Global+Hospital/@12.9059178,77.6037368,17z/data=!4m8!3m7!1s0x3bae150e6550b135:0xa07798be317297a5!8m2!3d12.9059178!4d77.6037368!9m1!1b1!16s%2Fg%2F11q4j4m7pw?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA2OUgBUAM%3D",
+};
+
+const defaultLocationHeading =
+  "Our Hospital location Chirag Global Hospitals";
+
+const doctorsSectionData = {
+  heading: "Our Top Doctors",
+
+  topDoctors: [
+    {
+      name: "Dr. Rajasekhar M R",
+      designation: "MBBS, MS General Surgeon",
+      qualification: "Chairman, Chief Colorectal Surgeon & Proctologist",
+      experience: "12 Years",
+      reviews: "99%",
+      img: "/doctorchiragcard.avif",
+    },
+    {
+      name: "Dr. Shreedevi KN",
+      designation: "MBBS, MS General Surgery, FSGE (Surgical Gastroenterology)",
+      qualification: "Head Colorectal Surgery & Proctology",
+      experience: "12 Years",
+      reviews: "99%",
+      img: "/doctorshreedevicard.avif",
+    },
+    {
+      name: "Dr. Prithvija Chakravarthy",
+      designation: "BAMS, MD(Ayu),YIC (Yoga - SVYASA)",
+      qualification: "Proctologist",
+      experience: "10 Years",
+      reviews: "99%",
+      img: "/doctorprithvicard.avif",
+    },
+  ],
+
+  moreDoctors: [
+    {
+      name: "Dr. Suchitra N Adiga",
+      designation: "BAMS, MS(Ayu)",
+      qualification: "Proctologist",
+      experience: "8 Years",
+      reviews: "99%",
+      img: "/doctorsuchithracard.avif",
+    },
+    {
+      name: "Dr.Jyotsna Vemulapalli",
+      designation: "MBBS, MS(Gen Surgery)",
+      qualification: "Colorectal Surgeon & Proctologist",
+      experience: "4 Years",
+      reviews: "99%",
+      img: "/doctorjyotsnacard.avif",
+    },
+    {
+      name: "Dr. Padmanabh R Bhat",
+      designation: "MBBS, MS(Gen Surgery),FRCS(Edin)",
+      qualification: "General Surgeon",
+      experience: "28 Years",
+      reviews: "99%",
+      img: "/doctorpadmanabhcard.avif",
+    },
+  ],
+
+  banner: {
+    heading: "Consult The Doctor Now",
+    points: [
+      "Free Consultation",
+      "Online Consultation",
+      "Know your condition from top doctors",
+    ],
+    buttonText: "Talk to the Doctor",
+    imageSrc: "/consultthedoctor.png",
+  },
+};
+
+const sampleReviews: Review[] = [
+  {
+    id: 1,
+    body: "SmoothUI has completely transformed how I build user interfaces. The animations are smooth, the components are well-designed, and the documentation is excellent. Highly recommend!",
+    author: "Sarah Johnson",
+    title: "Frontend Developer at TechCorp",
+  },
+  {
+    id: 2,
+    body: "I've been using SmoothUI for my latest project and I'm impressed by the quality of the components. The spring animations feel natural and the API is intuitive.",
+    author: "Michael Chen",
+    title: "UI/UX Designer",
+  },
+  {
+    id: 3,
+    body: "The best part about SmoothUI is how easy it is to customize. I can create beautiful, animated interfaces without spending hours on implementation details.",
+    author: "Emily Rodriguez",
+    title: "Full Stack Developer",
+  },
+  {
+    id: 4,
+    body: "As someone who values both aesthetics and performance, SmoothUI hits the perfect balance. The components are performant and look amazing.",
+    author: "David Kim",
+    title: "Product Engineer",
+  },
+  {
+    id: 5,
+    body: "The carousel component is particularly impressive. The spring physics make the interactions feel natural and delightful. Great work!",
+    author: "Lisa Anderson",
+    title: "Creative Director",
+  },
+];
+---
+
+<BaseLayout>
+<main>
+
+<div class="w-full max-w-[1500px] mx-auto px-4 py-8">
+  {/* 2-Column Layout */}
+  <div class="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
+    {/* LEFT SIDE 70% */}
+    <div class="space-y-10">
+      <Hero {...pilesHeroData} />
+      <Number {...statsSectionData} />
+      <Cost
+        title={costSectionData.title}
+        points={costSectionData.points}
+        buttonText={costSectionData.buttonText}
+        imageSrc={costSectionData.imageSrc}
+      />
+      <Risk {...risksOfDelayData} />
+      <Doctors {...doctorsSectionData} />
+      <HospitalLocation locationsectionheading={defaultLocationHeading} />
+      <CostDepends
+        heading={treatmentCostDependsData.heading}
+        items={treatmentCostDependsData.items}
+        ctaText={treatmentCostDependsData.ctaText}
+      />
+      <InsurenceAdvisor {...insuranceAdvisorData} />
+
+      <Why {...whyChooseData} />
+      <HospitalComparisond {...pilesComparisonContent} />
+      <Info {...laserPilesInfoData} />
+      <CtaBanner {...aiHealthBannerData} />
+      {faqs.length > 0 && (
+        <Faqs
+          className="md:!w-[95%] w-full mx-[unset]"
+          // fheading={fheading}
+          faqs={faqs.map((faq) => ({
+            faqquestion: faq.faqTitle,
+            faqanswer: faq.faqAnswer,
+          }))}
+        />
+      )}
+    </div>
+
+    {/* RIGHT SIDE 30% (Sticky Form) */}
+    <div class="relative">
+      {/* Desktop: sticky, Mobile: fixed bottom */}
+      <div class="hidden lg:block sticky top-24">
+        <Form reviewsData={testimonialSectionData} />
+      </div>
+      <div
+        class="block lg:hidden fixed bottom-0 left-0 w-full z-50 bg-transparent   px-4 py-1"
+        style={{ maxWidth: "1500px", margin: "0 auto" }}
+      >
+        <Form reviewsData={testimonialSectionData} />
+      </div>
+    </div>
+  </div>
+  <div class="flex min-h-[600px] w-full items-center justify-center overflow-visible p-8">
+    <div class="w-full max-w-4xl overflow-visible">
+      <ReviewsCarousel height="300px" reviews={sampleReviews} />
+    </div>
+  </div>
+</div>
+  
+</main>
+</BaseLayout>

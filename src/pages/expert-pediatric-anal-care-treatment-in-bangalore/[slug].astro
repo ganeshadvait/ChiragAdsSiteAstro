@@ -1,0 +1,738 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/header/header.astro";
+import Hero from "@/components/partials/hero/hero.astro";
+import WhatIsPediatric from "@/components/partials/whatispediatric/whatispediatric.astro";
+import PediatricConditions from "@/components/partials/pediatricconditions/pediatricconditions.astro";
+import WhenConsult from "@/components/partials/whenconsult/whenconsult.astro";
+import TreatmentApproach from "@/components/partials/treatmentapproach/treatmentapproach.astro";
+import TreatmentOptions from "@/components/partials/treatmentoptions/treatmentoptions.astro";
+import WhyChoosePediatric from "@/components/partials/whychoosepediatric/whychoosepediatric.astro";
+import RisksOfDelayPediatric from "@/components/partials/risksofdelaypediatric/risksofdelaypediatric.astro";
+import Number from "@/components/partials/number/number.astro";
+import Cost from "@/components/partials/cost/cost.astro";
+import Risk from "@/components/partials/risks/risk.astro";
+import Doctors from "@/components/partials/doctors/doctors.astro";
+import CostDepends from "@/components/partials/costdepends/costdepends.astro";
+import InsurenceAdvisor from "@/components/partials/insurenceadvisor/insurenceadvisor.astro";
+import Why from "@/components/partials/why/why.astro";
+import Google from "@/components/partials/google/google.astro";
+import Info from "@/components/partials/info/info.astro";
+import CtaBanner from "@/components/partials/ctabanner/ctabanner.astro";
+import Faqs from "@/components/faqs/faq.astro";
+import Form from "@/components/partials/form/from.astro";
+import Reviews from "@/components/partials/reviews/reviews.astro";
+import HospitalLocation from "@/components/HospitalLocation/hospitallocations.astro";
+import FooterComponent from "@/components/footer/footer.astro";
+
+type HeroDataType = {
+  heading: string;
+  points: string[];
+  buttonText: string;
+  imageSrc: string;
+};
+
+type PilesPageProps = {
+  params: {
+    slug: string;
+  };
+};
+import HospitalComparisond from "@/components/dynamictable/dynamictables.astro";
+
+const contentMap: Record<
+  string,
+  {
+    phone?: string;
+    hero?: Partial<HeroDataType>;
+    faqs?: { faqTitle: string; faqAnswer: string }[];
+  }
+> = {
+  "expert-pediatric-anal-care-treatment-in-bangalore": {
+    phone: "08065916427",
+    hero: {
+      heading: "Affordable Piles Treatment in Bangalore",
+      points: [
+        "Packages starting from ₹50,000",
+        "Transparent pricing, no surprises",
+        "Laser & advanced options available",
+        "Faster recovery-focused care",
+        "Easy payment options available",
+      ],
+    },
+    faqs: [
+      {
+        faqTitle: "How much does Piles laser treatment cost in Bangalore?",
+        faqAnswer:
+          "The cost ranges from ₹50,000, depending on the complexity of the treatment and hospital charges.",
+      },
+      {
+        faqTitle: "Are there any hidden costs for laser piles treatment?",
+        faqAnswer:
+          "No, Chirag Global Hospitals provides transparent pricing, and all costs will be discussed upfront. We offer no hidden charges.",
+      },
+      {
+        faqTitle: "Is Piles laser treatment covered under insurance?",
+        faqAnswer:
+          "Yes, most major insurance plans cover laser treatment for piles.",
+      },
+      {
+        faqTitle: "Can I pay for the treatment in installments?",
+        faqAnswer:
+          "Yes, Chirag Global Hospitals offers zero-interest EMI options for your convenience.",
+      },
+      {
+        faqTitle: "Is laser treatment for piles worth the cost?",
+        faqAnswer:
+          "Yes, laser treatment provides quick recovery, minimal pain, and a higher success rate with fewer complications compared to traditional surgery.",
+      },
+      {
+        faqTitle:
+          "Will the treatment cost be higher if the condition is severe?",
+        faqAnswer:
+          "Yes, in some cases, if the piles are advanced, the cost may vary slightly depending on the additional procedures required. Contact us today to get a personalized quotation and learn more about your treatment options.",
+      },
+    ],
+  },
+};
+
+export const prerender = false;
+
+const slug = Astro.params.slug ?? "";
+
+const normalizedSlug = decodeURIComponent(String(slug))
+  .trim()
+  .replace(/\/+$/, "")
+  .toLowerCase();
+
+const pageContent = contentMap[normalizedSlug];
+
+const defaultPhone = "08065916415";
+const finalPhone = pageContent?.phone ?? defaultPhone;
+
+const finalPhoneTel = `tel:${finalPhone}`;
+
+const HeroData = {
+  heading: "Expert Pediatric Anal Care Treatment in Bangalore",
+  points: [
+    "Child-friendly treatment environment",
+    "Minimally invasive & painless procedures",
+    "Experienced pediatric colorectal specialists",
+    "Same-day discharge & rapid recovery",
+    "Comprehensive pre & post treatment support",
+  ],
+  buttonText: "Book Appointment",
+  imageSrc: "/Chirag Doctors Main.png",
+};
+
+const finalHeroData = {
+  ...HeroData,
+  ...(pageContent?.hero ?? {}),
+  heading: pageContent?.hero?.heading ?? HeroData.heading,
+  points: pageContent?.hero?.points ?? HeroData.points,
+};
+
+const whatIsPediatricData = {
+  heading: "What Is Pediatric Anal Care?",
+  emoji: "👶",
+  image: "/pediatricanalacare/what is pediatric anal care.png",
+  imageAlt: "Pediatric anal care",
+  paragraphs: [
+    [
+      "Pediatric anal care refers to the specialized diagnosis and treatment of anorectal conditions in infants, children, and adolescents. These conditions — including ",
+      { text: "anal fissures" },
+      ", ",
+      { text: "perianal abscess" },
+      ", ",
+      { text: "rectal prolapse" },
+      ", ",
+      { text: "hemorrhoids" },
+      ", and ",
+      { text: "congenital anorectal malformations" },
+      " — require a ",
+      { text: "gentle" },
+      ", ",
+      { text: "child-specific approach" },
+      " that differs significantly from adult treatment.",
+    ],
+    [
+      "Children often cannot communicate their discomfort clearly, making expert evaluation essential. At Chirag Global Hospitals, our colorectal specialists are experienced in treating the unique anatomical and emotional needs of pediatric patients, ensuring minimal pain and maximum comfort throughout the process.",
+    ],
+    [
+      "Early intervention is critical. Untreated pediatric anorectal issues can lead to ",
+      { text: "chronic constipation" },
+      ", ",
+      { text: "behavioral changes" },
+      ", ",
+      { text: "feeding difficulties" },
+      ", and ",
+      { text: "long-term complications" },
+      " that affect your child's quality of life.",
+    ],
+  ],
+};
+
+const statsSectionData = {
+  heading: "Trusted by Patients\nWorldwide",
+  description:
+    "Patients receive safe treatment, quick discharge, shorter hospital stays, and faster recovery with continuous medical care and support.",
+  stats: [
+    {
+      value: "24 hr",
+      label: "Discharge",
+    },
+    {
+      value: "180K+",
+      label: "Patient Treated",
+    },
+    {
+      value: "3 Days",
+      label: "Recovery Time",
+    },
+    {
+      value: "99.5%",
+      label: "Success Rate",
+    },
+  ],
+};
+
+// const costSectionData = {
+//   title: "Check Surgery Cost",
+//   points: [
+//     "Find the total cost of Surgery at the best hospitals.",
+//     "Compare surgery prices across top hospitals.",
+//     "Get a clear estimate before visiting the hospital.",
+//   ],
+//   buttonText: "Calculate Surgery Cost",
+//   imageSrc: "/chiraggpt.png",
+// };
+
+const pediatricConditionsData = {
+  heading: "Pediatric Anorectal Conditions We Treat",
+  subheading:
+    "Our team of specialists provides expert diagnosis and treatment for a comprehensive range of pediatric anal and rectal conditions.",
+  conditions: [
+    {
+      icon: "heart",
+      title: "Anal Fissures in Children",
+      description:
+        "Small tears in the lining of the anus, usually caused by passing hard stools. The most common pediatric anorectal condition, causing pain, crying during bowel movements, and bright red blood on the stool or toilet tissue.",
+    },
+    {
+      icon: "shield",
+      title: "Perianal Abscess",
+      description:
+        "A painful, infected lump near the anus — most common in infants under 1 year. Presents as a red, swollen area with fever and irritability. Requires prompt drainage and, in some cases, fistula management.",
+    },
+    {
+      icon: "activity",
+      title: "Pediatric Rectal Prolapse",
+      description:
+        "Protrusion of the rectal lining through the anus during straining, most common in children aged 1–5 years. Usually resolves with conservative treatment; surgical correction is rarely needed.",
+    },
+    {
+      icon: "clock",
+      title: "Chronic Constipation",
+      description:
+        "Persistent difficulty passing stools with hard, infrequent bowel movements. A leading cause of many pediatric anorectal conditions; managed through dietary changes, stool softeners, and behavioral therapy.",
+    },
+    {
+      icon: "book",
+      title: "Pediatric Hemorrhoids",
+      description:
+        "Rare in children but can occur with chronic constipation or portal hypertension. Usually managed conservatively with dietary and lifestyle modifications rather than surgery.",
+    },
+    {
+      icon: "settings",
+      title: "Congenital Anorectal Malformations",
+      description:
+        "Birth defects affecting the anus and rectum, ranging from imperforate anus to complex cloacal malformations. Require specialized surgical reconstruction and long-term follow-up.",
+    },
+  ],
+};
+
+const whenConsultData = {
+  heading: "When to Consult a Pediatric Specialist",
+  subheading:
+    "Recognize these warning signs early — timely evaluation prevents complications and ensures your child's comfort.",
+  signs: [
+    "Crying or screaming during bowel movements",
+    "Bright red blood on stool or toilet tissue",
+    "Visible tear, lump, or swelling near the anus",
+    "Persistent constipation lasting more than 2 weeks",
+    "Child withholding stools due to pain",
+    "Fever with a red, tender area near the anus",
+    "Discharge of pus or mucus from the anal area",
+    "Tissue protruding from the anus during bowel movements",
+    "Loss of appetite or unexplained weight loss",
+    "Irritability or behavioral changes in infants",
+  ],
+};
+
+const treatmentOptionsData = {
+  heading: "Treatment Options for Pediatric Anal Care",
+  subheading:
+    "A conservative-first, child-friendly approach — surgery only when absolutely necessary.",
+  options: [
+    {
+      icon: "heart",
+      title: "Dietary & Lifestyle Guidance",
+      description:
+        "High-fiber diet, adequate hydration, and regular toilet habits form the foundation of treatment for most pediatric anorectal conditions. Age-appropriate counseling for parents and children.",
+    },
+    {
+      icon: "clock",
+      title: "Stool Softeners & Laxatives",
+      description:
+        "Pediatric-safe stool softeners help pass soft, painless stools while fissures heal. Dosage is tailored to your child's age and weight, and gradually reduced as symptoms resolve.",
+    },
+    {
+      icon: "shield",
+      title: "Topical Medications",
+      description:
+        "Soothing ointments, healing creams, and topical anesthetics provide fast symptom relief for anal fissures and minor irritation. Used alongside dietary changes for complete healing.",
+    },
+    {
+      icon: "zap",
+      title: "Sitz Baths & Hygiene Care",
+      description:
+        "Warm sitz baths promote healing, relieve pain, and maintain hygiene. Simple, effective, and easily done at home with guidance from our pediatric team.",
+    },
+    {
+      icon: "wrench",
+      title: "Minor Office Procedures",
+      description:
+        "Drainage of perianal abscesses, banding for pediatric hemorrhoids, and reduction of rectal prolapse are performed under mild sedation or local anesthesia, with same-day discharge.",
+    },
+    {
+      icon: "smile",
+      title: "Surgical Correction",
+      description:
+        "For congenital anorectal malformations, recurrent fistula, or refractory conditions — performed by experienced pediatric colorectal surgeons with a focus on long-term function and comfort.",
+    },
+  ],
+};
+
+const treatmentApproachData = {
+  heading: "Our Treatment Approach",
+  subheading:
+    "A gentle, step-by-step approach designed to minimize discomfort and build trust with every child.",
+  steps: [
+    {
+      title: "Child-Friendly Consultation",
+      description:
+        "A relaxed, patient conversation with you and your child in a calm environment. We take a detailed history, assess symptoms, and plan an examination that respects your child's comfort.",
+    },
+    {
+      title: "Gentle Examination & Diagnosis",
+      description:
+        "Minimally invasive clinical examination, with age-appropriate diagnostics — avoiding unnecessary tests. We only perform investigations essential for an accurate diagnosis.",
+    },
+    {
+      title: "Conservative-First Treatment",
+      description:
+        "Most pediatric conditions respond to diet, medications, and home care. Surgery is a last resort and is only recommended when conservative care is insufficient.",
+    },
+    {
+      title: "Ongoing Support & Follow-Up",
+      description:
+        "Regular follow-ups to monitor healing, dietary guidance, and parent education to prevent recurrence. We stay with you throughout your child's recovery.",
+    },
+  ],
+};
+
+const whyChooseData = {
+  heading: "Why Choose Chirag Hospitals for Pediatric Anal Care",
+  subheading:
+    "A trusted, child-friendly colorectal team dedicated to the unique needs of pediatric patients.",
+  features: [
+    {
+      title: "30+ Years of Colorectal Expertise",
+      description:
+        "Led by Dr. Rajasekhar M R, our senior colorectal team brings decades of experience in treating complex pediatric anorectal conditions with a child-first philosophy.",
+    },
+    {
+      title: "Conservative-First Philosophy",
+      description:
+        "We avoid unnecessary procedures. Most pediatric anorectal issues heal with dietary guidance, medications, and parental education — and we commit to non-surgical care wherever possible.",
+    },
+    {
+      title: "Child-Friendly Environment",
+      description:
+        "Kid-friendly consultation rooms, gentle examination techniques, and a warm, patient team make every visit reassuring for both child and parent.",
+    },
+    {
+      title: "Comprehensive Pediatric Diagnostics",
+      description:
+        "Age-appropriate imaging, anorectal assessment, and detailed evaluation — avoiding unnecessary tests while ensuring accurate diagnosis.",
+    },
+    {
+      title: "180K+ Patients Trusted Us",
+      description:
+        "Families across India trust Chirag Hospitals for colorectal care, with a 99.5% success rate and transparent, compassionate treatment.",
+    },
+    {
+      title: "Affordable & Insurance-Friendly",
+      description:
+        "Insurance support, zero-interest EMI through GMoney, and transparent pricing with no hidden charges for all pediatric procedures.",
+    },
+  ],
+};
+
+const risksOfDelayData = {
+  heading: "Risks of Delaying Pediatric Anal Care",
+  intro:
+    "Untreated pediatric anorectal conditions can have significant short- and long-term consequences for your child:",
+  image: "/pediatricanalacare/risk of pediatric anal care.png",
+  imageAlt: "Risks of delaying pediatric anal care",
+  risks: [
+    {
+      title: "Chronic constipation & stool withholding:",
+      description:
+        "Pain during bowel movements leads children to hold stools, worsening constipation and creating a painful cycle that can last into adulthood if untreated.",
+    },
+    {
+      title: "Behavioral & emotional impact:",
+      description:
+        "Persistent pain and distress around toileting can cause anxiety, sleep disturbance, regression in toilet training, and long-term toileting avoidance.",
+    },
+    {
+      title: "Recurrent infections:",
+      description:
+        "Untreated perianal abscesses can develop into fistulas and cause repeated, painful infections requiring more complex surgical management later.",
+    },
+    {
+      title: "Feeding difficulties & growth issues:",
+      description:
+        "Chronic pain and constipation reduce appetite and nutritional intake, potentially affecting growth and development in infants and young children.",
+    },
+    {
+      title: "Progression to complex conditions:",
+      description:
+        "Early, simple conditions often become chronic and complex when delayed. Early treatment avoids surgery and ensures your child grows up comfortable and confident.",
+    },
+  ],
+};
+const doctorsSectionData = {
+  heading: "Our Top Doctors",
+
+  topDoctors: [
+    {
+      name: "Dr. Rajasekhar M R",
+      designation: "MBBS, MS General Surgeon",
+      qualification: "Founder and Senior Colorectal Surgeon",
+      experience: "30+ Years",
+      reviews: "99%",
+      img: "/doctorchiragcard.avif",
+    },
+    {
+      name: "Dr. Shreedevi KN",
+      designation: "MBBS, MS, FSGE",
+      qualification: "Surgical Gastroenterologist and Colorectal surgeon",
+      experience: "12 Years",
+      reviews: "99%",
+      img: "/doctorshreedevicard.avif",
+    },
+    {
+      name: "Dr. Padmanabh R Bhat",
+      designation: "MBBS, MS(Gen Surgery),FRCS(Edin)",
+      qualification: "General Surgeon",
+      experience: "28 Years",
+      reviews: "99%",
+      img: "/doctorpadmanabhcard.avif",
+    },
+  ],
+
+  moreDoctors: [
+    {
+      name: "Dr.Jyotsna Vemulapalli",
+      designation: "MBBS, MS(Gen Surgery)",
+      qualification: "Colorectal Surgeon & Proctologist",
+      experience: "4 Years",
+      reviews: "99%",
+      img: "/doctorjyotsnacard.avif",
+    },
+    {
+      name: "Dr. Prithvija Chakravarthy",
+      designation: "BAMS, MD(Ayu),YIC (Yoga - SVYASA)",
+      qualification: "Proctologist",
+      experience: "10 Years",
+      reviews: "99%",
+      img: "/doctorprithvicard.avif",
+    },
+    {
+      name: "Dr. Suchitra N Adiga",
+      designation: "BAMS, MS(Ayu)",
+      qualification: "Proctologist",
+      experience: "8 Years",
+      reviews: "99%",
+      img: "/doctorsuchithracard.avif",
+    },
+  ],
+
+  banner: {
+    heading: "Consult The Doctor Now",
+    points: [
+      "Experienced colorectal specialists",
+      "Modern laser treatment methods",
+      "Proven treatment outcomes",
+    ],
+    buttonText: "Book Appointment",
+    imageSrc: "/pediatricanalacare/pediatric lady doctor consult.png",
+  },
+};
+const defaultLocationHeading =
+  "Chirag Global Hospital - Best Colorectal Hospital in Bangalore";
+
+const treatmentCostDependsData = {
+  heading: "Treatment Cost Depends On",
+  items: [
+    {
+      titleBold: "Type of",
+      titleRest: "Procedure",
+      icon: "/typeofprocedure.png",
+    },
+    {
+      titleBold: "Severity of",
+      titleRest: "the Disease",
+      icon: "/severitydisease.png",
+    },
+    {
+      titleBold: "Past Medical",
+      titleRest: "Condition",
+      icon: "/pastmedical.png",
+    },
+    {
+      titleBold: "Contact",
+      titleRest: "for exact cost",
+      icon: "/contact.png",
+    },
+  ],
+  ctaText: "Chat with Our Expert",
+};
+const insuranceAdvisorData = {
+  cards: [
+    {
+      titlePrefix: "Easy",
+      titleHighlight: "Payment Options",
+      description:
+        "Enjoy hassle-free treatment and insurance support through GMoney, with zero processing fees and interest-free finance.",
+      image: "/checkinsurancecoverage.png",
+      imageAlt: "Insurance coverage illustration",
+      buttonText: "Check EMI Options",
+      ctaType: "modal",
+    },
+    {
+      titlePrefix: "Talk To",
+      titleHighlight: "Health Advisor",
+      description:
+        "Get clear guidance on treatment options, costs, and recovery process.",
+      image: "/talktohealthadvaiser.png",
+      imageAlt: "Health advisor illustration",
+      buttonText: "Call Our Advisors",
+      ctaType: "call",
+    },
+  ],
+};
+
+const InfoContent = {
+  theading: "Piles Treatment at Chirag Hospitals",
+  videoSrc: "/chirag-piles-video.mp4",
+
+  title: "What Are Piles or Hemorrhoids?",
+  description: `Piles, also called hemorrhoids, are swollen veins in the anal area that cause pain, bleeding, and discomfort. Medical treatment helps relieve symptoms and prevents complications.`,
+
+  points: [
+    "Internal Piles – Piles inside the rectum",
+    "External Piles – Piles outside the anus",
+    "Thrombosed Piles – Piles with blood clots",
+  ],
+};
+const InfoData = {
+  aboutTitle: "Symptoms of Piles",
+  aboutText:
+    "Piles commonly cause bleeding during bowel movements, pain, itching, swelling, or a lump around the anus that needs medical attention.",
+
+  advantagesTitle: "Treatment Options for Piles",
+  advantages: [
+    "Laser piles treatment",
+    "Lifestyle and dietary guidance",
+    "Advanced DGHAL procedure for piles",
+    "Ultrasonic shears excision for minimal pain and faster recovery",
+  ],
+
+  costTitle: "Why Laser Is Best Treatment",
+  costIntro: "Laser piles treatment is preferred because it offers:",
+  costPoints: [
+    "Minimally invasive procedure",
+    "Less pain and bleeding",
+    "Same-day discharge possible",
+    "Faster recovery time",
+  ],
+
+  expandedContent: [
+    "Laser piles treatment is a modern option for patients seeking effective relief with minimal discomfort and shorter recovery time.",
+    "Treatment plan and cost are decided after medical evaluation based on the severity and individual patient condition.",
+  ],
+};
+
+const BannerData = {
+  heading: "Get Relief from Pediatric Anal – Book Now",
+  buttonText: "Book An Appointment",
+  imageSrc: "/scheduleyourvisit.png",
+};
+
+const faqs = [
+  {
+    faqTitle: "What are the most common anal problems in children?",
+    faqAnswer:
+      "The most common pediatric anorectal conditions include anal fissures (small tears caused by hard stools), perianal abscess (infected lumps near the anus, especially in infants), chronic constipation, rectal prolapse, and rectal bleeding. Anal fissures and constipation account for the majority of pediatric proctology visits.",
+  },
+  {
+    faqTitle: "At what age can children develop anal fissures?",
+    faqAnswer:
+      "Anal fissures can occur at any age, including infancy. They are most common in children between 6 months to 2 years during the introduction of solid foods, and again around toilet-training age (2–4 years). Dietary changes and constipation are the primary triggers.",
+  },
+  {
+    faqTitle: "Is surgery always needed for pediatric anal conditions?",
+    faqAnswer:
+      "No. The majority of pediatric anorectal conditions respond well to conservative treatment including dietary modifications, stool softeners, topical medications, and sitz baths. Surgery is only recommended when conservative measures fail or for conditions like congenital malformations that require surgical correction.",
+  },
+  {
+    faqTitle: "How can I prevent recurring anal fissures in my child?",
+    faqAnswer:
+      "Prevention focuses on maintaining soft, regular bowel movements through a high-fiber diet (fruits, vegetables, whole grains), adequate water intake, regular toilet habits, and avoiding stool withholding. Your doctor may also recommend a maintenance dose of stool softener for a period after healing.",
+  },
+  {
+    faqTitle: "Is blood in my child's stool a medical emergency?",
+    faqAnswer:
+      "While any rectal bleeding should be evaluated, most cases in children are caused by anal fissures and are not emergencies. However, you should seek immediate medical attention if there is heavy bleeding, blood mixed throughout the stool, the child appears pale or lethargic, or there is associated fever and abdominal pain.",
+  },
+  {
+    faqTitle: "How long does recovery take after pediatric anal treatment?",
+    faqAnswer:
+      "For conservative treatments, improvement is typically seen within 1–2 weeks. For minor procedures like abscess drainage, recovery takes 3–5 days. Surgical procedures may require 1–2 weeks for full recovery. Our team provides detailed aftercare instructions and follow-up appointments to ensure smooth healing.",
+  },
+  {
+    faqTitle: "How much does pediatric anal care treatment cost at Chirag Hospitals?",
+    faqAnswer:
+      "Treatment costs vary depending on the condition and approach. Conservative management is very affordable, while procedures may vary. EMI options through GMoney with zero interest, and transparent pricing. Contact our health advisors at 08065916415 for a personalized cost estimate.",
+  },
+  {
+    faqTitle: "Why is Chirag Hospitals trusted for pediatric anal care?",
+    faqAnswer:
+      "Chirag Global Hospitals brings 30+ years of colorectal expertise, 180K+ successfully treated patients, a child-friendly treatment environment, and a conservative-first philosophy that prioritizes your child's comfort. Our team of specialized colorectal surgeons ensures the highest standard of care for pediatric patients.",
+  },
+];
+
+const finalFaqs = pageContent?.faqs ?? faqs;
+
+const testimonialSectionData = {
+  testimonials: [
+    {
+      // title: "Laser treatment for my dad's piles",
+      text: "We visited the hospital for our child’s anal fissure treatment, and the care was excellent from start to finish. The doctors were very patient, explained everything clearly, and made us feel comfortable. My child recovered well, and we are very thankful for the support.",
+      name: "Ananya",
+      rating: 5,
+    },
+    {
+      // title: "Smooth and painless",
+      text: "Highly satisfied with the pediatric care team. Our baby was having pain and discomfort, and the doctor handled the case with great care and kindness. The treatment was effective, and the staff were very supportive throughout the process.",
+      name: "Rohini",
+      rating: 5,
+    },
+    {
+      // title: "Colorectal Diseases",
+      text: "A very good experience for pediatric anal care treatment. The doctors were experienced, gentle, and knew how to handle children calmly. The hospital was clean, organized, and the treatment helped our child recover quickly.",
+      name: "vrishika Reddy",
+      rating: 5,
+    },
+    {
+      // title: "Admitted for my fistula surgery",
+      text: "We were worried about our child’s condition, but the hospital team guided us very well. The pediatric specialist was professional, caring, and answered all our questions patiently. Excellent treatment and compassionate care.",
+      name: "Sahana",
+      rating: 5,
+    },
+  ],
+  ctaText: "Google Reviews",
+  ctaLink:
+    "https://www.google.com/maps/place/Chirag+Global+Hospital/@12.9059178,77.6037368,17z/data=!4m8!3m7!1s0x3bae150e6550b135:0xa07798be317297a5!8m2!3d12.9059178!4d77.6037368!9m1!1b1!16s%2Fg%2F11q4j4m7pw?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA2OUgBUAM%3D",
+};
+---
+
+<BaseLayout
+  title="Piles Treatment in Bangalore | Laser Piles Surgery | Chirag Hospitals"
+  description="Get advanced laser treatment for piles in Bangalore at Chirag Hospitals. Experienced specialists, minimal pain procedure, fast recovery, EMI options available.">
+<main>
+
+<>
+  <Header
+    PhoneNumber={finalPhone}
+    mobilectatext={"Call Now"}
+    mobileNumberHeader={finalPhoneTel}
+  />
+  <div class="w-full max-w-[1500px] mx-auto px-4 py-8">
+    {/* 2-Column Layout */}
+    <div class="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
+      {/* LEFT SIDE 70% */}
+      <div class="space-y-10">
+        <Hero {...finalHeroData} />
+        <Number {...statsSectionData} />
+        <WhatIsPediatric {...whatIsPediatricData} />
+        <PediatricConditions {...pediatricConditionsData} />
+        <RisksOfDelayPediatric {...risksOfDelayData} />
+        <WhenConsult {...whenConsultData} />
+        <Doctors {...doctorsSectionData} />
+        <TreatmentOptions {...treatmentOptionsData} />
+        <CostDepends
+          heading={treatmentCostDependsData.heading}
+          items={treatmentCostDependsData.items}
+          ctaText={treatmentCostDependsData.ctaText}
+        />
+        <TreatmentApproach {...treatmentApproachData} />
+        <InsurenceAdvisor {...insuranceAdvisorData} />
+        
+        <WhyChoosePediatric {...whyChooseData} />
+        {/* <Cost
+        title={costSectionData.title}
+        points={costSectionData.points}
+        buttonText={costSectionData.buttonText}
+        imageSrc={costSectionData.imageSrc}
+      /> */}
+        <HospitalLocation locationsectionheading={defaultLocationHeading} />
+        {/* <CtaBanner {...BannerData} /> */}
+        {finalFaqs.length > 0 && (
+          <Faqs
+            className="md:!w-[95%] w-full mx-[unset]"
+            // fheading={fheading}
+            faqs={finalFaqs.map((faq) => ({
+              faqquestion: faq.faqTitle,
+              faqanswer: faq.faqAnswer,
+            }))}
+          />
+        )}
+      </div>
+
+      {/* RIGHT SIDE 30% (Sticky Form) */}
+      <div class="relative">
+        {/* Desktop: sticky, Mobile: fixed bottom */}
+        <div class="hidden lg:block sticky top-24">
+          <Form reviewsData={testimonialSectionData} />
+        </div>
+        <div
+          class="block lg:hidden fixed bottom-0 left-0 w-full z-50 bg-transparent   px-4 py-1"
+          style={{ maxWidth: "1500px", margin: "0 auto" }}
+        >
+          <Form reviewsData={testimonialSectionData} />
+        </div>
+      </div>
+    </div>
+  </div>
+  <FooterComponent
+    footerdesc="About Chirag Global Hospitals"
+    extradesc="Providing trusted care with decades of experience in diagnosing and treating colorectal and digestive health conditions."
+    footernumber={finalPhone}
+  />
+</>
+  
+</main>
+</BaseLayout>

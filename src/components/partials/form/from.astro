@@ -1,0 +1,303 @@
+---
+// Astro twin of from.tsx: consultation form + reviews slider.
+// Rendered twice per page (desktop sticky + mobile fixed-bottom), so the script
+// initialises every [data-lead-form] instance separately.
+import TestimonialSlider from "@/components/partials/reviews/reviews.astro";
+import ContactCta from "@/components/ContactCta.astro";
+import { getPhoneForPath } from "@/constants/contact";
+
+type Testimonial = {
+  title?: string;
+  text: string;
+  name: string;
+  rating: number;
+  testimonial_date?: string;
+};
+
+interface Props {
+  reviewsData?: {
+    testimonials: Testimonial[];
+    ctaText: string;
+    ctaLink: string;
+  } | null;
+}
+
+const { reviewsData } = Astro.props;
+
+const phoneNumber = getPhoneForPath(Astro.url.pathname);
+---
+
+<div class="w-full max-w-sm bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] rounded-2xl p-4 md:p-6 mx-auto my-4 z-[1000]" data-lead-form data-phone={phoneNumber}>
+  {/* React only shows the slider after mount, so it's inserted by the script. */}
+  {reviewsData && (
+    <template data-lf-reviews>
+      <div class="hidden lg:block min-h-[220px]">
+        <TestimonialSlider testimonials={reviewsData.testimonials ?? []} ctaText={reviewsData.ctaText ?? ""} ctaLink={reviewsData.ctaLink ?? "#"} />
+      </div>
+    </template>
+  )}
+
+  <h2 class="no-section-heading text-xl font-semibold text-[#0b1b3f] mt-2 mb-0 md:mb-4 hidden" data-lf-heading>Book Appointment</h2>
+
+  {/* Success/Error Message: created by the script */}
+
+  {/* Animated Form Inputs */}
+  <div class="overflow-hidden transition-all duration-500 [transition-timing-function:cubic-bezier(0.77,0,0.175,1)] my-0 max-h-0 opacity-0 scale-95 pointer-events-none" data-lf-panel>
+    <form class="space-y-3">
+      {/* Patient Name */}
+      <div>
+        <input type="text" placeholder="Patient Name" class="w-full px-4 py-3 rounded-2xl border border-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#F8B956] placeholder-gray-400" name="full_name" value="" />
+      </div>
+
+      {/* Mobile Number */}
+      <div data-lf-phone-field>
+        <div class="w-full flex items-center gap-2">
+          <div class="px-3 py-3 rounded-xl border border-gray-300 bg-gray-50 text-gray-700 font-medium">+91</div>
+          <input type="tel" placeholder="Mobile Number *" maxlength="10" class="w-full px-4 py-3 rounded-2xl border border-gray-300 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#F8B956] placeholder-gray-400" name="phone_number" value="" />
+        </div>
+      </div>
+
+      {/* Submit Button */}
+      <button type="submit" class="w-full mt-4 bg-[#F8B956] hover:bg-transparent border-2 border-transparent hover:border-[#F8B956] hover:text-black transition text-white text-sm font-semibold rounded-full shadow min-w-[80px] px-2 py-3 md:py-4 disabled:opacity-50 disabled:cursor-not-allowed">Submit</button>
+    </form>
+  </div>
+
+  {/* Action Buttons: Book Now & Call Now, always visible */}
+  <div class="flex flex-row gap-3 mt-0 md:mt-5 w-full items-center">
+    <ContactCta class="group flex-1 bg-[#F8B956] hover:bg-transparent border-2 border-transparent hover:border-[#F8B956] hover:text-black transition text-white text-sm font-semibold rounded-full shadow min-w-[80px] px-2 py-3 md:py-4 flex items-center justify-center gap-2" data-lf-book><img src="/uil_calender.svg" alt="Calendar" class="w-5 h-5 transition group-hover:invert" />Book Now</ContactCta>
+    {/* Mobile + Tablet: Get Directions */}
+    <button class="flex-1 lg:hidden bg-[#625587] border-2 border-[#625587] text-white transition text-sm font-semibold rounded-full shadow px-2 py-3" data-lf-directions>Get Directions</button>
+
+    {/* Desktop only: Call Now */}
+    <ContactCta class="hidden lg:flex flex-1 bg-[#625587] hover:bg-transparent border-2 border-[#625587] hover:text-[#0b1b3f] text-white transition text-sm font-semibold rounded-full shadow px-2 py-3 md:py-4 items-center justify-center">Call Now</ContactCta>
+  </div>
+</div>
+
+<script>
+  type Status = "success" | "error" | null;
+
+  const UTM_KEYS = [
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_term",
+    "utm_content",
+    "utm_platform",
+    "utm_device",
+  ] as const;
+
+  const PANEL_OPEN = ["max-h-[400px]", "opacity-100", "scale-100", "my-4"];
+  const PANEL_CLOSED = ["max-h-0", "opacity-0", "scale-95", "pointer-events-none", "my-0"];
+
+  const SUCCESS_ICON =
+    '<svg class="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>';
+  const ERROR_ICON =
+    '<svg class="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>';
+  const SPINNER =
+    '<span class="flex items-center justify-center gap-2"><svg class="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Submitting...</span>';
+
+  function init(root: HTMLElement) {
+    const phoneNumber = root.dataset.phone ?? "";
+    const heading = root.querySelector<HTMLElement>("[data-lf-heading]")!;
+    const panel = root.querySelector<HTMLElement>("[data-lf-panel]")!;
+    const form = panel.querySelector("form")!;
+    const nameInput = form.querySelector<HTMLInputElement>('input[name="full_name"]')!;
+    const phoneInput = form.querySelector<HTMLInputElement>('input[name="phone_number"]')!;
+    const phoneField = form.querySelector<HTMLElement>("[data-lf-phone-field]")!;
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const bookBtn = root.querySelector<HTMLElement>("[data-lf-book]")!;
+    const directionsBtn = root.querySelector<HTMLButtonElement>("[data-lf-directions]")!;
+
+    let showForm = false;
+    let submitting = false;
+    let phoneError = "";
+    let submitStatus: Status = null;
+    let submitMessage = "";
+
+    // Capture UTM parameters on mount
+    const urlParams = new URLSearchParams(window.location.search);
+    const utmParams = Object.fromEntries(UTM_KEYS.map((k) => [k, urlParams.get(k) || ""]));
+
+    // Reviews slider (only rendered after mount in React, and only while the form is closed)
+    let reviewsWrap: HTMLElement | null = null;
+    const tpl = root.querySelector<HTMLTemplateElement>("template[data-lf-reviews]");
+    if (tpl) {
+      reviewsWrap = tpl.content.firstElementChild!.cloneNode(true) as HTMLElement;
+      tpl.replaceWith(reviewsWrap);
+      reviewsWrap.dispatchEvent(new CustomEvent("testimonial-slider:mount", { bubbles: true }));
+    }
+
+    let statusEl: HTMLElement | null = null;
+    let errorEl: HTMLElement | null = null;
+
+    const render = () => {
+      if (reviewsWrap) reviewsWrap.hidden = showForm;
+
+      heading.classList.toggle("hidden", !showForm);
+      heading.classList.toggle("block", showForm);
+
+      // Success/Error Message
+      if (submitStatus) {
+        if (!statusEl) {
+          statusEl = document.createElement("div");
+          heading.after(statusEl);
+        }
+        const ok = submitStatus === "success";
+        statusEl.className = `mb-4 p-4 rounded-lg ${ok ? "bg-green-50 border border-green-200" : "bg-red-50 border border-red-200"}`;
+        statusEl.innerHTML = `<div class="flex items-start gap-2">${ok ? SUCCESS_ICON : ERROR_ICON}<p class="text-sm ${ok ? "text-green-800" : "text-red-800"}"></p></div>`;
+        statusEl.querySelector("p")!.textContent = submitMessage;
+      } else if (statusEl) {
+        statusEl.remove();
+        statusEl = null;
+      }
+
+      PANEL_OPEN.forEach((c) => panel.classList.toggle(c, showForm));
+      PANEL_CLOSED.forEach((c) => panel.classList.toggle(c, !showForm));
+
+      // Phone error
+      phoneInput.classList.toggle("border-red-500", !!phoneError);
+      phoneInput.classList.toggle("border-gray-300", !phoneError);
+      if (phoneError) {
+        if (!errorEl) {
+          errorEl = document.createElement("p");
+          errorEl.className = "text-red-600 text-xs mt-1 ml-1";
+          phoneField.append(errorEl);
+        }
+        errorEl.textContent = phoneError;
+      } else if (errorEl) {
+        errorEl.remove();
+        errorEl = null;
+      }
+
+      nameInput.disabled = submitting;
+      phoneInput.disabled = submitting;
+      submitBtn.disabled = submitting;
+      submitBtn.innerHTML = submitting ? SPINNER : "Submit";
+
+      bookBtn.lastChild!.nodeValue = showForm ? "Close Form" : "Book Now";
+    };
+
+    // Clear the error for this field when the user starts typing
+    phoneInput.addEventListener("input", () => {
+      if (phoneError) {
+        phoneError = "";
+        render();
+      }
+    });
+
+    const validateForm = () => {
+      const value = phoneInput.value;
+      if (!value || value.trim() === "") {
+        phoneError = "Mobile number is required";
+      } else if (!/^[6-9]\d{9}$/.test(value)) {
+        phoneError = "Please enter a valid 10-digit mobile number";
+      } else {
+        phoneError = "";
+      }
+      render();
+      return !phoneError;
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!showForm) return;
+
+      if (!validateForm()) return;
+
+      submitting = true;
+      submitStatus = null;
+      submitMessage = "";
+      render();
+
+      const fullName = nameInput.value;
+
+      try {
+        const leadData = {
+          full_name: fullName || "Guest",
+          email: "",
+          phone_number: phoneInput.value,
+          alt_phone_number: "",
+          city: "",
+          state: "",
+          country: "India",
+          condition: "",
+          preferred_date: "",
+          additional_notes: "",
+          page_url: window.location.href,
+          form_type: "Consultation Form",
+          button_text: "Submit",
+          message: `New consultation request from ${fullName || "Guest"}`,
+          source: "Website",
+          date_time: new Date().toISOString(),
+          url: window.location.pathname,
+          ...utmParams,
+        };
+
+        // Submit to API with timeout
+        const controller = new AbortController();
+        const timeoutId = window.setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+        const response = await fetch("/api/leads/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(leadData),
+          signal: controller.signal,
+        });
+
+        window.clearTimeout(timeoutId);
+
+        let result;
+        try {
+          result = await response.json();
+        } catch (parseError) {
+          console.error("Failed to parse response:", parseError);
+          submitStatus = "error";
+          submitMessage = "Server error. Please try again or call us directly.";
+          return;
+        }
+
+        if (response.ok) {
+          submitStatus = "success";
+          submitMessage =
+            "Thank you! Your consultation request has been submitted successfully. We'll contact you soon.";
+
+          // Reset form
+          nameInput.value = "";
+          phoneInput.value = "";
+
+          // Hide form after 3 seconds
+          setTimeout(() => {
+            showForm = false;
+            submitStatus = null;
+            render();
+          }, 3000);
+        } else {
+          submitStatus = "error";
+          submitMessage = result?.error || result?.message || "Failed to submit. Please try again.";
+        }
+      } catch (error: any) {
+        console.error("Form submission error:", error);
+        submitStatus = "error";
+
+        if (error.name === "TypeError" && error.message.includes("fetch")) {
+          submitMessage = "Network error. Please check your internet connection and try again.";
+        } else if (error.name === "AbortError") {
+          submitMessage = "Request timeout. Please try again.";
+        } else {
+          submitMessage = `An error occurred. Please try again or call us at +91 ${phoneNumber}`;
+        }
+      } finally {
+        submitting = false;
+        render();
+      }
+    });
+
+    directionsBtn.addEventListener("click", () => {
+      window.open("https://maps.app.goo.gl/3ox9s9tsJ9rD9tmu7", "_blank");
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-lead-form]").forEach(init);
+</script>

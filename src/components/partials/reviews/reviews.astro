@@ -1,0 +1,414 @@
+---
+// Astro twin of reviews.jsx: testimonial slider (mobile vertical + desktop horizontal).
+// Markup is the initial state; the script below drives autoplay, swipe, dots and read-more.
+type Testimonial = { title?: string; text: string; name: string; rating: number };
+
+interface Props {
+  testimonials?: Testimonial[];
+  ctaText?: string;
+  ctaLink?: string;
+  sourceLogo?: string;
+}
+
+const {
+  testimonials = [],
+  ctaText = "",
+  ctaLink = "#",
+  sourceLogo = "/chirag google logo.png",
+} = Astro.props;
+
+const GAP = 16;
+
+const slides =
+  testimonials.length > 0
+    ? [testimonials[testimonials.length - 1], ...testimonials, testimonials[0]]
+    : [];
+
+// Initial index is 1, so the first dot is active.
+const mobileDotClass = (i: number) =>
+  `w-2 h-2 rounded-full transition-all duration-200 border border-[#059669] ${i === 0 ? "bg-[#059669]" : "bg-white"}`;
+const desktopDotClass = (i: number) =>
+  `w-2.5 h-2.5 rounded-full transition-all duration-200 border border-[#059669] ${i === 0 ? "bg-[#059669]" : "bg-white"}`;
+
+const stars = (rating: number) => ({
+  full: Math.floor(rating),
+  half: rating % 1 !== 0,
+});
+---
+
+<div id="reviews" class="max-w-xl mx-auto" data-testimonial-slider data-count={testimonials.length}>
+  <div class="rounded-2xl">
+    {/* MOBILE VERTICAL CAROUSEL */}
+    <div class="sm:hidden">
+      <div class="flex flex-row justify-between items-center">
+        <div class="flex flex-col">
+          <div class="overflow-hidden h-[66px] p-2" data-m-container>
+            <div class="flex flex-col" style={`gap:${GAP}px`} data-m-track>
+              {slides.map((t) => (
+                <div class="flex items-center gap-2 rounded-lg px-3 py-2 bg-white flex-shrink-0" style="height:50px">
+                  <img src={sourceLogo} alt="Google" class="w-6 h-6 flex-shrink-0" />
+                  <span class="text-xs text-gray-700">{t.text.length <= 200 ? <span>{t.text}</span> : <span>{t.text.slice(0, 200) + "..."}{" "}<button class="text-[#059669] font-medium ml-1" data-read-more={t.text} data-limit="200">Read more</button></span>}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Mobile Dots */}
+          <div class="flex justify-center gap-2 pb-4" data-m-dots>
+            {testimonials.map((_, i) => (
+              <button aria-label={`Go to slide ${i + 1}`} class={mobileDotClass(i)}></button>
+            ))}
+          </div>
+        </div>
+        <button data-m-toggle>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 15.75-7.5-7.5-7.5 7.5"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    {/* DESKTOP HORIZONTAL CAROUSEL */}
+    <div class="overflow-hidden py-2 hidden sm:block scrollbar-hide" data-d-container>
+      <div class="flex" style={`gap:${GAP}px`} data-d-track>
+        {slides.map((t) => {
+          const s = stars(t.rating);
+          return (
+            <div class="flex-shrink-0 w-full border border-gray-200 rounded-xl p-5 bg-white">
+              <h3 class="text-[#170F49] font-semibold text-lg">{t.title}</h3>
+
+              <p class="text-gray-600 text-sm mt-2 leading-relaxed">{t.text.length <= 250 ? <span>{t.text}</span> : <span>{t.text.slice(0, 250) + "..."}{" "}<button class="text-[#059669] font-medium ml-1" data-read-more={t.text} data-limit="250">Read more</button></span>}</p>
+
+              <div class="mt-4 flex items-center gap-3">
+                <img src={sourceLogo} alt="Google" class="w-6 h-6" />
+                <div>
+                  <p class="font-medium text-[#170F49]">{t.name}</p>
+                  <div class="flex gap-1 text-yellow-400 text-sm">{Array.from({ length: s.full }).map(() => <span>★</span>)}{s.half && <span class="opacity-50">★</span>}</div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    {/* Desktop Dots */}
+    <div class="hidden sm:flex justify-center gap-2 pb-6" data-d-dots>
+      {testimonials.map((_, i) => (
+        <button aria-label={`Go to slide ${i + 1}`} class={desktopDotClass(i)}></button>
+      ))}
+    </div>
+
+    {/* CTA Button */}
+    <div class=" pb-2">
+      <a href={ctaLink} target="_blank" rel="noopener noreferrer" class="w-full bg-[#17a388] hover:bg-white hover:text-black hover:border hover:border-[#17a388] text-white font-semibold px-8 py-4 rounded-full transition text-sm sm:text-base flex items-center gap-2 justify-center"><img src={sourceLogo} alt="Google" class="w-6 h-6" />{ctaText}</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const GAP = 16;
+  const SLIDE_MS = 500;
+  const ARROW_UP = "m19.5 15.75-7.5-7.5-7.5 7.5";
+  const ARROW_DOWN = "m19.5 8.25-7.5 7.5-7.5-7.5";
+  const ACTIVE = "bg-[#059669]";
+  const INACTIVE = "bg-white";
+  const M_DOT = "w-2 h-2 rounded-full transition-all duration-200 border border-[#059669]";
+  const D_DOT = "w-2.5 h-2.5 rounded-full transition-all duration-200 border border-[#059669]";
+
+  function init(root: HTMLElement) {
+    if (root.dataset.ready) return;
+    root.dataset.ready = "1";
+
+    const count = Number(root.dataset.count) || 0;
+    const slidesLen = count > 0 ? count + 2 : 0;
+    const q = <T extends HTMLElement>(sel: string) => root.querySelector<T>(sel)!;
+
+    const mContainer = q("[data-m-container]");
+    const mTrack = q("[data-m-track]");
+    const mDots = q("[data-m-dots]");
+    const mToggle = q("[data-m-toggle]");
+    const mArrow = mToggle.querySelector("path")!;
+    const dContainer = q("[data-d-container]");
+    const dTrack = q("[data-d-track]");
+    const dDots = q("[data-d-dots]");
+
+    // Read more / less (each slide, clones included, keeps its own state)
+    const expanded = new Map<HTMLButtonElement, boolean>();
+    const renderReadMore = (btn: HTMLButtonElement) => {
+      const text = btn.dataset.readMore!;
+      const limit = Number(btn.dataset.limit);
+      const open = expanded.get(btn) ?? false;
+      btn.parentElement!.firstChild!.nodeValue = (open ? text : text.slice(0, limit) + "...") + " ";
+      btn.textContent = open ? "Read less" : "Read more";
+    };
+    root.querySelectorAll<HTMLButtonElement>("button[data-read-more]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        expanded.set(btn, !(expanded.get(btn) ?? false));
+        renderReadMore(btn);
+      });
+    });
+
+    const isActive = (idx: number, i: number) =>
+      idx === i + 1 || (idx === 0 && i === count - 1) || (idx === slidesLen - 1 && i === 0);
+
+    // ---- Desktop ----
+    let index = 1;
+    let slideWidth = 0;
+    let isDragging = false;
+    let startX = 0;
+    let snap = false;
+    let timer: number | undefined;
+    let resumeTimer: number | undefined;
+    let wrapTimer: number | undefined;
+
+    const renderDesktopDots = () => {
+      Array.from(dDots.children).forEach((dot, i) => {
+        dot.className = `${D_DOT} ${isActive(index, i) ? ACTIVE : INACTIVE}`;
+      });
+    };
+
+    const positionDesktop = () => {
+      clearTimeout(wrapTimer);
+      if (slidesLen === 0 || slideWidth <= 0) return;
+
+      // Safety net: snap back into range instead of showing a blank card.
+      if (index < 0 || index > slidesLen - 1) {
+        snap = true;
+        setIndex(1);
+        return;
+      }
+
+      if (snap) {
+        snap = false;
+        dTrack.style.transition = "none";
+        dTrack.style.transform = `translateX(${-index * slideWidth}px)`;
+        void dTrack.offsetHeight; // flush, so the next move animates again
+        return;
+      }
+
+      dTrack.style.transition = `transform ${SLIDE_MS}ms ease-in-out`;
+      dTrack.style.transform = `translateX(${-index * slideWidth}px)`;
+
+      // Wrap on a timer instead of `transitionend` (never fires while hidden).
+      if (index === 0 || index === slidesLen - 1) {
+        const target = index === 0 ? count : 1;
+        wrapTimer = window.setTimeout(() => {
+          snap = true;
+          setIndex(target);
+        }, SLIDE_MS + 20);
+      }
+    };
+
+    function setIndex(next: number) {
+      if (next === index) return;
+      index = next;
+      renderDesktopDots();
+      positionDesktop();
+    }
+
+    const updateWidth = () => {
+      // offsetWidth is 0 while the desktop strip is hidden on small screens.
+      if (dContainer.offsetWidth > 0) {
+        const w = dContainer.offsetWidth + GAP;
+        if (w !== slideWidth) {
+          slideWidth = w;
+          positionDesktop();
+        }
+      }
+    };
+
+    const stopAuto = () => {
+      if (timer) clearInterval(timer);
+    };
+    const startAuto = () => {
+      stopAuto();
+      if (slidesLen === 0) return;
+      timer = window.setInterval(() => setIndex(index + 1), 5000);
+    };
+
+    dContainer.addEventListener("mouseenter", stopAuto);
+    dContainer.addEventListener("mouseleave", startAuto);
+    dContainer.addEventListener(
+      "touchstart",
+      (e) => {
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        stopAuto();
+      },
+      { passive: true }
+    );
+    dContainer.addEventListener(
+      "touchmove",
+      (e) => {
+        if (!isDragging) return;
+        const diff = e.touches[0].clientX - startX;
+        dTrack.style.transition = "none";
+        dTrack.style.transform = `translateX(${-index * slideWidth + diff}px)`;
+      },
+      { passive: true }
+    );
+    dContainer.addEventListener("touchend", (e) => {
+      if (!isDragging) return;
+      const diff = e.changedTouches[0].clientX - startX;
+      if (Math.abs(diff) > slideWidth / 4) setIndex(diff < 0 ? index + 1 : index - 1);
+      isDragging = false;
+      startAuto();
+    });
+
+    Array.from(dDots.children).forEach((dot, i) => {
+      dot.addEventListener("click", () => {
+        setIndex(i + 1);
+        stopAuto();
+        // Restart auto-slide after 7 seconds
+        clearTimeout(resumeTimer);
+        resumeTimer = window.setTimeout(startAuto, 7000);
+      });
+    });
+
+    // ---- Mobile ----
+    let mIndex = 1;
+    let mSlideWidth = 0;
+    let mDragging = false;
+    let mStartY = 0;
+    let mSnap = false;
+    let showReviews = true;
+    let mTimer: number | undefined;
+    let mWrapTimer: number | undefined;
+
+    const renderMobileDots = () => {
+      Array.from(mDots.children).forEach((dot, i) => {
+        dot.className = `${M_DOT} ${isActive(mIndex, i) ? ACTIVE : INACTIVE}`;
+      });
+    };
+
+    const positionMobile = () => {
+      clearTimeout(mWrapTimer);
+      if (!showReviews || slidesLen === 0 || mSlideWidth <= 0) return;
+
+      if (mIndex < 0 || mIndex > slidesLen - 1) {
+        mSnap = true;
+        setMobileIndex(1);
+        return;
+      }
+
+      if (mSnap) {
+        mSnap = false;
+        mTrack.style.transition = "none";
+        mTrack.style.transform = `translateY(${-mIndex * mSlideWidth}px)`;
+        void mTrack.offsetHeight;
+        return;
+      }
+
+      mTrack.style.transition = `transform ${SLIDE_MS}ms ease-in-out`;
+      mTrack.style.transform = `translateY(${-mIndex * mSlideWidth}px)`;
+
+      if (mIndex === 0 || mIndex === slidesLen - 1) {
+        const target = mIndex === 0 ? count : 1;
+        mWrapTimer = window.setTimeout(() => {
+          mSnap = true;
+          setMobileIndex(target);
+        }, SLIDE_MS + 20);
+      }
+    };
+
+    function setMobileIndex(next: number) {
+      if (next === mIndex) return;
+      mIndex = next;
+      renderMobileDots();
+      positionMobile();
+    }
+
+    const stopMobileAuto = () => {
+      if (mTimer) clearInterval(mTimer);
+    };
+    const startMobileAuto = () => {
+      stopMobileAuto();
+      if (slidesLen === 0) return;
+      mTimer = window.setInterval(() => setMobileIndex(mIndex + 1), 3000);
+    };
+
+    // Mirrors the [showmReviews] effect: the strip only exists while expanded.
+    const applyShowReviews = () => {
+      if (showReviews && mSlideWidth !== 50 + GAP) {
+        mSlideWidth = 50 + GAP;
+      }
+      if (!showReviews) stopMobileAuto();
+      else startMobileAuto();
+      positionMobile();
+    };
+
+    mContainer.addEventListener(
+      "touchstart",
+      (e) => {
+        mDragging = true;
+        mStartY = e.touches[0].clientY;
+        stopMobileAuto();
+      },
+      { passive: true }
+    );
+    mContainer.addEventListener(
+      "touchmove",
+      (e) => {
+        if (!mDragging) return;
+        const diff = e.touches[0].clientY - mStartY;
+        mTrack.style.transition = "none";
+        mTrack.style.transform = `translateY(${-mIndex * mSlideWidth + diff}px)`;
+      },
+      { passive: true }
+    );
+    mContainer.addEventListener("touchend", (e) => {
+      if (!mDragging) return;
+      const diff = e.changedTouches[0].clientY - mStartY;
+      if (Math.abs(diff) > mSlideWidth / 4) setMobileIndex(diff < 0 ? mIndex + 1 : mIndex - 1);
+      mDragging = false;
+      startMobileAuto();
+    });
+
+    Array.from(mDots.children).forEach((dot, i) => {
+      dot.addEventListener("click", () => setMobileIndex(i + 1));
+    });
+
+    mToggle.addEventListener("click", () => {
+      showReviews = !showReviews;
+      mContainer.hidden = !showReviews;
+      mDots.hidden = !showReviews;
+      mArrow.setAttribute("d", showReviews ? ARROW_UP : ARROW_DOWN);
+      if (!showReviews) {
+        // React unmounts the strip: drop its inline position and read-more state.
+        mTrack.removeAttribute("style");
+        mTrack.style.gap = `${GAP}px`;
+        mTrack.querySelectorAll<HTMLButtonElement>("button[data-read-more]").forEach((btn) => {
+          expanded.delete(btn);
+          renderReadMore(btn);
+        });
+      }
+      applyShowReviews();
+    });
+
+    // Pause while the tab is hidden (timers throttle, transitions freeze).
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        stopAuto();
+        stopMobileAuto();
+      } else {
+        startAuto();
+        if (showReviews) startMobileAuto();
+      }
+    });
+
+    // Mount: strips start at 0 and slide to slide 1, as in React.
+    void root.offsetHeight;
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    startAuto();
+    applyShowReviews();
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-testimonial-slider]").forEach(init);
+  // The lead form inserts its slider after load and fires this event.
+  document.addEventListener("testimonial-slider:mount", (e) => {
+    const target = e.target as HTMLElement;
+    if (target.matches("[data-testimonial-slider]")) init(target);
+    target.querySelectorAll<HTMLElement>("[data-testimonial-slider]").forEach(init);
+  });
+</script>

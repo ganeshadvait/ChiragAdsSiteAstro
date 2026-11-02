@@ -1,0 +1,121 @@
+---
+// File: components/medicalTourism/mtWhyIndia.astro
+
+// `saving` isn't set on any row yet; the badge renders empty until it is.
+const costRows: { treatment: string; ukUs: string; gulf: string; chirag: string; saving?: string }[] = [
+  {
+    treatment: "Piles Surgery",
+    ukUs: "$3,000–10,000+",
+    gulf: "$1,300–4,000+",
+    chirag: "$800–1,200",
+  },
+  {
+    treatment: "Fistula Surgery",
+    ukUs: "$5,000–15,000+",
+    gulf: "$1,300–5,500+",
+    chirag: "$1,000–1,800",
+  },
+  {
+    treatment: "Fissure Treatment",
+    ukUs: "$4,000–9,000+",
+    gulf: "$1,350–4,000+",
+    chirag: "$600–1,000",
+  },
+  {
+    treatment: "Pilonidal Sinus",
+    ukUs: "$2,500–4,800+",
+    gulf: "$4,000–10,800+",
+    chirag: "$800–1,400",
+  },
+  {
+    treatment: "Colon Cancer",
+    ukUs: "$28,000–100,000+",
+    gulf: "$8,000–50,000+",
+    chirag: "$4,000–9,000",
+  },
+];
+
+const whyPoints = [
+  {
+    icon: "/medicaltourism/India's Only Dedicated Colorectal Specialist Hospital.svg",
+    title: "India's Only Dedicated Colorectal Specialist Hospital",
+    description:
+      "Unlike multi-specialty chains, we focus 100% on proctology & colorectal care — giving you deeper expertise and better outcomes.",
+  },
+  {
+    icon: "/medicaltourism/Personalized, Not Assembly-Line Care.svg",
+    title: "Personalized, Not Assembly-Line Care",
+    description:
+      "Your senior doctor is also your treating specialist. Not an intern. Not a rotation. The same trusted face from consultation to discharge.",
+  },
+  {
+    icon: "/medicaltourism/End-to-End International Patient Support.svg",
+    title: "End-to-End International Patient Support",
+    description:
+      "Medical visa guidance, airport pickup, accommodation, interpreter services, and post-treatment follow-up — all handled by our dedicated team.",
+  },
+];
+---
+
+<section
+  id="why-india"
+  class="bg-white px-4 py-14 sm:px-6 lg:px-8 lg:py-20"
+>
+  <div class="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-2 lg:gap-16">
+    <div>
+      <span class="mb-3 inline-block text-xs font-semibold uppercase tracking-[2px] text-[#C8963E]">Why Medical Tourism in India</span>
+
+      <h2 class="text-3xl font-bold leading-tight text-[#625587] sm:text-4xl lg:text-5xl">Save 60–80% on World-Class Treatment</h2>
+
+      <p class="mt-4 max-w-2xl text-base leading-7 text-[#5A7078]">Save more on world-class treatment. At Chirag Global Hospitals, patients receive advanced surgical care with outcomes that meet or surpass leading international standards.</p>
+
+      <div class="mt-8 flex flex-col gap-5">
+        {whyPoints.map((point) => (
+          <div class="flex items-start gap-4 rounded-xl border-l-[3px] border-[#C8963E] bg-[#FAF7F3] p-[18px]">
+            <div class="text-2xl leading-none">
+              <img src={point.icon} alt="icon" class="w-10 h-10" />
+            </div>
+            <div>
+              <h4 class="text-lg font-bold text-[#625587]">{point.title}</h4>
+              <p class="mt-1 text-sm leading-6 text-[#5A7078]">{point.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div>
+      <div class="overflow-hidden rounded-2xl bg-[#FAF7F3] shadow-[0_4px_32px_rgba(11,79,90,0.10)]">
+        <div class="grid grid-cols-4 bg-[#625587] px-4 py-4 text-[11px] font-semibold uppercase tracking-[0.5px] text-white sm:px-5 sm:text-[13px]">
+          <span class="col-span-1">Treatment</span>
+          <span class="text-center">UK / US</span>
+          <span class="text-center">Gulf</span>
+          <span class="text-center text-[#E4B96A]">Chirag India</span>
+        </div>
+
+        <div>
+          {costRows.map((row, index) => (
+            <div
+              class={`grid grid-cols-4 items-center gap-2 border-b border-[#625587]/10 px-4 py-4 text-xs sm:px-5 sm:text-sm ${
+                index % 2 !== 0 ? "bg-[#625587]/[0.03]" : ""
+              }`}
+            >
+              <span class="font-semibold text-[#1C2B30]">{row.treatment}</span>
+
+              <span class="text-center text-[#5A7078]">{row.ukUs}</span>
+
+              <span class="text-center text-[#5A7078]">{row.gulf}</span>
+
+              <span class="flex flex-col items-center justify-center gap-1 text-center font-bold text-[#625587] sm:flex-row sm:gap-2">
+                <span>{row.chirag}</span>
+                <span class="rounded-full bg-[#E8F7EE] px-2 py-1 text-[10px] font-bold tracking-[0.5px] text-[#1A7A3E] sm:text-[11px]">{row.saving}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <p class="mt-3 text-center text-xs text-[#5A7078]">*Estimates vary. Contact us for your personalised quote.</p>
+    </div>
+  </div>
+</section>

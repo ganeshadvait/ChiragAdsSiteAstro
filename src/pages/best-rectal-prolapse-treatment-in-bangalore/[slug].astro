@@ -1,0 +1,724 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/header/header.astro";
+import Hero from "@/components/partials/hero/hero.astro";
+import WhatIsPediatric from "@/components/partials/whatispediatric/whatispediatric.astro";
+import PediatricConditions from "@/components/partials/pediatricconditions/pediatricconditions.astro";
+import StagesOfRectalProlapse from "@/components/partials/stagesofrectalprolapse/stagesofrectalprolapse.astro";
+import CausesRiskFactors from "@/components/partials/causesriskfactors/causesriskfactors.astro";
+import WhenConsult from "@/components/partials/whenconsult/whenconsult.astro";
+import TreatmentApproach from "@/components/partials/treatmentapproach/treatmentapproach.astro";
+import TreatmentOptions from "@/components/partials/treatmentoptions/treatmentoptions.astro";
+import WhyChoosePediatric from "@/components/partials/whychoosepediatric/whychoosepediatric.astro";
+import RisksOfDelayPediatric from "@/components/partials/risksofdelaypediatric/risksofdelaypediatric.astro";
+import Number from "@/components/partials/number/number.astro";
+import Cost from "@/components/partials/cost/cost.astro";
+import Risk from "@/components/partials/risks/risk.astro";
+import Doctors from "@/components/partials/doctors/doctors.astro";
+import CostDepends from "@/components/partials/costdepends/costdepends.astro";
+import InsurenceAdvisor from "@/components/partials/insurenceadvisor/insurenceadvisor.astro";
+import Why from "@/components/partials/why/why.astro";
+import Google from "@/components/partials/google/google.astro";
+import Info from "@/components/partials/info/info.astro";
+import CtaBanner from "@/components/partials/ctabanner/ctabanner.astro";
+import Faqs from "@/components/faqs/faq.astro";
+import Form from "@/components/partials/form/from.astro";
+import Reviews from "@/components/partials/reviews/reviews.astro";
+import HospitalLocation from "@/components/HospitalLocation/hospitallocations.astro";
+import FooterComponent from "@/components/footer/footer.astro";
+
+type HeroDataType = {
+  heading: string;
+  points: string[];
+  buttonText: string;
+  imageSrc: string;
+};
+
+type PilesPageProps = {
+  params: {
+    slug: string;
+  };
+};
+import HospitalComparisond from "@/components/dynamictable/dynamictables.astro";
+
+const contentMap: Record<
+  string,
+  {
+    phone?: string;
+    hero?: Partial<HeroDataType>;
+    faqs?: { faqTitle: string; faqAnswer: string }[];
+  }
+> = {
+  "best-rectal-prolapse-treatment-in-bangalore": {
+    phone: "08065916427",
+    hero: {
+      heading: "Affordable Piles Treatment in Bangalore",
+      points: [
+        "Packages starting from ₹50,000",
+        "Transparent pricing, no surprises",
+        "Laser & advanced options available",
+        "Faster recovery-focused care",
+        "Easy payment options available",
+      ],
+    },
+    faqs: [
+      {
+        faqTitle: "How much does Piles laser treatment cost in Bangalore?",
+        faqAnswer:
+          "The cost ranges from ₹50,000, depending on the complexity of the treatment and hospital charges.",
+      },
+      {
+        faqTitle: "Are there any hidden costs for laser piles treatment?",
+        faqAnswer:
+          "No, Chirag Global Hospitals provides transparent pricing, and all costs will be discussed upfront. We offer no hidden charges.",
+      },
+      {
+        faqTitle: "Is Piles laser treatment covered under insurance?",
+        faqAnswer:
+          "Yes, most major insurance plans cover laser treatment for piles.",
+      },
+      {
+        faqTitle: "Can I pay for the treatment in installments?",
+        faqAnswer:
+          "Yes, Chirag Global Hospitals offers zero-interest EMI options for your convenience.",
+      },
+      {
+        faqTitle: "Is laser treatment for piles worth the cost?",
+        faqAnswer:
+          "Yes, laser treatment provides quick recovery, minimal pain, and a higher success rate with fewer complications compared to traditional surgery.",
+      },
+      {
+        faqTitle:
+          "Will the treatment cost be higher if the condition is severe?",
+        faqAnswer:
+          "Yes, in some cases, if the piles are advanced, the cost may vary slightly depending on the additional procedures required. Contact us today to get a personalized quotation and learn more about your treatment options.",
+      },
+    ],
+  },
+};
+
+export const prerender = false;
+
+const slug = Astro.params.slug ?? "";
+
+const normalizedSlug = decodeURIComponent(String(slug))
+  .trim()
+  .replace(/\/+$/, "")
+  .toLowerCase();
+
+const pageContent = contentMap[normalizedSlug];
+
+const defaultPhone = "08065916415";
+const finalPhone = pageContent?.phone ?? defaultPhone;
+
+const finalPhoneTel = `tel:${finalPhone}`;
+
+const HeroData = {
+  heading: "Best Rectal Prolapse Treatment in Bangalore",
+  points: [
+    "Experienced colorectal surgery specialists",
+    "Advanced laparoscopic (keyhole) surgery",
+    "Personalized treatment for every stage",
+    "Short hospital stay & quick recovery",
+    "Complete pre, surgical & post care support",
+  ],
+  buttonText: "Book Appointment",
+  imageSrc: "/Chirag Doctors Main.png",
+};
+
+const finalHeroData = {
+  ...HeroData,
+  ...(pageContent?.hero ?? {}),
+  heading: pageContent?.hero?.heading ?? HeroData.heading,
+  points: pageContent?.hero?.points ?? HeroData.points,
+};
+
+const whatIsPediatricData = {
+  heading: "What Is Rectal Prolapse?",
+  image: "/rectalprolapse/what is rectal prolapse.png",
+  imageAlt: "Rectal prolapse illustration",
+  paragraphs: [
+    "Rectal prolapse is a condition where the rectum — the last section of the large intestine — turns inside out and protrudes through the anus. It occurs when the supporting muscles and ligaments of the pelvic floor weaken, allowing the rectal wall to slide downward and eventually emerge outside the body.",
+    "The condition can affect people of any age but is most common in women over 50 and in young children. In adults, it's often associated with chronic constipation, straining during bowel movements, weakened pelvic floor muscles (from childbirth, aging, or neurological conditions), and conditions that increase abdominal pressure.",
+    "Rectal prolapse is a progressive condition — it typically starts as an internal prolapse (intussusception) where the rectum folds in on itself, and gradually worsens to a full-thickness external prolapse. Early treatment prevents progression and avoids the need for more complex surgery.",
+  ],
+};
+
+const statsSectionData = {
+  heading: "Trusted by Patients\nWorldwide",
+  description:
+    "Patients receive safe treatment, quick discharge, shorter hospital stays, and faster recovery with continuous medical care and support.",
+  stats: [
+    {
+      value: "24 hr",
+      label: "Discharge",
+    },
+    {
+      value: "180K+",
+      label: "Patient Treated",
+    },
+    {
+      value: "3 Days",
+      label: "Recovery Time",
+    },
+    {
+      value: "99.5%",
+      label: "Success Rate",
+    },
+  ],
+};
+
+// const costSectionData = {
+//   title: "Check Surgery Cost",
+//   points: [
+//     "Find the total cost of Surgery at the best hospitals.",
+//     "Compare surgery prices across top hospitals.",
+//     "Get a clear estimate before visiting the hospital.",
+//   ],
+//   buttonText: "Calculate Surgery Cost",
+//   imageSrc: "/chiraggpt.png",
+// };
+
+const stagesData = {
+  heading: "Types & Stages of Rectal Prolapse",
+  subheading:
+    "Understanding the stage of prolapse is critical for determining the right treatment approach.",
+  stages: [
+    {
+      stageLabel: "STAGE 1 — MILD",
+      borderColor: "#22C55E",
+      badgeBg: "#DCFCE7",
+      badgeText: "#15803D",
+      title: "Internal Prolapse (Intussusception)",
+      description:
+        "The rectal lining begins to fold inward but does not protrude outside the anus. Patients may feel a sense of incomplete evacuation, difficulty passing stool, and mild discomfort. Often manageable with conservative measures including dietary changes, pelvic floor exercises, and biofeedback therapy.",
+    },
+    {
+      stageLabel: "STAGE 2 — MODERATE",
+      borderColor: "#F59E0B",
+      badgeBg: "#FEF3C7",
+      badgeText: "#B45309",
+      title: "Mucosal Prolapse",
+      description:
+        "Only the inner lining (mucosa) of the rectum protrudes through the anus, typically during straining. The tissue may retract on its own or need gentle manual reduction. Causes mucus discharge, bleeding, and a feeling of a lump. May respond to non-surgical treatment but often benefits from procedural intervention.",
+    },
+    {
+      stageLabel: "STAGE 3 — SEVERE",
+      borderColor: "#EF4444",
+      badgeBg: "#FEE2E2",
+      badgeText: "#B91C1C",
+      title: "Full-Thickness External Prolapse",
+      description:
+        "The entire rectal wall protrudes through the anus, initially only during straining but eventually becoming permanent. Causes fecal incontinence, constant mucus discharge, bleeding, pain, and significant quality of life impact. Requires surgical correction for definitive treatment.",
+    },
+  ],
+};
+
+const causesRiskFactorsData = {
+  heading: "Causes & Risk Factors",
+  intro:
+    "Rectal prolapse develops when the structures supporting the rectum weaken. Understanding the causes helps in both treatment and prevention:",
+  causes: [
+    {
+      title: "Chronic constipation & straining:",
+      description:
+        "Years of straining during bowel movements is the most common contributing factor, gradually weakening the pelvic floor muscles and rectal supports.",
+    },
+    {
+      title: "Childbirth & pregnancy:",
+      description:
+        "Multiple vaginal deliveries, prolonged labor, and large babies can damage the pelvic floor muscles and nerves, making women particularly susceptible.",
+    },
+    {
+      title: "Aging & muscle weakness:",
+      description:
+        "Natural weakening of pelvic floor muscles with age is a significant factor, especially in women over 50.",
+    },
+    {
+      title: "Neurological conditions:",
+      description:
+        "Conditions affecting nerve supply to the pelvic floor, including spinal cord injuries, MS, and diabetic neuropathy, increase risk.",
+    },
+    {
+      title: "Previous pelvic surgery:",
+      description:
+        "Prior hysterectomy or other pelvic surgeries can weaken supporting structures.",
+    },
+    {
+      title: "Chronic cough/COPD:",
+      description:
+        "Persistent coughing increases intra-abdominal pressure, straining the pelvic floor over time.",
+    },
+  ],
+};
+
+const whenConsultData = {
+  heading: "Symptoms of Rectal Prolapse",
+  subheading:
+    "Recognize these warning signs and seek expert evaluation early for best outcomes.",
+  signs: [
+    "Tissue visibly protruding from the anus during or after bowel movements",
+    "Feeling of a lump or mass coming out of the rectum",
+    "Fecal incontinence — inability to control bowel movements",
+    "Mucus or bloody discharge from the rectum",
+    "Feeling of incomplete evacuation after bowel movements",
+    "Chronic constipation and excessive straining",
+    "Rectal pain or discomfort, especially when sitting",
+    "Need to manually push tissue back inside after passing stool",
+    "Rectal bleeding during or after bowel movements",
+    "Ulceration or skin irritation around the anal area",
+  ],
+};
+
+const treatmentOptionsData = {
+  heading: "Treatment Options for Rectal Prolapse",
+  subheading:
+    "From conservative management to advanced laparoscopic surgery — comprehensive care for every stage.",
+  options: [
+    {
+      icon: "heart",
+      title: "Conservative Management",
+      description:
+        "For early internal prolapse and mucosal prolapse. Includes high-fiber diet, stool softeners, pelvic floor physiotherapy, biofeedback training, and avoiding straining. Effective for mild symptoms and in patients unfit for surgery.",
+    },
+    {
+      icon: "clock",
+      title: "Laparoscopic Rectopexy (Keyhole Surgery)",
+      description:
+        "The gold standard for adult rectal prolapse. The rectum is mobilized and secured (fixed) to the sacrum through small keyhole incisions. Offers excellent cure rates (over 95%), preserves bowel function, minimal scarring, shorter hospital stay (2–3 days), and faster recovery compared to open surgery.",
+    },
+    {
+      icon: "zap",
+      title: "Ventral Mesh Rectopexy",
+      description:
+        "A modern laparoscopic technique where a mesh is placed on the front of the rectum and attached to the sacrum, lifting and supporting the rectum. Avoids nerve damage, preserves bowel function, and has excellent long-term results. Particularly effective for women with associated pelvic organ prolapse.",
+    },
+    {
+      icon: "wrench",
+      title: "Delorme's Procedure (Perineal Approach)",
+      description:
+        "A perineal (from below) approach where the excess mucosal lining is removed and the muscle wall is plicated (folded). Performed without abdominal incisions, ideal for elderly or high-risk patients who cannot tolerate abdominal surgery. Lower recurrence than Altemeier's procedure.",
+    },
+    {
+      icon: "hexagon",
+      title: "Altemeier's Procedure (Perineal Proctosigmoidectomy)",
+      description:
+        "A perineal procedure where the prolapsed rectum and sigmoid colon are removed from below and reconnected. Suitable for elderly patients with large prolapse and significant comorbidities. Can be performed under regional anesthesia.",
+    },
+    {
+      icon: "shield",
+      title: "STARR Procedure",
+      description:
+        "Stapled Transanal Rectal Resection — a minimally invasive technique for internal prolapse (intussusception) and obstructed defecation syndrome. Uses a circular stapler to remove the prolapsing tissue from inside, with no external incisions. Quick recovery and effective symptom relief.",
+    },
+  ],
+};
+
+const treatmentApproachData = {
+  heading: "Your Rectal Prolapse Treatment Journey",
+  subheading:
+    "A comprehensive, patient-centered approach from diagnosis through complete recovery.",
+  steps: [
+    {
+      title: "Specialist Consultation",
+      description:
+        "Detailed clinical examination including digital rectal exam, assessment of sphincter function, and evaluation of prolapse grade. We take time to understand your symptoms, history, and concerns.",
+    },
+    {
+      title: "Advanced Diagnostics",
+      description:
+        "Defecography (MRI or video), anorectal manometry to assess sphincter pressure, colonoscopy to rule out other pathology, and pelvic floor assessment to plan the optimal surgical approach.",
+    },
+    {
+      title: "Surgical Treatment",
+      description:
+        "Procedure tailored to your age, health status, and prolapse severity. Most patients receive laparoscopic rectopexy — small incisions, 1–3 day hospital stay, and excellent outcomes.",
+    },
+    {
+      title: "Recovery & Rehabilitation",
+      description:
+        "Post-operative pelvic floor rehabilitation, dietary guidance, follow-up appointments to monitor recovery, and long-term lifestyle recommendations to prevent recurrence.",
+    },
+  ],
+};
+
+const whyChooseData = {
+  heading: "Why Choose Chirag Hospitals for Rectal Prolapse Treatment",
+  subheading:
+    "Bangalore's most experienced colorectal team for complex rectal prolapse management.",
+  features: [
+    {
+      title: "30+ Years of Colorectal Expertise",
+      description:
+        "Dr. Rajasekhar M R and team have extensive experience in all surgical approaches for rectal prolapse, from laparoscopic rectopexy to perineal procedures.",
+    },
+    {
+      title: "Advanced Laparoscopic Surgery",
+      description:
+        "Keyhole surgery with minimal scarring, shorter hospital stay, and faster recovery — performed by high-volume laparoscopic colorectal surgeons.",
+    },
+    {
+      title: "Comprehensive Diagnostics",
+      description:
+        "In-house access to MRI defecography, anorectal manometry, and colonoscopy for accurate staging and treatment planning.",
+    },
+    {
+      title: "Individualized Treatment Plans",
+      description:
+        "No one-size-fits-all approach. Treatment is tailored to your age, overall health, prolapse stage, and presence of associated conditions like incontinence or constipation.",
+    },
+    {
+      title: "180K+ Patients Trusted Us",
+      description:
+        "With a 99.5% success rate across all colorectal conditions, families from across India trust Chirag Hospitals for expert care.",
+    },
+    {
+      title: "Affordable & Insurance-Friendly",
+      description:
+        "Insurance support, zero-interest EMI through GMoney, and transparent pricing with no hidden charges.",
+    },
+  ],
+};
+
+const risksOfDelayData = {
+  heading: "Risks of Delaying Rectal Prolapse Treatment",
+  intro:
+    "Rectal prolapse is progressive and will not improve without intervention. Delaying treatment leads to:",
+  image: "/rectalprolapse/risk delaying rectal prolapse.png",
+  imageAlt: "Risks of delaying rectal prolapse treatment",
+  risks: [
+    {
+      title: "Worsening incontinence:",
+      description:
+        "As the prolapse progresses, the anal sphincter muscles stretch further, leading to increasingly severe fecal incontinence that may become permanent even after surgical repair.",
+    },
+    {
+      title: "Strangulation and emergency:",
+      description:
+        "Prolapsed tissue can become trapped outside the anus (incarcerated), cutting off blood supply. This is a surgical emergency that requires immediate intervention.",
+    },
+    {
+      title: "Ulceration and bleeding:",
+      description:
+        "Chronically exposed rectal tissue develops ulcers (solitary rectal ulcer syndrome), causing persistent bleeding, discharge, and pain.",
+    },
+    {
+      title: "More complex surgery needed:",
+      description:
+        "Early-stage prolapse can often be managed with simpler, perineal approaches. Advanced prolapse requires more extensive abdominal surgery with longer recovery.",
+    },
+    {
+      title: "Severe quality of life impact:",
+      description:
+        "Fecal incontinence, constant discharge, and the psychological burden of prolapse lead to social isolation, depression, and avoidance of activities.",
+    },
+  ],
+};
+const doctorsSectionData = {
+  heading: "Our Top Doctors",
+
+  topDoctors: [
+    {
+      name: "Dr. Rajasekhar M R",
+      designation: "MBBS, MS General Surgeon",
+      qualification: "Chairman, Chief Colorectal Surgeon & Proctologist",
+      experience: "30+ Years",
+      reviews: "99%",
+      img: "/doctorchiragcard.avif",
+    },
+    {
+      name: "Dr. Shreedevi KN",
+      designation: "MBBS, MS General Surgery, FSGE (Surgical Gastroenterology)",
+      qualification: "Head Colorectal Surgery & Proctology",
+      experience: "12 Years",
+      reviews: "99%",
+      img: "/doctorshreedevicard.avif",
+    },
+    {
+      name: "Dr. Padmanabh R Bhat",
+      designation: "MBBS, MS(Gen Surgery),FRCS(Edin)",
+      qualification: "General Surgeon",
+      experience: "28 Years",
+      reviews: "99%",
+      img: "/doctorpadmanabhcard.avif",
+    },
+  ],
+
+  moreDoctors: [
+    {
+      name: "Dr.Jyotsna Vemulapalli",
+      designation: "MBBS MS General Surgery",
+      qualification: "Colorectal Surgeon & Proctologist",
+      experience: "4 Years",
+      reviews: "99%",
+      img: "/doctorjyotsnacard.avif",
+    },
+  ],
+
+  banner: {
+    heading: "Consult The Doctor Now",
+    points: [
+      "Experienced colorectal specialists",
+      "Modern laser treatment methods",
+      "Proven treatment outcomes",
+    ],
+    buttonText: "Book Appointment",
+    imageSrc: "/consultthedoctor.png",
+  },
+};
+const defaultLocationHeading =
+  "Chirag Global Hospital - Best Colorectal Hospital in Bangalore";
+
+const treatmentCostDependsData = {
+  heading: "Treatment Cost Depends On",
+  items: [
+    {
+      titleBold: "Type of",
+      titleRest: "Procedure",
+      icon: "/typeofprocedure.png",
+    },
+    {
+      titleBold: "Severity of",
+      titleRest: "the Disease",
+      icon: "/severitydisease.png",
+    },
+    {
+      titleBold: "Past Medical",
+      titleRest: "Condition",
+      icon: "/pastmedical.png",
+    },
+    {
+      titleBold: "Contact",
+      titleRest: "for exact cost",
+      icon: "/contact.png",
+    },
+  ],
+  ctaText: "Chat with Our Expert",
+};
+const insuranceAdvisorData = {
+  cards: [
+    {
+      titlePrefix: "Easy",
+      titleHighlight: "Payment Options",
+      description:
+        "Enjoy hassle-free treatment and insurance support through GMoney, with zero processing fees and interest-free finance.",
+      image: "/checkinsurancecoverage.png",
+      imageAlt: "Insurance coverage illustration",
+      buttonText: "Check EMI Options",
+      ctaType: "modal",
+    },
+    {
+      titlePrefix: "Talk To",
+      titleHighlight: "Health Advisor",
+      description:
+        "Get clear guidance on treatment options, costs, and recovery process.",
+      image: "/talktohealthadvaiser.png",
+      imageAlt: "Health advisor illustration",
+      buttonText: "Call Our Advisors",
+      ctaType: "call",
+    },
+  ],
+};
+
+const InfoContent = {
+  theading: "Piles Treatment at Chirag Hospitals",
+  videoSrc: "/chirag-piles-video.mp4",
+
+  title: "What Are Piles or Hemorrhoids?",
+  description: `Piles, also called hemorrhoids, are swollen veins in the anal area that cause pain, bleeding, and discomfort. Medical treatment helps relieve symptoms and prevents complications.`,
+
+  points: [
+    "Internal Piles – Piles inside the rectum",
+    "External Piles – Piles outside the anus",
+    "Thrombosed Piles – Piles with blood clots",
+  ],
+};
+const InfoData = {
+  aboutTitle: "Symptoms of Piles",
+  aboutText:
+    "Piles commonly cause bleeding during bowel movements, pain, itching, swelling, or a lump around the anus that needs medical attention.",
+
+  advantagesTitle: "Treatment Options for Piles",
+  advantages: [
+    "Laser piles treatment",
+    "Lifestyle and dietary guidance",
+    "Advanced DGHAL procedure for piles",
+    "Ultrasonic shears excision for minimal pain and faster recovery",
+  ],
+
+  costTitle: "Why Laser Is Best Treatment",
+  costIntro: "Laser piles treatment is preferred because it offers:",
+  costPoints: [
+    "Minimally invasive procedure",
+    "Less pain and bleeding",
+    "Same-day discharge possible",
+    "Faster recovery time",
+  ],
+
+  expandedContent: [
+    "Laser piles treatment is a modern option for patients seeking effective relief with minimal discomfort and shorter recovery time.",
+    "Treatment plan and cost are decided after medical evaluation based on the severity and individual patient condition.",
+  ],
+};
+
+const BannerData = {
+  heading: "Get Relief from Pediatric Anal – Book Now",
+  buttonText: "Book An Appointment",
+  imageSrc: "/scheduleyourvisit.png",
+};
+
+const faqs = [
+  {
+    faqTitle: "What is the difference between hemorrhoids (piles) and rectal prolapse?",
+    faqAnswer:
+      "While both can cause a protrusion from the anus, they are different conditions. Hemorrhoids are swollen blood vessels in the anal canal, while rectal prolapse involves the actual rectal wall turning inside out. Rectal prolapse produces concentric circular folds of tissue, whereas prolapsed hemorrhoids appear as separate grape-like swellings. A specialist can distinguish between them through clinical examination.",
+  },
+  {
+    faqTitle: "Can rectal prolapse be cured without surgery?",
+    faqAnswer:
+      "Early internal prolapse (Stage 1) may improve with conservative measures including dietary changes, pelvic floor exercises, and biofeedback. However, external rectal prolapse (Stages 2-3) requires surgical correction for lasting relief. Conservative measures alone cannot fix a full-thickness prolapse, though they play an important role in post-surgical recovery.",
+  },
+  {
+    faqTitle: "What is laparoscopic rectopexy and why is it preferred?",
+    faqAnswer:
+      "Laparoscopic rectopexy is a keyhole surgery where the rectum is mobilized and fixed (attached) to the sacrum through 3–4 small incisions (5–10mm each). It's preferred because it offers over 95% cure rate, preserves bowel and sexual function, causes less pain than open surgery, requires a shorter hospital stay (2–3 days), and allows faster return to normal activities (2–3 weeks).",
+  },
+  {
+    faqTitle: "How long does recovery take after rectal prolapse surgery?",
+    faqAnswer:
+      "After laparoscopic rectopexy, most patients go home within 2–3 days. Return to light activities takes 1–2 weeks, and full recovery including return to heavy lifting takes 4–6 weeks. Perineal procedures often have shorter initial recovery. Your surgeon will provide specific guidelines based on your procedure.",
+  },
+  {
+    faqTitle: "Will I regain bowel control after rectal prolapse surgery?",
+    faqAnswer:
+      "Many patients experience significant improvement in bowel control after prolapse repair. When the prolapse is corrected, the anal sphincter muscles are no longer stretched and can regain tone. However, if incontinence has been present for a long time, full recovery may take several months and may benefit from pelvic floor physiotherapy. This is why early treatment is important.",
+  },
+  {
+    faqTitle: "Can rectal prolapse come back after surgery?",
+    faqAnswer:
+      "Recurrence rates vary by procedure. Laparoscopic rectopexy has a recurrence rate of 2–5%, while perineal procedures have higher rates (10–20%). Following post-operative dietary advice, performing pelvic floor exercises, avoiding straining, and maintaining a healthy weight all help prevent recurrence.",
+  },
+  {
+    faqTitle: "Is rectal prolapse common in women?",
+    faqAnswer:
+      "Yes, rectal prolapse is approximately 6 times more common in women than men, particularly after age 50. Multiple vaginal deliveries, hormonal changes after menopause, and associated pelvic organ prolapse (bladder, uterus) are contributing factors. Women may also have concurrent rectocele or cystocele that can be addressed simultaneously.",
+  },
+  {
+    faqTitle: "How much does rectal prolapse treatment cost at Chirag Hospitals?",
+    faqAnswer:
+      "Treatment costs depend on the procedure type and complexity. Interest-free EMI options through GMoney, and transparent pricing. Contact our health advisors at 08065916415 for a detailed cost estimate based on your specific condition.",
+  },
+];
+
+const finalFaqs = pageContent?.faqs ?? faqs;
+
+const testimonialSectionData = {
+  testimonials: [
+    {
+      // title: "Laser treatment for my dad's piles",
+      text: "I visited this hospital for rectal prolapse treatment and received excellent care. The doctor explained my condition clearly and guided me through the treatment options. The procedure went smoothly, and my recovery has been very comfortable.",
+      name: "Ramesh K.",
+      rating: 5,
+    },
+    {
+      // title: "Smooth and painless",
+      text: "Very thankful to Dr. Rajashekar and the staff for their support during my rectal prolapse treatment. I was nervous in the beginning, but the team handled everything professionally and made me feel at ease. The results have been very good.",
+      name: "Lakshmi P.",
+      rating: 5,
+    },
+    {
+      // title: "Colorectal Diseases",
+      text: "Highly recommend this hospital for rectal prolapse treatment. The specialists were experienced, the facilities were clean, and the entire process was well organized. I also appreciated the follow-up care after treatment.",
+      name: "Suresh M.",
+      rating: 5,
+    },
+    {
+      // title: "Admitted for my fistula surgery",
+      text: "I had a positive experience here for rectal prolapse treatment. Dr. Rajashekar was patient, answered all my questions, and gave me confidence before the procedure. Recovery was smooth, and I’m feeling much better now.",
+      name: "Anitha R.",
+      rating: 5,
+    },
+  ],
+  ctaText: "Google Reviews",
+  ctaLink:
+    "https://www.google.com/maps/place/Chirag+Global+Hospital/@12.9059178,77.6037368,17z/data=!4m8!3m7!1s0x3bae150e6550b135:0xa07798be317297a5!8m2!3d12.9059178!4d77.6037368!9m1!1b1!16s%2Fg%2F11q4j4m7pw?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA2OUgBUAM%3D",
+};
+---
+
+<BaseLayout
+  title="Piles Treatment in Bangalore | Laser Piles Surgery | Chirag Hospitals"
+  description="Get advanced laser treatment for piles in Bangalore at Chirag Hospitals. Experienced specialists, minimal pain procedure, fast recovery, EMI options available.">
+<main>
+
+<>
+  <Header
+    PhoneNumber={finalPhone}
+    mobilectatext={"Call Now"}
+    mobileNumberHeader={finalPhoneTel}
+  />
+  <div class="w-full max-w-[1500px] mx-auto px-4 py-8">
+    {/* 2-Column Layout */}
+    <div class="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
+      {/* LEFT SIDE 70% */}
+      <div class="space-y-10">
+        <Hero {...finalHeroData} />
+        <Number {...statsSectionData} />
+        <WhatIsPediatric {...whatIsPediatricData} />
+        <StagesOfRectalProlapse {...stagesData} />
+        <CausesRiskFactors {...causesRiskFactorsData} />
+        <WhenConsult {...whenConsultData} />
+        <Doctors {...doctorsSectionData} />
+        <TreatmentOptions {...treatmentOptionsData} />
+        <CostDepends
+          heading={treatmentCostDependsData.heading}
+          items={treatmentCostDependsData.items}
+          ctaText={treatmentCostDependsData.ctaText}
+        />
+        <InsurenceAdvisor {...insuranceAdvisorData} />
+        <TreatmentApproach {...treatmentApproachData} />
+        <RisksOfDelayPediatric {...risksOfDelayData} />
+        <WhyChoosePediatric {...whyChooseData} />
+        {/* <Cost
+        title={costSectionData.title}
+        points={costSectionData.points}
+        buttonText={costSectionData.buttonText}
+        imageSrc={costSectionData.imageSrc}
+      /> */}
+        <HospitalLocation locationsectionheading={defaultLocationHeading} />
+        {/* <CtaBanner {...BannerData} /> */}
+        {finalFaqs.length > 0 && (
+          <Faqs
+            className="md:!w-[95%] w-full mx-[unset]"
+            // fheading={fheading}
+            faqs={finalFaqs.map((faq) => ({
+              faqquestion: faq.faqTitle,
+              faqanswer: faq.faqAnswer,
+            }))}
+          />
+        )}
+      </div>
+
+      {/* RIGHT SIDE 30% (Sticky Form) */}
+      <div class="relative">
+        {/* Desktop: sticky, Mobile: fixed bottom */}
+        <div class="hidden lg:block sticky top-24">
+          <Form reviewsData={testimonialSectionData} />
+        </div>
+        <div
+          class="block lg:hidden fixed bottom-0 left-0 w-full z-50 bg-transparent   px-4 py-1"
+          style={{ maxWidth: "1500px", margin: "0 auto" }}
+        >
+          <Form reviewsData={testimonialSectionData} />
+        </div>
+      </div>
+    </div>
+  </div>
+  <FooterComponent
+    footerdesc="About Chirag Global Hospitals"
+    extradesc="Providing trusted care with decades of experience in diagnosing and treating colorectal and digestive health conditions."
+    footernumber={finalPhone}
+  />
+</>
+  
+</main>
+</BaseLayout>

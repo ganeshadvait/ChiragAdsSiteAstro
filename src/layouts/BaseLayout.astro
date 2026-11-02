@@ -1,0 +1,91 @@
+---
+import "@fontsource/dm-sans/400.css";
+import "@fontsource/dm-sans/500.css";
+import "@fontsource/dm-sans/600.css";
+import "@fontsource/dm-sans/700.css";
+import "@/styles/globals.css";
+import FloatingLanguageSwitcher from "@/components/GoogleTranslate/GoogleTranslate.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Chirag Global Hospitals – Best Colon & Colorectal Care for Piles, Fistula & Colon Cancer",
+  description = "Chirag Global Hospitals offers 30+ years of expert Colorectal care for piles, fistula, fissure, constipation and colon/rectal disorders. Advanced laser treatments, experienced surgeons and personalized care ensure effective & affordable solutions.",
+} = Astro.props;
+
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <script is:inline>
+      // Mark the active language on <html> before first paint so CSS
+      // can style translated pages (html[data-lang="kn"|"hi"]).
+      try {
+        var lang = "en";
+        document.cookie.split("; ").forEach(function (c) {
+          if (c.indexOf("googtrans=") === 0) {
+            var parts = c.split("=")[1].split("/");
+            if (parts[2]) lang = parts[2];
+          }
+        });
+        document.documentElement.setAttribute("data-lang", lang);
+      } catch (e) {}
+      window.googleTranslateElementInit = function () {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: "en",
+            includedLanguages: "en,kn,hi",
+            autoDisplay: false,
+            layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+          },
+          "google_translate_element",
+        );
+      };
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script is:inline>
+      window.addEventListener("load", function () {
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != "dataLayer" ? "&l=" + l : "";
+          j.async = true;
+          j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, "script", "dataLayer", "GTM-WFRRMC43");
+      });
+    </script>
+  </head>
+  <body class="antialiased">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-WFRRMC43"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"></iframe>
+    </noscript>
+
+    <slot />
+    <FloatingLanguageSwitcher />
+  </body>
+</html>
+
+<style is:global>
+  body {
+    --font-dmsans: "DM Sans", sans-serif;
+  }
+</style>

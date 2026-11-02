@@ -1,0 +1,521 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/header/header.astro";
+import Hero from "@/components/partials/hero/hero.astro";
+import Number from "@/components/partials/number/number.astro";
+import RisksOfDelayPediatric from "@/components/partials/risksofdelaypediatric/risksofdelaypediatric.astro";
+import Doctors from "@/components/partials/doctors/doctors.astro";
+import CostDepends from "@/components/partials/costdepends/costdepends.astro";
+import InsurenceAdvisor from "@/components/partials/insurenceadvisor/insurenceadvisor.astro";
+import WhyChoosePediatric from "@/components/partials/whychoosepediatric/whychoosepediatric.astro";
+import WhenConsult from "@/components/partials/whenconsult/whenconsult.astro";
+import TreatmentOptions from "@/components/partials/treatmentoptions/treatmentoptions.astro";
+import WhyLaserBest from "@/components/partials/whylaserbest/whylaserbest.astro";
+import CtaBanner from "@/components/partials/ctabanner/ctabanner.astro";
+import Faqs from "@/components/faqs/faq.astro";
+import Form from "@/components/partials/form/from.astro";
+import HospitalLocation from "@/components/HospitalLocation/hospitallocations.astro";
+import FooterComponent from "@/components/footer/footer.astro";
+
+import HospitalComparisond from "@/components/dynamictable/dynamictables.astro";
+
+const finalPhone = "08065916415";
+const finalPhoneTel = `tel:${finalPhone}`;
+
+const finalHeroData = {
+  heading: "Best Fissure Treatment in Bangalore",
+  points: [
+    "Experienced colorectal specialists",
+    "Painless laser & advanced treatments",
+    "Same-day consultation & diagnosis",
+    "Personalized treatment for quick relief",
+    "Non-surgical options available",
+  ],
+  buttonText: "Book Appointment",
+  imageSrc: "/chiragheroimage.png",
+};
+
+const statsSectionData = {
+  heading: "Trusted by Patients\nWorldwide",
+  description:
+    "Patients receive safe treatment, quick discharge, shorter hospital stays, and faster recovery with continuous medical care and support.",
+  stats: [
+    {
+      value: "24 hr",
+      label: "Same-Day Discharge",
+    },
+    {
+      value: "180K+",
+      label: "Patient Treated",
+    },
+    {
+      value: "3-7 Days",
+      label: "Recovery Time",
+    },
+    {
+      value: "98%+",
+      label: "Success Rate",
+    },
+  ],
+};
+
+const risksOfDelayData = {
+  heading: "Risks of Delaying Fissure Treatment",
+  intro:
+    "",
+  image: "/fissures/fissure risks.png",
+  imageAlt: "Risks of delaying Fissure treatment",
+  risks: [
+    {
+      title: "Severe & Persistent Pain",
+      description:
+        "Anal fissures cause sharp, tearing pain during & after bowel movements, often worsening with time and affecting quality of life.",
+    },
+    {
+      title: "Chronic Muscle Spasm",
+      description:
+        "The internal anal sphincter becomes hyperactive, maintaining tension and preventing natural healing, prolonging discomfort.",
+    },
+    {
+      title: "Difficulty with Bowel Movements",
+      description:
+        "Fear of pain may lead to constipation & straining, which further irritates the fissure and delays healing.",
+    },
+    {
+      title: "Risk of Infection or Bleeding",
+      description:
+        "Open anal fissures can bleed or become infected if untreated, requiring more intensive care and higher risk of complications.",
+    },
+    {
+      title: "Reduced Mobility & Sleep",
+      description:
+        "Constant pain and discomfort affect sitting, daily activities, sleep quality, and overall well-being and work productivity.",
+    },
+  ],
+};
+
+// const costSectionData = {
+//   title: "Check Surgery Cost",
+//   points: [
+//     "Find the total cost of Surgery at the best hospitals.",
+//     "Compare surgery prices across top hospitals.",
+//     "Get a clear estimate before visiting the hospital.",
+//   ],
+//   buttonText: "Calculate Surgery Cost",
+//   imageSrc: "/chiraggpt.png",
+// };
+const doctorsSectionData = {
+  heading: "Our Top Doctors",
+
+  topDoctors: [
+    {
+      name: "Dr. Rajasekhar M R",
+      designation: "MBBS, MS General Surgeon",
+      qualification: "Chairman, Chief Colorectal Surgeon & Proctologist",
+      experience: "30+ Years",
+      reviews: "99%",
+      img: "/doctorchiragcard.avif",
+    },
+    {
+      name: "Dr. Shreedevi KN",
+      designation: "MBBS, MS General Surgery, FSGE (Surgical Gastroenterology )",
+      qualification: "Head Colorectal Surgery & Proctology",
+      experience: "12 Years",
+      reviews: "99%",
+      img: "/doctorshreedevicard.avif",
+    },
+    {
+      name: "Dr. Padmanabh R Bhat",
+      designation: "MBBS, MS(Gen Surgery),FRCS(Edin)",
+      qualification: "General Surgeon",
+      experience: "28 Years",
+      reviews: "99%",
+      img: "/doctorpadmanabhcard.avif",
+    },
+  ],
+
+  moreDoctors: [
+    {
+      name: "Dr.Jyotsna Vemulapalli",
+      designation: "MBBS MS General Surgery",
+      qualification: "Colorectal Surgeon & Proctologist",
+      experience: "4 Years",
+      reviews: "99%",
+      img: "/doctorjyotsnacard.avif",
+    },
+  ],
+
+  banner: {
+    heading: "Consult The Doctor Now",
+    points: [
+      "Experienced colorectal specialists",
+      "Modern laser treatment methods",
+      "Proven treatment outcomes",
+    ],
+    buttonText: "Book Appointment",
+    imageSrc: "/consultthedoctor.png",
+  },
+};
+const defaultLocationHeading =
+  "Chirag Global Hospital - Best Colorectal Hospital in Bangalore";
+
+const treatmentCostDependsData = {
+  heading: "Treatment Cost Depends On",
+  items: [
+    {
+      titleBold: "Type of",
+      titleRest: "Procedure",
+      icon: "/typeofprocedure.png",
+    },
+    {
+      titleBold: "Severity of",
+      titleRest: "the Disease",
+      icon: "/severitydisease.png",
+    },
+    {
+      titleBold: "Past Medical",
+      titleRest: "Condition",
+      icon: "/pastmedical.png",
+    },
+    {
+      titleBold: "Contact",
+      titleRest: "for exact cost",
+      icon: "/contact.png",
+    },
+  ],
+  ctaText: "Chat with Our Expert",
+};
+const insuranceAdvisorData = {
+  cards: [
+    {
+      titlePrefix: "Easy",
+      titleHighlight: "EMI Options",
+      description:
+        "Hassle-free treatment with zero processing fees and interest-free financing through GMoney",
+      image: "/checkinsurancecoverage.png",
+      imageAlt: "Insurance coverage illustration",
+      buttonText: "Check EMI Options",
+      ctaType: "modal",
+    },
+    {
+      titlePrefix: "Health",
+      titleHighlight: "Advisor Support",
+      description:
+        "Get clear guidance on treatment options, costs, recovery timeline, and what to expect",
+      image: "/talktohealthadvaiser.png",
+      imageAlt: "Health advisor illustration",
+      buttonText: "Call Our Advisors",
+      ctaType: "call",
+    },
+  ],
+};
+
+ const whyChooseData = {
+  heading: "Why Choose Chirag Hospitals for Fissure Treatment",
+  subheading:
+    "",
+  features: [
+    {
+      title: "30+ Years in Colorectal & Proctology Care",
+      description:
+        "Our specialized team treats all grades of anal fissures—acute, chronic, complex, and recurrent—with proven expertise and successful outcomes.",
+    },
+    {
+      title: "Advanced Laser & Botox Treatment Options",
+      description:
+        "We offer cutting-edge laser fissure treatment and Botox injections, minimizing pain and ensuring faster, more comfortable healing.",
+    },
+    {
+      title: "Complete Evaluation & Diagnosis",
+      description:
+        "Every patient undergoes thorough examination to understand fissure grade, location, and sphincter tone, guiding precise treatment selection.",
+    },
+    {
+      title: "Personalized Treatment Plans",
+      description:
+        "Whether acute or chronic, internal or external, we tailor treatment based on symptoms, sphincter function, and patient preference for minimal or surgical options.",
+    },
+    {
+      title: "Compassionate Proctology Care",
+      description:
+        "Fissure treatment requires specialized care. We provide safe, dignified treatment in a supportive clinical environment with proper pre- and post-care guidance.",
+    },
+    {
+      title: "Transparent Pricing & Flexible EMI",
+      description:
+        "Clear cost breakdowns and interest-free EMI options make fissure treatment accessible, with no hidden charges or surprise bills.",
+    },
+  ],
+};
+const whenConsultData = {
+  heading: "Symptoms of Anal Fissures",
+  subheading:
+    "",
+  signs: [
+    "Sharp, Tearing Pain During Bowel Movements",
+    "Burning Sensation After Defecation",
+    "Visible Tear or Crack in the Anal Area",
+    "Bleeding During or After Bowel Movements",
+    "Itching or Irritation Around the Anus",
+    "Muscle Spasm & Tension in the Anal Area",
+  ],
+};
+
+const treatmentOptionsData = {
+  heading: "Treatment Options for Fissures ",
+  subheading:
+    "",
+  options: [
+    {
+      icon: "zap",
+      title: "Conservative Management",
+      description:
+        "High-fibre diet, stool softeners, adequate water, warm sitz baths, and topical anesthetics to reduce pain and promote natural healing.",
+    },
+    {
+      icon: "wrench",
+      title: "Topical Medications",
+      description:
+        "Nitroglycerin, diltiazem, or lidocaine creams help relax the anal sphincter, reduce spasm, and ease pain while healing progresses.",
+    },
+    {
+      icon: "shield",
+      title: "Botulinum Toxin (Botox) Injection",
+      description:
+        "Relaxes the anal sphincter to reduce spasm and pain, allowing fissures to heal naturally without surgery.",
+    },
+    {
+      icon: "filetext",
+      title: "Laser Fissure Treatment",
+      description:
+        "Minimally invasive laser procedure to relax the sphincter and promote healing with minimal tissue damage and faster recovery.",
+    },
+    {
+      icon: "hexagon",
+      title: "Lateral Internal Sphincterotomy (LIS)",
+      description:
+        "Surgical procedure that carefully cuts the internal anal sphincter to reduce spasm, tension, and pain for lasting relief.",
+    },
+    {
+      icon: "smile",
+      title: "Advanced Fissurectomy",
+      description:
+        "Surgical removal of chronic fissure tissue combined with sphincter relaxation for complete, long-term resolution.",
+    },
+  ],
+};
+
+const whyLaserBestData = {
+  heading: "Why Laser is the Best Treatment for Fissures ",
+  subheading:
+    "",
+  image: "",
+  imageAlt: "",
+  points: [
+    {
+      title: "Painless & Precise",
+      description:
+        "Laser energy targets the fissure without cutting healthy tissue, reducing post-procedure pain significantly",
+    },
+    {
+      title: "Relieves Sphincter Spasm",
+      description:
+        "Laser heat helps relax the anal sphincter, addressing the root cause of fissure pain",
+    },
+    {
+      title: "Faster Healing",
+      description:
+        "Promotes tissue regeneration and blood flow, allowing fissures to heal in days instead of weeks",
+    },
+    {
+      title: "Minimal Recovery Time",
+      description:
+        "Most patients resume normal activities within 3-7 days with minimal restrictions",
+    },
+    {
+      title: "Lower Recurrence Rate",
+      description:
+        "Effective sphincter relaxation reduces the risk of fissure recurrence compared to other methods",
+    },
+    {
+      title: "No Stitches or Dressing Changes",
+      description:
+        "Wound-free procedure means no dressing maintenance or infection risk",
+    },
+  ],
+};
+
+
+const InfoContent = {
+  theading: "Piles Treatment at Chirag Hospitals",
+  videoSrc: "/chirag-piles-video.mp4",
+  
+
+  title: "What Are Piles or Hemorrhoids?",
+  description: `Piles, also called hemorrhoids, are swollen veins in the anal area that cause pain, bleeding, and discomfort. Medical treatment helps relieve symptoms and prevents complications.`,
+
+  points: [
+    "Internal Piles – Piles inside the rectum",
+    "External Piles – Piles outside the anus",
+    "Thrombosed Piles – Piles with blood clots",
+  ],
+};
+
+
+const BannerData = {
+  heading: "Get Relief from Fissures – Book Now",
+  buttonText: "Book An Appointment",
+  imageSrc: "/scheduleyourvisit.png",
+};
+
+const faqs = [
+  {
+    faqTitle: "What causes anal fissures?",
+    faqAnswer:
+      "Fissures result from tight anal sphincter, constipation, straining, childbirth, or repeated trauma during bowel movements.",
+  },
+  {
+    faqTitle: "Is fissure treatment painful?",
+    faqAnswer:
+      "Modern treatments like laser and Botox are nearly painless, with minimal discomfort compared to the fissure pain itself.",
+  },
+  {
+    faqTitle: "How long does fissure treatment take?",
+    faqAnswer:
+      "Laser treatment takes 15-20 minutes. Conservative treatment may take 4-6 weeks for healing.",
+  },
+  {
+    faqTitle: "Can fissures heal on their own?",
+    faqAnswer:
+      "Some acute fissures heal with conservative care, but chronic fissures often need medical intervention.",
+  },
+  {
+    faqTitle: "What's the success rate of laser treatment?",
+    faqAnswer:
+      "Laser fissure treatment has a 95%+ success rate with minimal recurrence when combined with proper sphincter relaxation.",
+  },
+  {
+    faqTitle: "When should I see a doctor?",
+    faqAnswer:
+      "Consult immediately if pain is severe, persists beyond 2 weeks, or bleeding is frequent.",
+  },
+];
+
+const finalFaqs = faqs;
+
+const testimonialSectionData = {
+  testimonials: [
+    {
+      // title: "Laser treatment for my dad's piles",
+      text: "I consulted Dr. Rajashekar at Chirag Hospital for fissure treatment. He explained my condition clearly and guided me through the treatment process. The care and support provided by the doctor and hospital team made my experience comfortable.",
+      name: "Ananya Rao",
+      rating: 5,
+    },
+    {
+      // title: "Smooth and painless",
+      text: "I was suffering from fissure-related pain and discomfort for some time before consulting Dr. Rajashekar. He patiently listened to my concerns and explained the treatment options. The overall experience at Chirag Hospital was smooth and reassuring.",
+      name: "Rahul Nair",
+      rating: 5,
+    },
+    {
+      // title: "Colorectal Diseases",
+      text: "I visited Chirag Hospital for fissure treatment and consulted Dr. Rajashekar. He provided clear guidance and answered all my questions patiently. I appreciate the professional care and support I received during my treatment.",
+      name: "Priya Shetty",
+      rating: 5,
+    },
+    {
+      // title: "Admitted for my fistula surgery",
+      text: "Dr. Rajashekar is approachable and explains medical concerns in a simple way. My fissure treatment experience at Chirag Hospital was well managed, and the staff was helpful throughout my visits.",
+      name: "Karthik Gowda",
+      rating: 5,
+    },
+    {
+      // title: "Admitted for my fistula surgery",
+      text: "I consulted Dr. Rajashekar for my fissure problem. The doctor diagnosed my condition properly and explained the next steps clearly. I am thankful for the care and attention provided by the team at Chirag Hospital.",
+      name: "Sneha Kulkarni",
+      rating: 5,
+    },
+    {
+      // title: "Admitted for my fistula surgery",
+      text: "I had a good experience at Chirag Hospital for fissure treatment. Dr. Rajashekar guided me throughout the process and explained the recovery steps properly. The hospital staff was supportive and professional.",
+      name: "Arjun Menon",
+      rating: 5,
+    },
+  ],
+  ctaText: "Google Reviews",
+  ctaLink:
+    "https://www.google.com/maps/place/Chirag+Global+Hospital/@12.9059178,77.6037368,17z/data=!4m8!3m7!1s0x3bae150e6550b135:0xa07798be317297a5!8m2!3d12.9059178!4d77.6037368!9m1!1b1!16s%2Fg%2F11q4j4m7pw?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA2OUgBUAM%3D",
+};
+---
+
+<BaseLayout>
+
+<>
+  <Header
+    PhoneNumber={finalPhone}
+    mobilectatext={"Call Now"}
+    mobileNumberHeader={finalPhoneTel}
+  />
+  <div class="w-full max-w-[1500px] mx-auto px-4 py-8">
+    {/* 2-Column Layout */}
+    <div class="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
+      {/* LEFT SIDE 70% */}
+      <div class="space-y-10">
+        <Hero {...finalHeroData} />
+        <Number {...statsSectionData} />
+        {/* <Cost
+        title={costSectionData.title}
+        points={costSectionData.points}
+        buttonText={costSectionData.buttonText}
+        imageSrc={costSectionData.imageSrc}
+      /> */}
+        <RisksOfDelayPediatric {...risksOfDelayData} />
+        <Doctors {...doctorsSectionData} />
+        <HospitalLocation locationsectionheading={defaultLocationHeading} />
+        <CostDepends
+          heading={treatmentCostDependsData.heading}
+          items={treatmentCostDependsData.items}
+          ctaText={treatmentCostDependsData.ctaText}
+        />
+        <InsurenceAdvisor {...insuranceAdvisorData} />
+        <WhenConsult {...whenConsultData} />
+        <TreatmentOptions {...treatmentOptionsData} />
+        <WhyLaserBest {...whyLaserBestData} />
+        {/* <HospitalComparisond {...InfoContent} /> */}
+        <WhyChoosePediatric {...whyChooseData} />
+        <CtaBanner {...BannerData} />
+        {finalFaqs.length > 0 && (
+          <Faqs
+            className="md:!w-[95%] w-full mx-[unset]"
+            // fheading={fheading}
+            faqs={finalFaqs.map((faq) => ({
+              faqquestion: faq.faqTitle,
+              faqanswer: faq.faqAnswer,
+            }))}
+          />
+        )}
+      </div>
+
+      {/* RIGHT SIDE 30% (Sticky Form) */}
+      <div class="relative">
+        {/* Desktop: sticky, Mobile: fixed bottom */}
+        <div class="hidden lg:block sticky top-24">
+          <Form reviewsData={testimonialSectionData} />
+        </div>
+        <div
+          class="block lg:hidden fixed bottom-0 left-0 w-full z-50 bg-transparent   px-4 py-1"
+          style={{ maxWidth: "1500px", margin: "0 auto" }}
+        >
+          <Form reviewsData={testimonialSectionData} />
+        </div>
+      </div>
+    </div>
+  </div>
+  <FooterComponent
+    footerdesc="About Chirag Global Hospitals"
+    extradesc="Providing trusted care with decades of experience in diagnosing and treating colorectal and digestive health conditions."
+    footernumber={finalPhone}
+  />
+</>
+  
+</BaseLayout>

@@ -1,0 +1,268 @@
+---
+// Floating language switcher. Hidden in the server HTML (the React island
+// rendered nothing until mounted); the script reveals it once the browser is idle.
+const languages = [
+  { code: "en", label: "English", native: "EN", script: "Aa" },
+  { code: "kn", label: "ಕನ್ನಡ", native: "Kannada", script: "ಕ" },
+  { code: "hi", label: "हिंदी", native: "Hindi", script: "हि" },
+];
+---
+
+<div data-lang-switcher hidden class="fixed bottom-7 left-7 z-[9999] font-[var(--font-dmsans)] max-md:bottom-[115px] max-md:left-4">
+  {/* Hidden Google Translate element */}
+  <div id="google_translate_element" class="hidden"></div>
+
+  {/* ── Floating Button ── */}
+  <button
+    data-lang-toggle
+    class="group relative flex items-center gap-2.5 py-3 pl-4 pr-5 rounded-full border-[1.5px] font-semibold text-sm cursor-pointer overflow-hidden select-none transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] shadow-[0_2px_12px_rgba(0,0,0,0.06),0_8px_32px_rgba(0,0,0,0.04)] hover:-translate-y-[3px] hover:shadow-[0_4px_20px_rgba(98,85,135,0.18),0_12px_40px_rgba(98,85,135,0.08)] hover:border-violet-300 active:-translate-y-[1px] max-md:py-2.5 max-md:pl-3 max-md:pr-4 max-md:text-[13px] max-md:gap-2 max-md:shadow-[0_2px_16px_rgba(0,0,0,0.1)] [-webkit-tap-highlight-color:transparent] bg-white border-slate-200 text-slate-800"
+    aria-label="Change language"
+  >
+    {/* Hover gradient overlay */}
+    <span data-lang-overlay class="absolute inset-0 rounded-full bg-gradient-to-br from-[#625587] to-violet-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
+
+    {/* Pulse ring animation */}
+    <span class="absolute -inset-1 rounded-full border-2 border-violet-300 opacity-0 pointer-events-none -z-10 animate-[lswPulse_2s_ease-out_1s_2]"></span>
+
+    {/* Globe icon */}
+    <span class="relative z-10 w-[22px] h-[22px] shrink-0 transition-colors duration-300 max-md:w-[19px] max-md:h-[19px]">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M2 12h20"></path>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"></path>
+      </svg>
+    </span>
+
+    {/* Label */}
+    <span data-lang-label class="relative z-10 whitespace-nowrap transition-colors duration-300">{languages[0].label}</span>
+
+    {/* Arrow */}
+    <span class="relative z-10 flex items-center transition-all duration-300">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </span>
+  </button>
+
+  {/* ── Panel ── */}
+  <div data-lang-panel hidden class="absolute bottom-[calc(100%+14px)] left-0 bg-white/95 backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)] rounded-[20px] min-w-[260px] overflow-hidden border border-white/60 shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_8px_16px_rgba(0,0,0,0.06),0_20px_60px_rgba(98,85,135,0.12)] origin-bottom-left animate-[lswPanelIn_0.28s_cubic-bezier(0.32,0.72,0,1)] max-md:min-w-[240px] max-md:rounded-[18px]">
+    {/* Gradient bar */}
+    <div class="h-[3px] bg-gradient-to-r from-[#625587] via-violet-500 to-[#F8B956] rounded-t-[3px]"></div>
+
+    {/* Header */}
+    <div class="flex items-center gap-2 px-5 pt-4 pb-2 text-[11.5px] font-bold text-[#625587] uppercase tracking-[1px]">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#625587" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M2 12h20"></path>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"></path>
+      </svg>
+      <span>Choose Language</span>
+    </div>
+
+    {/* Options (active styling is applied by the script) */}
+    <div class="flex flex-col gap-0.5 p-1.5 px-2">
+      {languages.map((lang) => (
+        <button
+          data-lang-option={lang.code}
+          data-label={lang.label}
+          class="flex items-center justify-between w-full py-3 px-3.5 border-2 rounded-[14px] cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] select-none [-webkit-tap-highlight-color:transparent] max-md:py-2.5 max-md:px-3 bg-transparent border-transparent hover:bg-violet-50 hover:border-violet-100 active:bg-violet-50"
+        >
+          <div class="flex items-center gap-3.5">
+            {/* Script badge */}
+            <span data-lang-badge class="flex items-center justify-center w-[42px] h-[42px] rounded-xl text-white text-[17px] font-bold shrink-0 max-md:w-[38px] max-md:h-[38px] max-md:text-[15px] max-md:rounded-[10px] bg-gradient-to-br from-[#625587] to-[#7c6b9e] shadow-[0_2px_8px_rgba(98,85,135,0.25)]">{lang.script}</span>
+
+            <div class="flex flex-col items-start gap-px">
+              <span class="text-[15px] font-semibold text-slate-800 leading-tight max-md:text-sm">{lang.label}</span>
+              <span class="text-xs text-slate-400 font-medium">{lang.native}</span>
+            </div>
+          </div>
+
+          {/* Check */}
+          <span data-lang-check hidden class="flex items-center justify-center w-[26px] h-[26px] rounded-full bg-[#625587] text-white shrink-0 animate-[lswCheckPop_0.3s_cubic-bezier(0.34,1.56,0.64,1)]">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </span>
+        </button>
+      ))}
+    </div>
+
+    {/* Footer */}
+    <div class="py-2.5 px-5 pb-3.5 text-[10.5px] text-slate-300 text-center tracking-wide">Powered by Google Translate</div>
+  </div>
+</div>
+
+<script>
+  const SUPPORTED = ["en", "kn", "hi"];
+  const STORAGE_KEY = "chirag-lang";
+
+  // Save language preference (localStorage as primary, cookie as fallback)
+  function saveLangPreference(code: string) {
+    try {
+      localStorage.setItem(STORAGE_KEY, code);
+    } catch {
+      // localStorage blocked (iOS private browsing) — use cookie
+    }
+    document.cookie = `${STORAGE_KEY}=${code};path=/;max-age=31536000;SameSite=Lax`;
+  }
+
+  // Read saved language preference
+  function getSavedLang() {
+    try {
+      const ls = localStorage.getItem(STORAGE_KEY);
+      if (ls && SUPPORTED.includes(ls)) return ls;
+    } catch {
+      // localStorage blocked
+    }
+    const match = document.cookie.match(new RegExp(`${STORAGE_KEY}=(\\w+)`));
+    if (match?.[1] && SUPPORTED.includes(match[1])) return match[1];
+    return "en";
+  }
+
+  // Every domain scope a googtrans cookie could have been written on.
+  // Google's own widget writes it on the registrable domain (".example.com"),
+  // which is NOT cleared by only targeting the current hostname.
+  function cookieDomains() {
+    const host = window.location.hostname;
+    const domains: (string | null)[] = [null]; // host-only cookie (no domain attribute)
+    // Skip domain-scoped cookies for localhost / raw IPs — browsers reject them.
+    if (host === "localhost" || /^[\d.]+$/.test(host) || host.includes(":")) {
+      return domains;
+    }
+    const parts = host.split(".");
+    for (let i = 0; i < parts.length - 1; i++) {
+      const d = parts.slice(i).join(".");
+      domains.push(d, `.${d}`);
+    }
+    return domains;
+  }
+
+  // Clear Google Translate's googtrans cookie on every host/domain variant
+  function clearGoogTransCookie() {
+    const expired = "expires=Thu, 01 Jan 1970 00:00:00 UTC";
+    for (const domain of cookieDomains()) {
+      document.cookie = `googtrans=; ${expired}; path=/;${domain ? ` domain=${domain};` : ""}`;
+    }
+  }
+
+  // Persist the chosen language in googtrans so it survives navigations / reloads.
+  function setGoogTransCookie(langCode: string) {
+    clearGoogTransCookie();
+    if (langCode !== "en") {
+      const value = `/en/${langCode}`;
+      for (const domain of cookieDomains()) {
+        document.cookie = `googtrans=${value}; path=/;${domain ? ` domain=${domain};` : ""}`;
+      }
+    }
+  }
+
+  // Every switch goes through the cookie + a reload: Google Translate can't
+  // cleanly revert or re-translate an already-translated page.
+  function applyGoogleTranslate(langCode: string) {
+    setGoogTransCookie(langCode);
+    window.location.reload();
+  }
+
+  const cookieLang = () => document.cookie.match(/googtrans=\/[^/]*\/(\w+)/)?.[1] || "en";
+
+  const BTN_OPEN = ["bg-gradient-to-br", "from-[#625587]", "to-violet-500", "border-violet-300", "text-white"];
+  const BTN_CLOSED = ["bg-white", "border-slate-200", "text-slate-800"];
+  const OPT_ACTIVE = ["bg-gradient-to-br", "from-violet-50", "to-violet-100", "border-violet-300"];
+  const OPT_INACTIVE = ["bg-transparent", "border-transparent", "hover:bg-violet-50", "hover:border-violet-100", "active:bg-violet-50"];
+  const BADGE_ACTIVE = ["from-violet-500", "to-violet-400", "shadow-[0_4px_14px_rgba(139,92,246,0.35)]"];
+  const BADGE_INACTIVE = ["from-[#625587]", "to-[#7c6b9e]", "shadow-[0_2px_8px_rgba(98,85,135,0.25)]"];
+
+  function swap(el: Element, on: string[], off: string[]) {
+    el.classList.remove(...off);
+    el.classList.add(...on);
+  }
+
+  function init(root: HTMLElement) {
+    const toggle = root.querySelector<HTMLButtonElement>("[data-lang-toggle]")!;
+    const overlay = root.querySelector<HTMLElement>("[data-lang-overlay]")!;
+    const label = root.querySelector<HTMLElement>("[data-lang-label]")!;
+    const panel = root.querySelector<HTMLElement>("[data-lang-panel]")!;
+    const options = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-lang-option]"));
+
+    let open = false;
+    let active = "en";
+
+    const render = () => {
+      swap(toggle, open ? BTN_OPEN : BTN_CLOSED, open ? BTN_CLOSED : BTN_OPEN);
+      overlay.classList.toggle("group-hover:opacity-100", !open);
+      const activeOpt = options.find((o) => o.dataset.langOption === active) ?? options[0];
+      label.textContent = activeOpt.dataset.label!;
+      panel.hidden = !open;
+      for (const opt of options) {
+        const isActive = opt.dataset.langOption === active;
+        swap(opt, isActive ? OPT_ACTIVE : OPT_INACTIVE, isActive ? OPT_INACTIVE : OPT_ACTIVE);
+        const badge = opt.querySelector("[data-lang-badge]")!;
+        swap(badge, isActive ? BADGE_ACTIVE : BADGE_INACTIVE, isActive ? BADGE_INACTIVE : BADGE_ACTIVE);
+        opt.querySelector<HTMLElement>("[data-lang-check]")!.hidden = !isActive;
+      }
+    };
+
+    // Close on outside tap/click (works on iOS with touchstart)
+    const handleClose = (e: Event) => {
+      if (!root.contains(e.target as Node)) setOpen(false);
+    };
+    const setOpen = (value: boolean) => {
+      if (value === open) return;
+      open = value;
+      if (open) {
+        document.addEventListener("mousedown", handleClose);
+        document.addEventListener("touchstart", handleClose, { passive: true });
+      } else {
+        document.removeEventListener("mousedown", handleClose);
+        document.removeEventListener("touchstart", handleClose);
+      }
+      render();
+    };
+
+    toggle.addEventListener("click", () => setOpen(!open));
+
+    for (const opt of options) {
+      opt.addEventListener("click", () => {
+        const code = opt.dataset.langOption!;
+        if (code === active) {
+          setOpen(false);
+          return;
+        }
+        active = code;
+        saveLangPreference(code);
+        setOpen(false);
+        render();
+        applyGoogleTranslate(code); // sets googtrans cookie + reloads
+      });
+    }
+
+    // "Mount": restore the saved language. The googtrans cookie is what makes
+    // Google Translate apply it on load, so only re-write it when it has drifted
+    // out of sync with the saved preference (e.g. Google cleared it).
+    active = getSavedLang();
+    render();
+    root.hidden = false;
+    if (cookieLang() !== active) {
+      setGoogTransCookie(active);
+      // Only reload if the cookie actually took — otherwise we'd loop forever.
+      if (cookieLang() === active) {
+        window.location.reload();
+        return;
+      }
+    }
+
+    // Google's script only has work to do when a non-English language is active.
+    if (cookieLang() !== "en" && !document.getElementById("google-translate-script")) {
+      const script = document.createElement("script");
+      script.id = "google-translate-script";
+      script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }
+
+  // Matches the old `client:idle` island: initialise once the browser is idle.
+  const start = () => document.querySelectorAll<HTMLElement>("[data-lang-switcher]").forEach(init);
+  if ("requestIdleCallback" in window) window.requestIdleCallback(start);
+  else setTimeout(start, 200);
+</script>

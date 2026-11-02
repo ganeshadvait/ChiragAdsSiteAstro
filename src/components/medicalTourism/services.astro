@@ -1,0 +1,70 @@
+---
+// File: components/medicalTourism/mtIncluded.astro
+
+const includedServices = [
+  {
+    icon: "/medicaltourism/Medical Visa Support.svg",
+    title: "Medical Visa Support",
+    description:
+      "We provide official invitation letters, medical certificates and documentation to secure your India medical visa.",
+  },
+  {
+    icon: "/medicaltourism/Accommodation Guidance.svg",
+    title: "Accommodation Guidance",
+    description:
+      "Curated hotels near the hospital at all budgets — from budget guesthouses to 5-star options.",
+  },
+  {
+    icon: "/medicaltourism/WhatsApp-First Communication.svg",
+    title: "WhatsApp-First Communication",
+    description:
+      "Send reports, X-rays and queries directly on WhatsApp. We respond within hours, not days.",
+  },
+  {
+    icon: "/medicaltourism/Transparent Cost Estimates.svg",
+    title: "Transparent Cost Estimates",
+    description:
+      "Detailed written treatment plan with all-inclusive pricing before you book flights. No hidden charges.",
+  },
+  {
+    icon: "/medicaltourism/Remote Pre-Consultation.svg",
+    title: "Remote Pre-Consultation",
+    description:
+      "Video call with the treating doctor before you travel. Get your questions answered by the specialist directly.",
+  },
+  {
+    icon: "/medicaltourism/Post-Treatment Follow-Up.svg",
+    title: "Post-Treatment Follow-Up",
+    description:
+      "Online consultations and medical reports shared with your home doctor. Lifetime WhatsApp access to our team.",
+  },
+];
+---
+
+<section
+  id="services"
+  class="bg-white px-4 py-14 sm:px-6 lg:px-8 lg:py-20"
+>
+  <div class="mx-auto max-w-7xl">
+    <span class="mb-3 inline-block text-xs font-semibold uppercase tracking-[2px] text-[#C8963E]">International Patient Services</span>
+
+    <h2 class="text-3xl font-bold leading-tight text-[#625587] sm:text-4xl lg:text-5xl">Everything Included. Zero Surprises.</h2>
+
+    <p class="mt-4 max-w-2xl text-base leading-7 text-[#5A7078]">We&apos;ve designed a complete end-to-end experience so you can travel with confidence.</p>
+
+    <div class="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      {includedServices.map((service) => (
+        <div class="flex items-start gap-4 rounded-[14px] border border-[#E2EDF0] p-6 transition duration-300 hover:border-[#625587] hover:bg-[#FAF7F3]">
+          <div class="flex h-12 w-12 min-w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[#fff] to-[#F8B956] text-xl text-white">
+            <img src={service.icon} alt="icon" class="w-6 h-6" />
+          </div>
+
+          <div>
+            <h4 class="text-base font-semibold text-[#0B4F5A]">{service.title}</h4>
+            <p class="mt-1 text-sm leading-6 text-[#5A7078]">{service.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

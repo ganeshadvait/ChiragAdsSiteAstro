@@ -1,0 +1,42 @@
+---
+// Astro port of symptomsinfo.jsx (static).
+import ContactCta from "@/components/ContactCta.astro";
+
+type Props = {
+  symptomsHeading?: string;
+  symptoms: string[];
+  ctaText?: string;
+  diagnosisHeading?: string;
+  diagnosisText?: string;
+};
+
+const { symptomsHeading, symptoms, ctaText, diagnosisHeading, diagnosisText } = Astro.props;
+---
+
+<section class="w-full max-w-5xl mx-auto px-4 py-6 space-y-10">
+  {/* Symptoms */}
+  <div>
+    <h2 class="text-2xl md:text-3xl font-semibold text-[#625587] mb-6">{symptomsHeading}</h2>
+
+    <ul class="space-y-6 text-gray-800">
+      {symptoms.map((item) => (
+        <li class="flex items-start gap-4 transition-all duration-300 ease-[cubic-bezier(.22,.61,.36,1)] hover:ml-2 border border-transparent hover:border-gray-100 rounded-lg p-2 w-fit">
+          <span class="mt-1 flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path></svg>
+          </span>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+
+    {ctaText && (
+      <ContactCta class="inline-block mt-6 bg-[#F8B956] hover:bg-transparent transition text-white hover:text-black border-2 border-transparent hover:border-[#F8B956] font-semibold rounded-full px-8 py-3 text-lg">{ctaText}</ContactCta>
+    )}
+  </div>
+
+  {/* Why Early Diagnosis */}
+  <div>
+    <h2 class="text-2xl md:text-3xl font-semibold text-[#625587] mb-4">{diagnosisHeading}</h2>
+    <p class="text-gray-700 text-lg">{diagnosisText}</p>
+  </div>
+</section>

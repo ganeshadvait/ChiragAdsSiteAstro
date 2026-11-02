@@ -1,0 +1,575 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/header/header.astro";
+import Hero from "@/components/partials/hero/hero.astro";
+import WhatIsPediatric from "@/components/partials/whatispediatric/whatispediatric.astro";
+import Number from "@/components/partials/number/number.astro";
+import PediatricConditions from "@/components/partials/pediatricconditions/pediatricconditions.astro";
+import Doctors from "@/components/partials/doctors/doctors.astro";
+import CostDepends from "@/components/partials/costdepends/costdepends.astro";
+import InsurenceAdvisor from "@/components/partials/insurenceadvisor/insurenceadvisor.astro";
+import Why from "@/components/partials/why/why.astro";
+import WhyChoosePediatric from "@/components/partials/whychoosepediatric/whychoosepediatric.astro";
+import CtaBanner from "@/components/partials/ctabanner/ctabanner.astro";
+import Faqs from "@/components/faqs/faq.astro";
+import Form from "@/components/partials/form/from.astro";
+import HospitalLocation from "@/components/HospitalLocation/hospitallocations.astro";
+import TreatmentOptions from "@/components/partials/treatmentoptions/treatmentoptions.astro";
+import SymptomsInfo from "@/components/partials/symptomsinfo/symptomsinfo.astro";
+import FooterComponent from "@/components/footer/footer.astro";
+type HeroDataType = {
+  heading: string;
+  subheading?: string;
+  points: string[];
+  buttonText: string;
+  imageSrc: string;
+};
+
+const contentMap: Record<
+  string,
+  {
+    phone?: string;
+    hero?: Partial<HeroDataType>;
+    faqs?: { faqTitle: string; faqAnswer: string }[];
+  }
+> = {
+  "colorectal-laser-treatment-cost-in-bangalore": {
+    phone: "08065916418",
+    hero: {
+      heading: "Best Colorectal Cancer Treatment in Bangalore",
+      points: [
+        "Early detection and precise diagnosis",
+        "Experienced colorectal cancer specialists",
+        "Surgical and medical oncologists",
+        "Personalised patient-focused care",
+        "Early stage endoscopic treatment",
+        "Palliative care facility",
+      ],
+    },
+    faqs: [
+      {
+        faqTitle: "Is colorectal cancer treatable?",
+        faqAnswer:
+          "Early-stage colorectal cancer can be treated effectively, often with surgery and/or chemotherapy. The treatment plan depends on the stage and location of the cancer.",
+      },
+      {
+        faqTitle: "Will I need surgery?",
+        faqAnswer:
+          "Surgery is often a part of the treatment for colorectal cancer, but it depends on the stage and type of tumor. Our specialists will discuss options with you.",
+      },
+      {
+        faqTitle: "How soon do I need to act?",
+        faqAnswer:
+          "If you're experiencing symptoms or have been diagnosed, we recommend getting evaluated as soon as possible to confirm staging and prevent delays in treatment.",
+      },
+      {
+        faqTitle: "What can I expect during chemotherapy?",
+        faqAnswer:
+          "Chemotherapy is a common treatment for colorectal cancer. Side effects vary, but we provide detailed guidance on what to expect and how to manage them.",
+      },
+      {
+        faqTitle: "Can I get a second opinion?",
+        faqAnswer:
+          "Yes, we offer second opinions to confirm treatment plans and help guide you to the best possible care.",
+      },
+    ],
+  },
+  "best-colorectal-cancer-treatment-in-bangalore": {
+    phone: "08065916418",
+  },
+};
+
+export const prerender = false;
+
+const slug = Astro.params.slug ?? "";
+
+const normalizedSlug = decodeURIComponent(String(slug))
+  .trim()
+  .replace(/\/+$/, "")
+  .toLowerCase();
+
+const pageContent = contentMap[normalizedSlug];
+
+const defaultPhone = "08065916418";
+const finalPhone = pageContent?.phone ?? defaultPhone;
+
+const finalPhoneTel = `tel:${finalPhone}`;
+
+const HeroData = {
+  heading: "Best Colorectal Cancer Treatment in Bangalore",
+  points: [
+    "Early detection and precise diagnosis",
+    "Experienced colorectal cancer specialists",
+    "Surgical and medical oncologists",
+    "Personalised patient-focused care",
+    "Early stage endoscopic treatment",
+    "Palliative care facility",
+  ],
+  buttonText: "Book Appointment",
+  imageSrc: "/Chirag Doctors Main.png",
+};
+
+ const whatIsPediatricData = {
+  heading: "What Is Colon Cancer?",
+  emoji: "🩺",
+  image: "/coloncancer/colon cancer.png",
+  imageAlt: "colon cancer",
+  paragraphs: [
+    "Colon and rectal cancers are more commonly diagnosed in people between the ages of 65 and 74, with a median age at diagnosis of around 68 years. However, in recent years, cases have also been increasing in younger age groups. In many Western countries, colon cancer is more common than rectal cancer. In India, rectal cancer has historically been reported more often, with men affected more frequently than women.",
+    "Colorectal cancer usually begins in the innermost lining of the colon or rectum, called the mucosa. Over time, it can grow deeper into the wall through the submucosa, muscularis propria, and outermost layer known as the serosa (or surrounding tissues, depending on the location). The depth of spread, along with lymph node involvement and spread to other organs, helps determine the stage of the disease.",
+    "",
+  ],
+};
+
+const finalHeroData = {
+  ...HeroData,
+  ...(pageContent?.hero ?? {}),
+  heading: pageContent?.hero?.heading ?? HeroData.heading,
+  points: pageContent?.hero?.points ?? HeroData.points,
+};
+
+const statsSectionData = {
+  heading: "Trusted by Patients\nWorldwide",
+  description:
+    "Patients receive safe treatment, quick discharge, shorter hospital stays, and faster recovery with continuous medical care and support.",
+  stats: [
+    {
+      value: "24 hr",
+      label: "Discharge",
+    },
+    {
+      value: "180K+",
+      label: "Patient Treated",
+    },
+    {
+      value: "3 Days",
+      label: "Recovery Time",
+    },
+    {
+      value: "99.5%",
+      label: "Success Rate",
+    },
+  ],
+};
+
+const pediatricConditionsData = {
+  heading: "Symptoms of Colon Cancer",
+  subheading:
+    "Common colon cancer symptoms may include blood in stool, changes in bowel habits, abdominal discomfort, fatigue, and unexplained weight loss.",
+  conditions: [
+    {
+      icon: "clock",
+      title: "Blood in Stool",
+      description:
+        "Red or dark blood in the stool, or bleeding from the rectum, should not be ignored.",
+    },
+    {
+      icon: "shield",
+      title: "Unexplained Weight Loss",
+      description:
+        "Losing weight without trying, often with reduced appetite or weakness.",
+    },
+    {
+      icon: "activity",
+      title: "Change in Bowel Habits",
+      description:
+        "Persistent constipation, diarrhea, narrower stools, or frequent changes in bowel movements.",
+    },
+    {
+      icon: "activity",
+      title: "Abdominal Discomfort",
+      description:
+        "Ongoing cramps, bloating, gas, pain, or a feeling of fullness in the abdomen.",
+    },
+    {
+      icon: "activity",
+      title: "Incomplete Evacuation",
+      description:
+        "A sensation that the bowel does not empty completely after passing stool.",
+    },
+    {
+      icon: "activity",
+      title: "Fatigue or Anemia",
+      description:
+        "Constant tiredness, weakness, or low hemoglobin caused by hidden blood loss.",
+    },
+  ],
+};
+
+// const costSectionData = {
+//   title: "Check Surgery Cost",
+//   points: [
+//     "Find the total cost of Surgery at the best hospitals.",
+//     "Compare surgery prices across top hospitals.",
+//     "Get a clear estimate before visiting the hospital.",
+//   ],
+//   buttonText: "Calculate Surgery Cost",
+//   imageSrc: "/chiraggpt.png",
+// };
+
+const symptomsInfoData = {
+  symptomsHeading: "Symptoms You Shouldn't Ignore",
+  symptoms: [
+    "Blood in stool or rectal bleeding",
+    "Unexplained weight loss or fatigue",
+    "Persistent change in bowel habits",
+    "Abdominal discomfort, bloating, or cramps",
+    "Feeling of incomplete evacuation",
+    "Low hemoglobin (anemia) or weakness",
+  ],
+  ctaText: " Book An Appointment",
+  diagnosisHeading: "Why Early Diagnosis Matters",
+  diagnosisText:
+    "If you notice any of the above symptoms, early evaluation can help guide your next steps for treatment, reducing delays and improving outcome.",
+};
+const doctorsSectionData = {
+  heading: "Our Top Doctors",
+
+  topDoctors: [
+    {
+      name: "Dr. Rajasekhar M R",
+      designation: "MBBS, MS General Surgeon",
+      qualification: "Founder and Senior Colorectal Surgeon",
+      experience: "30+ Years",
+      reviews: "99%",
+      img: "/doctorchiragcard.avif",
+    },
+    {
+      name: "Dr. Shreedevi KN",
+      designation: "MBBS, MS, FSGE",
+      qualification: "Surgical Gastroenterologist and Colorectal surgeon",
+      experience: "12 Years",
+      reviews: "99%",
+      img: "/doctorshreedevicard.avif",
+    },
+    {
+      name: "Dr. Padmanabh R Bhat",
+      designation: "MBBS, MS(Gen Surgery),FRCS(Edin)",
+      qualification: "General Surgeon",
+      experience: "28 Years",
+      reviews: "99%",
+      img: "/doctorpadmanabhcard.avif",
+    },
+  ],
+
+  moreDoctors: [
+    {
+      name: "Dr.Jyotsna Vemulapalli",
+      designation: "MBBS, MS(Gen Surgery)",
+      qualification: "Colorectal Surgeon & Proctologist",
+      experience: "4 Years",
+      reviews: "99%",
+      img: "/doctorjyotsnacard.avif",
+    },
+    {
+      name: "Dr. Prithvija Chakravarthy",
+      designation: "BAMS, MD(Ayu),YIC (Yoga - SVYASA)",
+      qualification: "Proctologist",
+      experience: "10 Years",
+      reviews: "99%",
+      img: "/doctorprithvicard.avif",
+    },
+    {
+      name: "Dr. Suchitra N Adiga",
+      designation: "BAMS, MS(Ayu)",
+      qualification: "Proctologist",
+      experience: "8 Years",
+      reviews: "99%",
+      img: "/doctorsuchithracard.avif",
+    },
+  ],
+
+  banner: {
+    heading: "Consult The Doctor Now",
+    points: [
+      "Experienced oncologists",
+      "Various treatment methods",
+      "Proven treatment outcomes",
+    ],
+    buttonText: "Book Appointment",
+    imageSrc: "/consultthedoctor.png",
+  },
+};
+const defaultLocationHeading =
+  "Chirag Global Hospital - Best Colorectal Hospital in Bangalore";
+
+const treatmentOptionsData = {
+  heading: "Treatment Options",
+  options: [
+    {
+      icon: "wrench",
+      title: "Surgery",
+      description:
+        "When appropriate, surgery will be considered for tumor removal, depending on staging.",
+    },
+    {
+      icon: "shield",
+      title: "Chemotherapy",
+      description:
+        "Often recommended as part of the treatment plan to shrink tumors or after surgery to reduce recurrence.",
+    },
+    {
+      icon: "clock",
+      title: "Radiation Therapy",
+      description:
+        "Can be used pre-surgery for rectal cancer to shrink the tumor or post-surgery for better results.",
+    },
+    {
+      icon: "shield",
+      title: "Targeted / Immunotherapy",
+      description:
+        "Used based on the tumor's biological makeup. This may be suitable for certain cases with metastasis.",
+    },
+    {
+      icon: "clock",
+      title: "Supportive Care",
+      description:
+        "Nutritional counseling, pain management, and emotional support to guide you through treatment.",
+    },
+  ],
+  ctaText: "Book An Appointment",
+};
+
+const treatmentCostDependsData = {
+  heading: "Treatment Cost Depends On",
+  items: [
+    {
+      titleBold: "Type of",
+      titleRest: "Procedure",
+      icon: "/typeofprocedure.png",
+    },
+    {
+      titleBold: "Severity of",
+      titleRest: "the Disease",
+      icon: "/severitydisease.png",
+    },
+    {
+      titleBold: "Past Medical",
+      titleRest: "Condition",
+      icon: "/pastmedical.png",
+    },
+    {
+      titleBold: "Contact",
+      titleRest: "for exact cost",
+      icon: "/contact.png",
+    },
+  ],
+  ctaText: "Chat with Our Expert",
+};
+const insuranceAdvisorData = {
+  cards: [
+    {
+      titlePrefix: "Easy",
+      titleHighlight: "Payment Options",
+      description:
+        "Enjoy hassle-free treatment and insurance support through GMoney, with zero processing fees and interest-free finance.",
+      image: "/checkinsurancecoverage.png",
+      imageAlt: "Insurance coverage illustration",
+      buttonText: "Check EMI Options",
+      ctaType: "modal",
+    },
+    {
+      titlePrefix: "Talk To",
+      titleHighlight: "Health Advisor",
+      description:
+        "Get clear guidance on treatment options, costs, and recovery process.",
+      image: "/talktohealthadvaiser.png",
+      imageAlt: "Health advisor illustration",
+      buttonText: "Call Our Advisors",
+      ctaType: "call",
+    },
+  ],
+};
+
+
+const whyChooseData = {
+  heading: "Why Choose Chirag Hospital for Colon Cancer",
+  subheading:
+    "Comprehensive Care. Advanced Treatment. Better Outcomes.",
+  features: [
+    {
+      title: "Specialized Team of Experts",
+      description:
+        "Our experienced team includes colon surgeons, medical oncologists, radiologists, pathologists, anesthetists, and critical care specialists working together to deliver coordinated cancer care.",
+    },
+    {
+      title: "Comprehensive Care",
+      description:
+        "From evaluation and diagnosis to surgery, treatment, recovery, and follow-up, we provide complete care plans tailored to each patient’s condition and needs.",
+    },
+    {
+      title: "Advanced Treatment Options",
+      description:
+        "We offer modern colon cancer treatments including minimally invasive surgery, laparoscopic procedures, robotic-assisted surgery, chemotherapy, immunotherapy, and targeted therapies when appropriate.",
+    },
+    {
+      title: "Patient-Centered Approach",
+      description:
+        "We focus on clear communication, coordinated care, emotional support, and guidance at every stage of treatment to help patients and families feel informed and confident.",
+    },
+    {
+      title: "Advanced Technology & Diagnostics",
+      description:
+        "Our hospital is equipped with modern imaging, endoscopy, pathology support, and surgical infrastructure for accurate diagnosis, staging, and effective treatment planning.",
+    },
+    {
+      title: "Privacy & Comfort",
+      description:
+        "We maintain confidential consultations, respectful care, and a supportive environment designed for patient comfort, dignity, and peace of mind throughout treatment.",
+    },
+  ],
+};
+
+const BannerData = {
+  heading: "Get Relief from colorectal cancer  – Book Now",
+  buttonText: "Book An Appointment",
+  imageSrc: "/scheduleyourvisit.png",
+};
+
+const faqs = [
+  {
+    faqTitle: "Is colorectal cancer treatable?",
+    faqAnswer:
+      "Early-stage colorectal cancer can be treated effectively, often with surgery and/or chemotherapy. The treatment plan depends on the stage and location of the cancer.",
+  },
+  {
+    faqTitle: "Will I need surgery?",
+    faqAnswer:
+      "Surgery is often a part of the treatment for colorectal cancer, but it depends on the stage and type of tumor. Our specialists will discuss options with you.",
+  },
+  {
+    faqTitle: "How soon do I need to act?",
+    faqAnswer:
+      "If you're experiencing symptoms or have been diagnosed, we recommend getting evaluated as soon as possible to confirm staging and prevent delays in treatment.",
+  },
+  {
+    faqTitle: "What can I expect during chemotherapy?",
+    faqAnswer:
+      "Chemotherapy is a common treatment for colorectal cancer. Side effects vary, but we provide detailed guidance on what to expect and how to manage them.",
+  },
+  {
+    faqTitle: "Can I get a second opinion?",
+    faqAnswer:
+      "Yes, we offer second opinions to confirm treatment plans and help guide you to the best possible care.",
+  },
+];
+
+const finalFaqs = pageContent?.faqs ?? faqs;
+
+const testimonialSectionData = {
+  testimonials: [
+    {
+      // title: "Laser treatment for my dad's piles",
+      text: "Dr.Rajasekhar is a specialist in colorectal cancer. He explained my condition clearly and discussed the treatment options in simple language. I felt comfortable asking questions and was satisfied with the care.",
+      name: "Abddul",
+      rating: 5,
+    },
+    {
+      // title: "Smooth and painless",
+      text: "I consulted Dr.Rajasekhar for colorectal cancer treatment. He reviewed my reports carefully and suggested the right treatment plan. He is calm, patient, and supportive.",
+      name: "Sai",
+      rating: 5,
+    },
+    {
+      // title: "Colorectal Diseases",
+      text: "Dr.Rajasekhar handled my colorectal cancer surgery. The procedure went well, and he monitored my recovery closely. I am thankful for his guidance during the treatment.",
+      name: "Kasireddy",
+      rating: 5,
+    },
+    {
+      // title: "Admitted for my fistula surgery",
+      text: "We met Dr.Rajasekhar after my diagnosis of colorectal cancer. He explained the stage of the disease and what steps were needed next. The overall treatment process was smooth.",
+      name: "Syam",
+      rating: 5,
+    },
+    {
+      // title: "Admitted for my fistula surgery",
+      text: "Dr.Rajasekhar is experienced in treating colorectal cancer. He answers questions clearly and makes sure the patient understands the treatment plan. I would recommend him for colorectal cancer care.",
+      name: "Priyank",
+      rating: 5,
+    },
+  ],
+  ctaText: "Google Reviews",
+  ctaLink:
+    "https://www.google.com/maps/place/Chirag+Global+Hospital/@12.9059178,77.6037368,17z/data=!4m8!3m7!1s0x3bae150e6550b135:0xa07798be317297a5!8m2!3d12.9059178!4d77.6037368!9m1!1b1!16s%2Fg%2F11q4j4m7pw?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA2OUgBUAM%3D",
+};
+---
+
+<BaseLayout
+  title="Colorectal Cancer Treatment in Bangalore | Colorectal Cancer Surgery | Chirag Hospitals"
+  description="Get advanced colorectal cancer treatment in Bangalore at Chirag Hospitals. Experienced colorectal specialists, early detection, surgical and medical oncology, personalised patient care.">
+<main>
+
+<>
+  <Header
+    PhoneNumber={finalPhone}
+    mobilectatext={"Call Now"}
+    mobileNumberHeader={finalPhoneTel}
+  />
+  <div class="w-full max-w-[1500px] mx-auto px-4 py-8">
+    {/* 2-Column Layout */}
+    <div class="grid grid-cols-1 lg:grid-cols-[70%_30%] gap-6">
+      {/* LEFT SIDE 70% */}
+      <div class="space-y-10">
+        <Hero {...finalHeroData} />
+         <WhatIsPediatric {...whatIsPediatricData} />
+        <Number {...statsSectionData} />
+        {/* <Cost
+        title={costSectionData.title}
+        points={costSectionData.points}
+        buttonText={costSectionData.buttonText}
+        imageSrc={costSectionData.imageSrc}
+      /> */}
+        {/* <Risk {...risksOfDelayData} /> */}
+         <PediatricConditions {...pediatricConditionsData} />
+        {/* <SymptomsInfo {...symptomsInfoData} /> */}
+        <Doctors {...doctorsSectionData} />
+        <HospitalLocation locationsectionheading={defaultLocationHeading} />
+        <TreatmentOptions {...treatmentOptionsData} />
+
+        <CostDepends
+          heading={treatmentCostDependsData.heading}
+          items={treatmentCostDependsData.items}
+          ctaText={treatmentCostDependsData.ctaText}
+        />
+        <InsurenceAdvisor {...insuranceAdvisorData} />
+        <WhyChoosePediatric {...whyChooseData} />
+        {/* <HospitalComparisond {...InfoContent} /> */}
+        {/* <Info {...InfoData} /> */}
+        <CtaBanner {...BannerData} />
+        {finalFaqs.length > 0 && (
+          <Faqs
+            className="md:!w-[95%] w-full mx-[unset]"
+            // fheading={fheading}
+            faqs={finalFaqs.map((faq) => ({
+              faqquestion: faq.faqTitle,
+              faqanswer: faq.faqAnswer,
+            }))}
+          />
+        )}
+      </div>
+
+      {/* RIGHT SIDE 30% (Sticky Form) */}
+      <div class="relative">
+        {/* Desktop: sticky, Mobile: fixed bottom */}
+        <div class="hidden lg:block sticky top-24">
+          <Form reviewsData={testimonialSectionData} />
+        </div>
+        <div
+          class="block lg:hidden fixed bottom-0 left-0 w-full z-50 bg-transparent   px-4 py-1"
+          style={{ maxWidth: "1500px", margin: "0 auto" }}
+        >
+          <Form reviewsData={testimonialSectionData} />
+        </div>
+      </div>
+    </div>
+  </div>
+  <FooterComponent
+    footerdesc="About Chirag Global Hospitals"
+    extradesc="Providing trusted care with decades of experience in diagnosing and treating colorectal and digestive health conditions."
+    footernumber={finalPhone}
+  />
+</>
+  
+</main>
+</BaseLayout>

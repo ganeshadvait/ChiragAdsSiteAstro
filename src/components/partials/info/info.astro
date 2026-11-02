@@ -1,0 +1,83 @@
+---
+// Astro port of info.jsx. The expandable content is rendered `hidden` and
+// toggled by the Read more / Read less button.
+type Props = {
+  aboutTitle?: string;
+  aboutText?: string;
+  advantagesTitle?: string;
+  advantages: string[];
+  costTitle?: string;
+  costIntro?: string;
+  costPoints: string[];
+  expandedContent?: string[];
+  readMoreText?: string;
+  readLessText?: string;
+};
+
+const {
+  aboutTitle,
+  aboutText,
+  advantagesTitle,
+  advantages,
+  costTitle,
+  costIntro,
+  costPoints,
+  expandedContent,
+  readMoreText = "Read more",
+  readLessText = "Read less",
+} = Astro.props;
+
+const hasMore = (expandedContent?.length ?? 0) > 0;
+---
+
+<section class="w-full max-w-5xl mx-auto px-4 py-6" data-info>
+  <div class="bg-white rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] p-6 md:p-8">
+    {/* About Section */}
+    <h2 class="text-2xl font-semibold text-gray-900 mb-2">{aboutTitle}</h2>
+    <p class="text-gray-700 leading-relaxed mb-6">{aboutText}</p>
+
+    {/* Advantages Section */}
+    <h3 class="text-2xl font-semibold text-gray-900 mb-2">{advantagesTitle}</h3>
+    <ol class="list-decimal list-inside text-gray-700 space-y-1 mb-6">
+      {advantages.map((item) => <li>{item}</li>)}
+    </ol>
+
+    {/* Cost Section */}
+    <h3 class="text-2xl font-semibold text-gray-900 mb-2">{costTitle}</h3>
+    <p class="text-gray-700 leading-relaxed mb-3">{costIntro}</p>
+
+    <ol class="list-decimal list-inside text-gray-700 space-y-1 mb-4">
+      {costPoints.map((item) => <li>{item}</li>)}
+    </ol>
+
+    {hasMore && (
+      <>
+        {/* Expandable Content */}
+        <div class="text-gray-700 leading-relaxed space-y-3 mb-4" hidden data-info-more>
+          {expandedContent!.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+
+        {/* Read More / Less */}
+        <button
+          class="text-emerald-600 font-medium text-lg hover:underline focus:outline-none"
+          data-info-toggle
+          data-more={readMoreText}
+          data-less={readLessText}
+        >{readMoreText}</button>
+      </>
+    )}
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-info]").forEach((root) => {
+    const more = root.querySelector<HTMLElement>("[data-info-more]");
+    const toggle = root.querySelector<HTMLButtonElement>("[data-info-toggle]");
+    if (!more || !toggle) return;
+    toggle.addEventListener("click", () => {
+      const expanded = more.hidden;
+      more.hidden = !expanded;
+      toggle.textContent = expanded ? toggle.dataset.less! : toggle.dataset.more!;
+    });
+  });
+</script>

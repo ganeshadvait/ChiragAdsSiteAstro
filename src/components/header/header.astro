@@ -1,0 +1,92 @@
+---
+import Image from "@/lib/Image.astro";
+import { WHATSAPP_URL, getPhoneForPath } from "@/constants/contact";
+
+// Kept for API compatibility with the React version; not rendered.
+interface Props {
+  PhoneNumber?: string;
+  mobilectatext?: string;
+  mobileNumberHeader?: string;
+}
+
+const phoneNumber = getPhoneForPath(Astro.url.pathname);
+
+const navItems = [
+  { link: "", value: "Home" },
+  { link: "doctors", value: "Doctors" },
+  { link: "reviews", value: "Reviews" },
+  { link: "faqs", value: "FAQ's" },
+  { link: "contact", value: "Contact Us" },
+];
+---
+
+<header data-site-header class="header w-[96%] h-[90px] mx-auto my-2 flex items-center justify-between p-5 border border-[#ebeff6] bg-white sticky top-[10px] z-[1000] transition-all duration-300 ease-in-out max-w-[1500px] shadow-lg rounded-xl">
+  <div class="flex gap-1 md:gap-4 items-center">
+    <Image
+      class="w-[100px] md:w-[140px] h-[80px] md:h-[100px] object-contain md:object-cover"
+      src="https://www.chiragglobalhospitals.com/wp-content/uploads/2026/01/chirag-logo-2048x1170.png"
+      alt="Chirag Global Hospitals"
+      width={175}
+      height={100}
+      loading="eager"
+    />
+    <img class="logo-fade header__logotwo" src="/logos/chirag38+yearslogo.png" />
+    <img class="logo-fade header__logothree" src="/Nabh-logo-img..avif" />
+  </div>
+
+  <nav class="header__menu font-semibold">
+    <ul>
+      {navItems.map((item) => (
+        <li data-scroll-to={item.link} style="cursor:pointer">{item.value}</li>
+      ))}
+    </ul>
+  </nav>
+
+  <div class="header__cta flex items-center gap-1 md:gap-3">
+    <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" class="flex items-center">
+      <Image src="/chirag whatsapp icon.png" alt="WhatsApp icon" width={20} height={20} class="w-6 h-6 md:w-8 md:h-8" />
+    </a>
+
+    <!-- Mobile Link (≤ 760px) -->
+    <a
+      href={`tel:${phoneNumber}`}
+      class="header_cta_type_one mobile-only flex items-center gap-2 transition-transform duration-300 hover:-translate-y-1 active:translate-y-0.5"
+    >
+      <Image src="/phone-call-icon svg.svg" alt="Call Icon" width={20} height={20} class="w-4 h-4 md:w-5 md:h-5 ringing" />
+      <span class="phone_number">{phoneNumber}</span>
+      <span data-cta="header cta call button" class="call_now gtm-cta">Call Now</span>
+    </a>
+
+    <!-- Desktop Link (> 760px) → WhatsApp -->
+    <a
+      href={WHATSAPP_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="header_cta_type_one desktop-only flex items-center gap-2 transition-transform duration-300 hover:-translate-y-1 active:translate-y-0.5"
+    >
+      <Image src="/phone-call-icon svg.svg" alt="Call Icon" width={20} height={20} class="w-4 h-4 md:w-5 md:h-5 ringing" />
+      <span class="phone_number">{phoneNumber}</span>
+      <span data-cta="header cta call button" class="call_now gtm-cta">Message on WhatsApp</span>
+    </a>
+  </div>
+</header>
+
+<script>
+  // Smooth-scroll nav: "" scrolls to top, otherwise to the section minus the sticky header.
+  function scrollToSection(id: string) {
+    if (!id) {
+      window.history.pushState(null, "", `#${id}`);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const element = document.getElementById(id);
+    if (element) {
+      window.history.pushState(null, "", `#${id}`);
+      window.scrollTo({ top: element.offsetTop - 100, behavior: "smooth" });
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-site-header] [data-scroll-to]").forEach((li) => {
+    li.addEventListener("click", () => scrollToSection(li.dataset.scrollTo ?? ""));
+  });
+</script>
