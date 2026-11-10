@@ -1,4 +1,4 @@
-# Chirag Global Hospitals – Ads Site (Astro)
+# Chirag Global Hospitals – Ads Site (Astro).
 
 Astro port of the Next.js site at https://github.com/ganeshadvait/chirag.
 Pure Astro: no React or other UI framework.
