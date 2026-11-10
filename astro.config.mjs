@@ -9,6 +9,13 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   output: "static",
   adapter: vercel(),
+  // Doctor profiles moved from /doctors/Proctology/... to lowercase; keep old links working.
+  redirects: {
+    "/doctors/Proctology/[drname]": {
+      status: 301,
+      destination: "/doctors/proctology/[drname]",
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
   },
