@@ -1,0 +1,54 @@
+---
+import Image from "@/lib/Image.astro";
+import ContactCta from "@/components/ContactCta.astro";
+
+interface Props {
+  heading: string;
+  points: string[];
+  buttonText: string;
+  imageSrc?: string;
+  name: string;
+  qualifications: string;
+  designation: string;
+  experience: string;
+}
+
+const { heading, points, buttonText, imageSrc, name, qualifications, designation, experience } = Astro.props;
+---
+
+<section class="w-full bg-white pt-4 pb-8 my-4">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center px-4 md:px-6">
+    {/* LEFT CONTENT */}
+    <div>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 leading-snug">{heading}</h1>
+
+      <ul class="mt-6 space-y-6">
+        {points.map((item) => (
+          <li class="flex items-center gap-3">
+            <span class="w-6 h-6 flex items-center justify-center rounded-full bg-[#625587] text-white text-sm">✓</span>
+            <span class="text-lg text-gray-700 font-semibold">{item}.</span>
+          </li>
+        ))}
+      </ul>
+
+      <ContactCta class="inline-block mt-6 bg-[#F8B956] hover:bg-transparent transition text-white hover:text-black border-2 border-transparent hover:border-[#F8B956] font-semibold rounded-full px-8 py-3 text-lg">{buttonText}</ContactCta>
+    </div>
+
+    {/* RIGHT IMAGE */}
+    <section class="w-full max-w-md mx-auto">
+      {imageSrc && (
+        <div class="relative w-full h-64 sm:h-80 md:h-[400px] rounded-xl overflow-hidden !z-0">
+          <Image src={imageSrc} alt={heading} fill class="object-cover  !z-0" />
+        </div>
+      )}
+      <div class="bg-gray-100 rounded-xl  max-w-md mx-auto px-4 py-6 -mt-4 z-100 relative">
+        <ul class="text-gray-800 font-medium space-y-1 flex flex-col items-center justify-center">
+          <li>{name}</li>
+          <li>{qualifications}</li>
+          <li>{designation}</li>
+          <li>{experience}</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</section>
